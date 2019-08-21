@@ -3,6 +3,7 @@ import 'package:flutter_demo/demo/Home.dart';
 import 'package:flutter_demo/demo/BottomAppBarDemo.dart';
 
 import 'demo/BottomNavigationBarDemo.dart';
+import 'demo/FrostedGlassDemo.dart';
 import 'demo/RouteAnimationDemo.dart';
 
 void main() => runApp(new MyApp());
@@ -32,12 +33,14 @@ class _MyAppState extends State<MyAppWidget> {
       ..add(BottomNavigationBarDemo())
       ..add(BottomAppBarDemo())
       ..add(RouteAnimationDemo())
+      ..add(FrostedGlassDemo())
       ..add(Home());
 
     listStr
       ..add("BottomNavigationBarDemo")
       ..add("BottomAppBarDemo")
       ..add("RouteAnimationDemo")
+      ..add("FrostedGlassDemo")
       ..add("Other");
     super.initState();
   }
