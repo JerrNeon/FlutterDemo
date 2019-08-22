@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/demo/Home.dart';
 import 'package:flutter_demo/demo/BottomAppBarDemo.dart';
+import 'package:flutter_demo/demo/Home.dart';
+import 'package:flutter_demo/demo/TabBarDemo.dart';
 
 import 'demo/BottomNavigationBarDemo.dart';
 import 'demo/FrostedGlassDemo.dart';
@@ -34,6 +35,7 @@ class _MyAppState extends State<MyAppWidget> {
       ..add(BottomAppBarDemo())
       ..add(RouteAnimationDemo())
       ..add(FrostedGlassDemo())
+      ..add(TabBarDemo())
       ..add(Home());
 
     listStr
@@ -41,6 +43,7 @@ class _MyAppState extends State<MyAppWidget> {
       ..add("BottomAppBarDemo")
       ..add("RouteAnimationDemo")
       ..add("FrostedGlassDemo")
+      ..add("TabBarDemo")
       ..add("Other");
     super.initState();
   }
