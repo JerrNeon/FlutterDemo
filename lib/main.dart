@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/demo/BottomAppBarDemo.dart';
+import 'package:flutter_demo/demo/ExpandTitleDemo.dart';
 import 'package:flutter_demo/demo/Home.dart';
+import 'package:flutter_demo/demo/SearchBarDemo.dart';
 import 'package:flutter_demo/demo/TabBarDemo.dart';
+import 'package:flutter_demo/demo/WrapLayoutDemo.dart';
 
 import 'demo/BottomNavigationBarDemo.dart';
+import 'demo/ExpansionPanelListDemo.dart';
 import 'demo/FrostedGlassDemo.dart';
 import 'demo/RouteAnimationDemo.dart';
 
@@ -14,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
+      debugShowCheckedModeBanner: false, //去掉DeBug图标
       home: MyAppWidget(),
     );
   }
@@ -36,6 +41,10 @@ class _MyAppState extends State<MyAppWidget> {
       ..add(RouteAnimationDemo())
       ..add(FrostedGlassDemo())
       ..add(TabBarDemo())
+      ..add(SearchBarDemo())
+      ..add(WrapLayoutDemo())
+      ..add(ExpandTitleDemo())
+      ..add(ExpansionPanelListDemo())
       ..add(Home());
 
     listStr
@@ -44,6 +53,10 @@ class _MyAppState extends State<MyAppWidget> {
       ..add("RouteAnimationDemo")
       ..add("FrostedGlassDemo")
       ..add("TabBarDemo")
+      ..add("SearchBarDemo")
+      ..add("WrapLayoutDemo")
+      ..add("ExpandTitleDemo")
+      ..add("ExpansionPanelListDemo")
       ..add("Other");
     super.initState();
   }
