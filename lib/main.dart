@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/demo/BottomAppBarDemo.dart';
+import 'package:flutter_demo/demo/ClipPathDemo.dart';
 import 'package:flutter_demo/demo/ExpandTitleDemo.dart';
 import 'package:flutter_demo/demo/Home.dart';
+import 'package:flutter_demo/demo/RightSlipBackDemo.dart';
 import 'package:flutter_demo/demo/SearchBarDemo.dart';
+import 'package:flutter_demo/demo/SplashDemo.dart';
 import 'package:flutter_demo/demo/TabBarDemo.dart';
+import 'package:flutter_demo/demo/ToolTipDemo.dart';
 import 'package:flutter_demo/demo/WrapLayoutDemo.dart';
 
 import 'demo/BottomNavigationBarDemo.dart';
@@ -36,6 +40,7 @@ class _MyAppState extends State<MyAppWidget> {
   @override
   void initState() {
     list
+      ..add(Home())
       ..add(BottomNavigationBarDemo())
       ..add(BottomAppBarDemo())
       ..add(RouteAnimationDemo())
@@ -45,9 +50,13 @@ class _MyAppState extends State<MyAppWidget> {
       ..add(WrapLayoutDemo())
       ..add(ExpandTitleDemo())
       ..add(ExpansionPanelListDemo())
-      ..add(Home());
+      ..add(ClipPathDemo())
+      ..add(SplashDemo())
+      ..add(RightSlipBackDemo())
+      ..add(ToolTipDemo());
 
     listStr
+      ..add("Home")
       ..add("BottomNavigationBarDemo")
       ..add("BottomAppBarDemo")
       ..add("RouteAnimationDemo")
@@ -57,7 +66,11 @@ class _MyAppState extends State<MyAppWidget> {
       ..add("WrapLayoutDemo")
       ..add("ExpandTitleDemo")
       ..add("ExpansionPanelListDemo")
-      ..add("Other");
+      ..add("ClipPathDemo")
+      ..add("SplashDemo")
+      ..add("RightSlipBackDemo")
+      ..add("ToolTipDemo");
+
     super.initState();
   }
 
