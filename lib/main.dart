@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/demo/BottomAppBarDemo.dart';
 import 'package:flutter_demo/demo/ClipPathDemo.dart';
+import 'package:flutter_demo/demo/DraggableDemo.dart';
 import 'package:flutter_demo/demo/ExpandTitleDemo.dart';
 import 'package:flutter_demo/demo/Home.dart';
 import 'package:flutter_demo/demo/RightSlipBackDemo.dart';
@@ -53,7 +54,8 @@ class _MyAppState extends State<MyAppWidget> {
       ..add(ClipPathDemo())
       ..add(SplashDemo())
       ..add(RightSlipBackDemo())
-      ..add(ToolTipDemo());
+      ..add(ToolTipDemo())
+      ..add(DraggableDemo());
 
     listStr
       ..add("Home")
@@ -69,7 +71,8 @@ class _MyAppState extends State<MyAppWidget> {
       ..add("ClipPathDemo")
       ..add("SplashDemo")
       ..add("RightSlipBackDemo")
-      ..add("ToolTipDemo");
+      ..add("ToolTipDemo")
+      ..add("DraggableDemo");
 
     super.initState();
   }
