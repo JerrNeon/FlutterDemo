@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/demo/DemoItem.dart';
+
+import 'DemoItem.dart';
 
 class DemoPage extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/bean/ExpandStateBean.dart';
+import 'package:flutter_demo/jsp_code/bean/ExpandStateBean.dart';
 
 class ExpansionPanelListDemo extends StatelessWidget {
   @override

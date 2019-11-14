@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/demo/Home.dart';
+
+import 'Home.dart';
 
 class SplashDemo extends StatelessWidget {
   @override

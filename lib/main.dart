@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/demo/BottomAppBarDemo.dart';
-import 'package:flutter_demo/demo/ClipPathDemo.dart';
-import 'package:flutter_demo/demo/DraggableDemo.dart';
-import 'package:flutter_demo/demo/ExpandTitleDemo.dart';
-import 'package:flutter_demo/demo/Home.dart';
-import 'package:flutter_demo/demo/RightSlipBackDemo.dart';
-import 'package:flutter_demo/demo/SearchBarDemo.dart';
-import 'package:flutter_demo/demo/SplashDemo.dart';
-import 'package:flutter_demo/demo/TabBarDemo.dart';
-import 'package:flutter_demo/demo/ToolTipDemo.dart';
-import 'package:flutter_demo/demo/WrapLayoutDemo.dart';
 
-import 'demo/BottomNavigationBarDemo.dart';
-import 'demo/ExpansionPanelListDemo.dart';
-import 'demo/FrostedGlassDemo.dart';
-import 'demo/RouteAnimationDemo.dart';
+import 'jsp_code/my_app.dart';
+
+///   common	一些工具类，如通用方法类、网络接口类、保存全局变量的静态类等
+///   i10n	国际化相关的类都在此目录下
+///   models	Json文件对应的Dart Model类会在此目录下
+///   states	保存APP中需要跨组件共享的状态类
+///   routes	存放所有路由页面类
+///   widgets	APP内封装的一些Widget组件都在该目录下
 
 void main() => runApp(new MyApp());
 
@@ -25,79 +18,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       debugShowCheckedModeBanner: false, //去掉DeBug图标
       home: MyAppWidget(),
-    );
-  }
-}
-
-class MyAppWidget extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyAppWidget> {
-  List<Widget> list = List();
-  List<String> listStr = List();
-
-  @override
-  void initState() {
-    list
-      ..add(Home())
-      ..add(BottomNavigationBarDemo())
-      ..add(BottomAppBarDemo())
-      ..add(RouteAnimationDemo())
-      ..add(FrostedGlassDemo())
-      ..add(TabBarDemo())
-      ..add(SearchBarDemo())
-      ..add(WrapLayoutDemo())
-      ..add(ExpandTitleDemo())
-      ..add(ExpansionPanelListDemo())
-      ..add(ClipPathDemo())
-      ..add(SplashDemo())
-      ..add(RightSlipBackDemo())
-      ..add(ToolTipDemo())
-      ..add(DraggableDemo());
-
-    listStr
-      ..add("Home")
-      ..add("BottomNavigationBarDemo")
-      ..add("BottomAppBarDemo")
-      ..add("RouteAnimationDemo")
-      ..add("FrostedGlassDemo")
-      ..add("TabBarDemo")
-      ..add("SearchBarDemo")
-      ..add("WrapLayoutDemo")
-      ..add("ExpandTitleDemo")
-      ..add("ExpansionPanelListDemo")
-      ..add("ClipPathDemo")
-      ..add("SplashDemo")
-      ..add("RightSlipBackDemo")
-      ..add("ToolTipDemo")
-      ..add("DraggableDemo");
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text("MyApp"),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => Card(
-          margin: EdgeInsets.all(10.0),
-          child: ListTile(
-            title: Text(listStr[index]),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => list[index]));
-            },
-          ),
-        ),
-        itemCount: list.length,
-      ),
     );
   }
 }

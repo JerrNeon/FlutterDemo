@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/demo/DemoPage.dart';
-import 'package:flutter_demo/demo/DemoStateWidget.dart';
-import 'package:flutter_demo/demo/DemoWidget.dart';
+
+import 'DemoPage.dart';
+import 'DemoStateWidget.dart';
+import 'DemoWidget.dart';
 
 void main() => runApp(Home());
 
@@ -24,7 +25,7 @@ class Home extends StatelessWidget {
   }
 }
 
-class _HomeItem extends StatefulWidget{
+class _HomeItem extends StatefulWidget {
   final int index;
 
   _HomeItem(this.index);
@@ -73,4 +74,3 @@ class __HomeItemState extends State<_HomeItem> {
     );
   }
 }
-

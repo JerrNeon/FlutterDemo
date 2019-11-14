@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/route/customer_router.dart';
+import 'package:flutter_demo/jsp_code/route/customer_router.dart';
 
 class RouteAnimationDemo extends StatelessWidget {
   @override
@@ -25,7 +25,9 @@ class FirstPage extends StatelessWidget {
         child: MaterialButton(
           onPressed: () {
             Navigator.push(
-                context, CustomerRoute(SecondPage(),CustomerRoute.ANIMATION_SLIDE_LEFT_RIGHT));
+                context,
+                CustomerRoute(
+                    SecondPage(), CustomerRoute.ANIMATION_SLIDE_LEFT_RIGHT));
           },
           child: Icon(Icons.navigate_next, color: Colors.white, size: 64),
         ),
