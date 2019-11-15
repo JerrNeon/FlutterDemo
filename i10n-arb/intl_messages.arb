@@ -1,0 +1,22 @@
+{
+  "@@last_modified": "2019-11-15T17:27:53.999702",
+  "@@locale":"en_US",
+  "title": "Flutter App",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "home": "Flutter Client",
+  "@home": {
+    "description": "Title for the home route",
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "login",
+  "@login": {
+    "description": "Title for the login button",
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "@@last_modified": "2019-11-15T16:33:37.315415",
+  "@@locale":"zh_CH",
+  "title": "Flutter应用",
+  "@title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "home": "Flutter 客户端",
+  "@home": {
+     "description": "Title for the home route",
+     "type": "text",
+     "placeholders": {}
+   },
+  "login": "登录",
+  "@login": {
+      "description": "Title for the login button",
+      "type": "text",
+      "placeholders": {}
+  }
+}

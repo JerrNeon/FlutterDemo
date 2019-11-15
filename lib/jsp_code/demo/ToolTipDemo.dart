@@ -22,7 +22,7 @@ class ToolTipWidget extends StatelessWidget {
         child: Tooltip(
           // 长按显示的内容
           message: '点击',
-          child: Image(image: AssetImage('assets/images/lake.jpg')),
+          child: Image(image: AssetImage('imgs/lake.jpg')),
           //child: Image.network(
           //              'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557744149&di=f68af941c41b28a7fd7484165f9c77c4&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201512%2F12%2F20151212193107_ujGZV.jpeg'),
         ),

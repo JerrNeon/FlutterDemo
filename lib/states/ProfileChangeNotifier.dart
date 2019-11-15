@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/Global.dart';
+import 'package:flutter_demo/common/global.dart';
 import 'package:flutter_demo/models/profile.dart';
 
 ///Provider包来实现跨组件状态共享

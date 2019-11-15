@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/common/Global.dart';
+import 'package:flutter_demo/common/global.dart';
 
 import 'ProfileChangeNotifier.dart';
 

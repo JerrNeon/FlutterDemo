@@ -5,8 +5,8 @@ import 'package:flutter_demo/models/cacheConfig.dart';
 import 'package:flutter_demo/models/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'CacheObject.dart';
-import 'Net.dart';
+import 'cache_object.dart';
+import 'net.dart';
 
 ///管理APP的全局变量
 
