@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/i10n/localization_intl.dart';
 
 class LoginRoute extends StatefulWidget {
   @override
@@ -8,6 +9,14 @@ class LoginRoute extends StatefulWidget {
 class _LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    var gm = GmLocalizations.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(gm.login),
+      ),
+      body: Center(
+        child: Text(gm.login),
+      ),
+    );
   }
 }

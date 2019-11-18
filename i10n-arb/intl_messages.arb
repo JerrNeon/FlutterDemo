@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-15T17:27:53.999702",
+  "@@last_modified": "2019-11-18T17:32:38.612537",
   "@@locale":"en_US",
   "title": "Flutter App",
   "@title": {
@@ -7,15 +7,83 @@
     "type": "text",
     "placeholders": {}
   },
-  "home": "Flutter Client",
+  "home": "Github",
   "@home": {
-    "description": "Title for the home route",
     "type": "text",
     "placeholders": {}
   },
-  "login": "login",
+  "language": "Language",
+  "@language": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Login",
   "@login": {
-    "description": "Title for the login button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "auto": "Auto",
+  "@auto": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "setting": "Setting",
+  "@setting": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "theme": "Theme",
+  "@theme": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDescription": "No description yet !",
+  "@noDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "userName": "User Name",
+  "@userName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "userNameRequired": "User name required!",
+  "@userNameRequired": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "Password",
+  "@password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordRequired": "Password required!",
+  "@passwordRequired": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "userNameOrPasswordWrong": "User name or password is not correct!",
+  "@userNameOrPasswordWrong": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "logout",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutTip": "Are you sure you want to quit your current account?",
+  "@logoutTip": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yes": "yes",
+  "@yes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "cancel",
+  "@cancel": {
     "type": "text",
     "placeholders": {}
   }

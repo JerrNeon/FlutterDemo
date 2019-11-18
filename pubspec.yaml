@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -31,6 +31,8 @@ dependencies:
   provider: ^3.1.0+1
   pull_to_refresh: ^1.5.7
   intl: ^0.15.8
+  cached_network_image: ^1.1.3
+  fluttertoast: ^3.1.3
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +62,9 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - imgs/lake.jpg
+    - imgs/avatar-default.png
+    - imgs/logo_dark.png
+    - imgs/logo_light.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -86,3 +91,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: myIcon
+      fonts:
+        - asset: fonts/iconfont.ttf
