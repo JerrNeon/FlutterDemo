@@ -18,8 +18,11 @@ class HomeRoute extends StatefulWidget {
 }
 
 class _HomeRouteState extends State<HomeRoute> {
+  Future<List<Repo>> _repos;
+
   @override
   void initState() {
+    _repos = _initRepos();
     super.initState();
   }
 
@@ -29,7 +32,9 @@ class _HomeRouteState extends State<HomeRoute> {
       appBar: AppBar(
         title: Text(GmLocalizations.of(context).home),
       ),
-      body: _buildBody(),
+      body: IndexedStack(
+        children: <Widget>[_buildBody()],
+      ),
       drawer: MyDrawer(),
     );
   }
@@ -47,7 +52,7 @@ class _HomeRouteState extends State<HomeRoute> {
     } else {
       return Center(
         child: FutureBuilder(
-            future: _init(),
+            future: _repos,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
@@ -76,7 +81,7 @@ class _HomeRouteState extends State<HomeRoute> {
     }
   }
 
-  Future<List<Repo>> _init() async {
+  Future<List<Repo>> _initRepos() async {
     print("init: ");
     return await Net(context).getRepos(
       refresh: true,
