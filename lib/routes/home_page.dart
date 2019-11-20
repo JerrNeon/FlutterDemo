@@ -5,6 +5,7 @@ import 'package:flutter_demo/common/Net.dart';
 import 'package:flutter_demo/common/route_config.dart';
 import 'package:flutter_demo/common/utils.dart';
 import 'package:flutter_demo/i10n/localization_intl.dart';
+import 'package:flutter_demo/jsp_code/my_app.dart';
 import 'package:flutter_demo/models/index.dart';
 import 'package:flutter_demo/states/ProfileChangeNotifier.dart';
 import 'package:flutter_demo/widgets/item_home_repo.dart';
@@ -113,7 +114,11 @@ class _MySmartRefresherState extends State<MySmartRefresher> {
       onRefresh: () => _onRefresh(),
       onLoading: () => _loading(),
       child: ListView.builder(
-        itemBuilder: (context, index) => RepoItem(repos[index]),
+        itemBuilder: (context, index) => GestureDetector(
+          child: RepoItem(repos[index]),
+          onTap: () =>
+              Navigator.of(context).pushNamed(ROUTE_MY_APP_WIDGET_DEMO),
+        ),
         itemCount: repos.length,
       ),
     );

@@ -16,12 +16,12 @@ import 'demo/TabBarDemo.dart';
 import 'demo/ToolTipDemo.dart';
 import 'demo/WrapLayoutDemo.dart';
 
-class MyAppWidget extends StatefulWidget {
+class MyAppWidgetDemo extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppWidgetDemoState createState() => _MyAppWidgetDemoState();
 }
 
-class _MyAppState extends State<MyAppWidget> {
+class _MyAppWidgetDemoState extends State<MyAppWidgetDemo> {
   List<Widget> list = List();
   List<String> listStr = List();
 
@@ -68,7 +68,7 @@ class _MyAppState extends State<MyAppWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("MyApp"),
+        title: Text("MyAppDemo"),
         centerTitle: true,
       ),
       body: ListView.builder(

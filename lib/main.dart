@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           ThemeModel themeModel, LocaleModel localeModel, Widget child) {
         return MaterialApp(
           theme: ThemeData(primarySwatch: themeModel.theme),
+          //debugShowCheckedModeBanner: false, //去掉DeBug图标
           onGenerateTitle: (context) {
             return GmLocalizations.of(context).title;
           },
@@ -72,17 +73,10 @@ class MyApp extends StatelessWidget {
             ROUTE_LOGIN: (context) => LoginRoute(),
             ROUTE_THEMES: (context) => ThemeChangeRoute(),
             ROUTE_LANGUAGE: (context) => LanguageRoute(),
+            ROUTE_MY_APP_WIDGET_DEMO: (context) => MyAppWidgetDemo(),
           },
         );
       }),
-    );
-  }
-
-  Widget _myAppWidgetDemo() {
-    return MaterialApp(
-      theme: ThemeData.light(),
-      debugShowCheckedModeBanner: false, //去掉DeBug图标
-      home: MyAppWidget(),
     );
   }
 }
