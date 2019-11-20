@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/common/Net.dart';
 import 'package:flutter_demo/common/route_config.dart';
 import 'package:flutter_demo/common/utils.dart';
@@ -49,20 +50,22 @@ class _HomeRouteState extends State<HomeRoute> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
-                  return ConstrainedBox(
-                    constraints: BoxConstraints.expand(),
-                    child: GestureDetector(
-                      child: Text(
-                        "加载失败，请重试！",
-                        style: TextStyle(color: Colors.black, fontSize: 14),
+                  return GestureDetector(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 60, vertical: 40),
+                        child: Text(
+                          "加载失败，请重试！",
+                          style: TextStyle(color: Colors.black, fontSize: 14),
+                        ),
                       ),
+                      behavior: HitTestBehavior.opaque, //使padding点击区域生效
                       onTap: () {
                         setState(() {});
-                      },
-                    ),
-                  );
+                      });
                 } else {
-                  return CupertinoScrollbar(child: MySmartRefresher(snapshot.data));
+                  return CupertinoScrollbar(
+                      child: MySmartRefresher(snapshot.data));
                 }
               } else {
                 return CircularProgressIndicator();

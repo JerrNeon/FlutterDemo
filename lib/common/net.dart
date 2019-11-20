@@ -24,6 +24,7 @@ class Net {
     headers: {
       HttpHeaders.acceptHeader: "application/vnd.github.squirrel-girl-preview,"
           "application/vnd.github.symmetra-preview+json",
+      HttpHeaders.authorizationHeader: Global.profile.token,//用户token
     },
   ));
 
@@ -34,7 +35,7 @@ class Net {
       dio.interceptors.add(LogInterceptor());
     }
     //设置用户token
-    dio.options.headers[HttpHeaders.authorizationHeader] = Global.profile.token;
+    //dio.options.headers[HttpHeaders.authorizationHeader] = Global.profile.token;
 
     //在调试模式下需要抓包，所以我们需要使用代理，并禁用https证书校验
     if (!Global.isRelease) {
@@ -75,7 +76,6 @@ class Net {
       // 列表下拉刷新，需要删除缓存（拦截器中会读取这些信息）
       _options.extra.addAll({KEY_REFRESH: true, KEY_LIST: true});
     }
-    _options.headers[HttpHeaders.authorizationHeader] = Global.profile.token;
     var r = await dio.get<List>(
       "user/repos",
       queryParameters: queryParameters,
