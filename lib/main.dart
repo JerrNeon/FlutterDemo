@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/common/global.dart';
 import 'package:flutter_demo/common/route_config.dart';
 import 'package:flutter_demo/i10n/localization_intl.dart';
-import 'package:flutter_demo/states/LocaleModel.dart';
-import 'package:flutter_demo/states/ThemeModel.dart';
-import 'package:flutter_demo/states/UserModel.dart';
+import 'package:flutter_demo/states/ProfileChangeNotifier.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
