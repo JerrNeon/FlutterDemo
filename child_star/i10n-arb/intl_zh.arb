@@ -1,0 +1,48 @@
+{
+  "@@last_modified": "2019-11-26T15:53:22.566074",
+  "appName": "child_star",
+  "@appName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeTitle": "首页",
+  "@homeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "knowledgeTitle": "知识",
+  "@knowledgeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseTitle": "活动",
+  "@exerciseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "consultationTitle": "在线咨询",
+  "@consultationTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchHintTitle": "你想找的这里都有...",
+  "@searchHintTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeNewTitle": "最新",
+  "@homeNewTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeAttentionTitle": "关注",
+  "@homeAttentionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeCommunityTitle": "社区",
+  "@homeCommunityTitle": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

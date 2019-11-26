@@ -5,14 +5,20 @@ class ConsultationPage extends StatefulWidget {
   _ConsultationPageState createState() => _ConsultationPageState();
 }
 
-class _ConsultationPageState extends State<ConsultationPage> with SingleTickerProviderStateMixin {
+class _ConsultationPageState extends State<ConsultationPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Container(
-        child: Text("consultation"),
+        child: Center(
+          child: Text("consultation"),
+        ),
       ),
     );
   }
 }
-

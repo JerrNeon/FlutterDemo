@@ -1,4 +1,6 @@
 import 'package:child_star/common/my_colors.dart';
+import 'package:child_star/common/my_images.dart';
+import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/routes/consultation_page.dart';
 import 'package:child_star/routes/exercise_page.dart';
 import 'package:child_star/routes/home_page.dart';
@@ -11,12 +13,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  var _index = 0;
-  var list = List();
+  var _currentIndex = 0;
+  var _list = List();
+  var _pageController = PageController();
 
   @override
   void initState() {
-    list
+    _list
       ..add(HomePage())
       ..add(KnowledgePage())
       ..add(ExercisePage())
@@ -26,54 +29,50 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final gm = GmLocalizations.of(context);
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image(image: AssetImage("images/ic_home.png")),
-            activeIcon: Image(image: AssetImage("images/ic_home_active.png")),
-            title: Text(
-              "首页",
-              style: TextStyle(color: MyColors.c_92992, fontSize: 11),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Image(image: AssetImage("images/ic_knowledge.png")),
-            activeIcon:
-                Image(image: AssetImage("images/ic_knowledge_active.png")),
-            title: Text(
-              "知识",
-              style: TextStyle(color: MyColors.c_92992, fontSize: 11),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Image(image: AssetImage("images/ic_exercise.png")),
-            activeIcon:
-                Image(image: AssetImage("images/ic_exercise_active.png")),
-            title: Text(
-              "活动",
-              style: TextStyle(color: MyColors.c_92992, fontSize: 11),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Image(image: AssetImage("images/ic_consultation.png")),
-            activeIcon:
-                Image(image: AssetImage("images/ic_consultation_active.png")),
-            title: Text(
-              "在线咨询",
-              style: TextStyle(color: MyColors.c_92992, fontSize: 11),
-            ),
-          ),
+          _createBottomNavigationBarItem(
+              MyImages.ic_home, MyImages.ic_home_active, gm.homeTitle),
+          _createBottomNavigationBarItem(MyImages.ic_knowledge,
+              MyImages.ic_knowledge_active, gm.knowledgeTitle),
+          _createBottomNavigationBarItem(MyImages.ic_exercise,
+              MyImages.ic_exercise_active, gm.exerciseTitle),
+          _createBottomNavigationBarItem(MyImages.ic_consultation,
+              MyImages.ic_consultation_active, gm.consultationTitle),
         ],
-        currentIndex: _index,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          setState(() {
-            _index = index;
-          });
+          _pageController.jumpToPage(index);
         },
       ),
-      body: list[_index],
+      body: PageView.builder(
+          //禁止滑动
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              if (_currentIndex != index) {
+                _currentIndex = index;
+              }
+            });
+          },
+          itemCount: _list.length,
+          itemBuilder: (context, index) => _list[index]),
+    );
+  }
+
+  BottomNavigationBarItem _createBottomNavigationBarItem(
+      AssetImage icon, AssetImage activeIcon, String title) {
+    return BottomNavigationBarItem(
+      icon: Image(image: icon),
+      activeIcon: Image(image: activeIcon),
+      title: Text(
+        title,
+        style: TextStyle(color: MyColors.c_92992, fontSize: 11),
+      ),
     );
   }
 }

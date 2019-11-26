@@ -10,19 +10,25 @@ class Global {
   static SharedPreferences _preferences; //SP
   static Profile profile = Profile(); //保存在SP中的信息
 
+  // 是否为release版
+  static bool get isRelease => bool.fromEnvironment("dart.vm.product");
+
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
-    String profileStr;
-    try {
-      profileStr = _preferences.getString(PROFILE_KEY);
-    } catch (e) {}
-    if (profileStr != null && profileStr.isNotEmpty)
-      profile = Profile.fromJson(jsonDecode(profileStr));
+    var profileStr = _preferences.getString(PROFILE_KEY);
+    if (profileStr != null) {
+      try {
+        profile = Profile.fromJson(jsonDecode(profileStr));
+      } catch (e) {
+        print(e);
+      }
+    }
 
     Net.init();
   }
 
-  static void saveProfile() {
-    _preferences.setString(PROFILE_KEY, jsonEncode(profile));
+  // 持久化Profile信息
+  static saveProfile() {
+    _preferences.setString(PROFILE_KEY, jsonEncode(profile.toJson()));
   }
 }

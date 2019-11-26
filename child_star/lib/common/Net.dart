@@ -22,16 +22,17 @@ class Net {
 
   BuildContext context;
 
-  static Dio dio;
-
-  static void init() {
-    dio = Dio(BaseOptions(
+  static Dio dio = Dio(
+    BaseOptions(
       baseUrl: BASE_URL,
       headers: {HEADER_AUTHORIZATION: Global.profile.token},
       connectTimeout: TIME_OUT,
       sendTimeout: TIME_OUT,
       receiveTimeout: TIME_OUT,
-    ));
+    ),
+  );
+
+  static void init() {
     dio.interceptors.add(LogInterceptor());
     dio.interceptors.add(SignInterceptor());
   }
