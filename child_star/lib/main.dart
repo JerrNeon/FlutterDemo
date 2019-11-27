@@ -1,12 +1,19 @@
 import 'package:child_star/common/global.dart';
+import 'package:child_star/common/my_colors.dart';
+import 'package:child_star/common/my_systems.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/routes/main_page.dart';
 import 'package:child_star/states/profile_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-void main() => Global.init().then((value) => runApp(MyApp()));
+void main() => Global.init().then((value) {
+      runApp(MyApp());
+      //设置状态栏颜色(白底黑字黑色图标)
+      SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
+    });
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -18,8 +25,17 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            primaryColor: MyColors.c_ffa2b1, //主色，决定导航栏颜色
+            accentColor: MyColors.c_ffa2b1, //次级色，决定大多数Widget的颜色，如进度条、开关等。
+            scaffoldBackgroundColor: Colors.white, //作为Scaffold基础的Material默认颜色
+            //解决TextField提示语hintText不居中的问题
+            textTheme: TextTheme(
+              subhead: TextStyle(
+                textBaseline: TextBaseline.alphabetic,
+              ),
+            )),
+        //不显示debug图标
+        debugShowCheckedModeBanner: false,
         onGenerateTitle: (context) => GmLocalizations.of(context).appName,
         //手动指定环境为中文简体
         locale: const Locale("zh", "CN"),

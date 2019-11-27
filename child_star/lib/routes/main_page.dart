@@ -1,10 +1,11 @@
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
+import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
-import 'package:child_star/routes/consultation_page.dart';
-import 'package:child_star/routes/exercise_page.dart';
-import 'package:child_star/routes/home_page.dart';
-import 'package:child_star/routes/knowledge_page.dart';
+import 'package:child_star/routes/consultation/consultation_page.dart';
+import 'package:child_star/routes/exercise/exercise_page.dart';
+import 'package:child_star/routes/home/home_page.dart';
+import 'package:child_star/routes/knowledge/knowledge_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -44,6 +45,7 @@ class _MainPageState extends State<MainPage> {
         ],
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
         onTap: (index) {
           _pageController.jumpToPage(index);
         },
@@ -71,7 +73,7 @@ class _MainPageState extends State<MainPage> {
       activeIcon: Image(image: activeIcon),
       title: Text(
         title,
-        style: TextStyle(color: MyColors.c_92992, fontSize: 11),
+        style: TextStyle(color: MyColors.c_92992, fontSize: MyFontSizes.s_11),
       ),
     );
   }
