@@ -88,8 +88,27 @@ flutter:
     - images/3.0x/ic_home_message.png
     - images/3.0x/ic_home_personal.png
     - images/3.0x/ic_home_search.png
+    - images/icon_home_tag.png
+    - images/2.0x/icon_home_tag.png
     - images/3.0x/icon_home_tag.png
+    - images/icon_home_tagall.png
+    - images/2.0x/icon_home_tagall.png
     - images/3.0x/icon_home_tagall.png
+    - images/ic_homenew_audio.png
+    - images/2.0x/ic_homenew_audio.png
+    - images/3.0x/ic_homenew_audio.png
+    - images/ic_homenew_collect.png
+    - images/2.0x/ic_homenew_collect.png
+    - images/3.0x/ic_homenew_collect.png
+    - images/ic_homenew_look.png
+    - images/2.0x/ic_homenew_look.png
+    - images/3.0x/ic_homenew_look.png
+    - images/ic_homenew_uncollect.png
+    - images/2.0x/ic_homenew_uncollect.png
+    - images/3.0x/ic_homenew_uncollect.png
+    - images/ic_homenew_video.png
+    - images/2.0x/ic_homenew_video.png
+    - images/3.0x/ic_homenew_video.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

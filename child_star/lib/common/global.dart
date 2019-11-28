@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:child_star/common/net.dart';
+import 'package:child_star/common/net/net.dart';
 import 'package:child_star/common/router/routers.dart';
 import 'package:child_star/models/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';

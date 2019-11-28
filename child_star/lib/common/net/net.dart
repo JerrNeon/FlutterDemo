@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:child_star/common/global.dart';
+import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/encode_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import 'net_config.dart';
 
 const APP_ID = "U2FsdGVkX1GwcRpbYrXPTfZfmwfPNpXFn9Wi6sT4g";
 const APP_SECRET = "7p7yaBX+%.6V{7f^sfghvxsa";
@@ -35,6 +38,11 @@ class Net {
   static void init() {
     dio.interceptors.add(LogInterceptor());
     dio.interceptors.add(SignInterceptor());
+  }
+
+  Future<List<Tag>> getHotTagList(BuildContext context) async {
+    var response = await Net.dio.post<List>(NetConfig.GET_HOT_TAGS);
+    return response.data.map((e) => Tag.fromJson(e)).toList();
   }
 }
 

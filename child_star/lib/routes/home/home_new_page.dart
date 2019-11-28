@@ -1,9 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
+import 'package:child_star/utils/image_utils.dart';
+import 'package:child_star/widgets/banner_widget.dart';
 import 'package:child_star/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeNewPage extends StatefulWidget {
   @override
@@ -12,6 +16,8 @@ class HomeNewPage extends StatefulWidget {
 
 class _HomeNewPageState extends State<HomeNewPage>
     with AutomaticKeepAliveClientMixin {
+  final RefreshController _refreshController = RefreshController();
+
   @override
   bool get wantKeepAlive => true;
 
@@ -27,7 +33,7 @@ class _HomeNewPageState extends State<HomeNewPage>
             child: Column(
               children: <Widget>[
                 _buildTag(),
-                _buildBanner(),
+                _buildBody(_refreshController),
               ],
             ),
           )
@@ -114,6 +120,41 @@ class _HomeNewPageState extends State<HomeNewPage>
     );
   }
 
+  Widget _buildBody(RefreshController refreshController) {
+    return Container(
+      height: 500,
+      child: SmartRefresher(
+        controller: _refreshController,
+        header: ClassicHeader(),
+        footer: ClassicFooter(),
+        enablePullUp: true,
+        enablePullDown: true,
+        onRefresh: null,
+        onLoading: null,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: _buildBanner(),
+            ),
+            SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return _buildBodyItem();
+                },
+                childCount: 20,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: MySizes.s_5,
+                  crossAxisSpacing: MySizes.s_5,
+                  childAspectRatio: 1.1),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildBanner() {
     final _list = [
       "https://mplanetasset.allyes.com/images/1572248293173n3650_732x306.jpg",
@@ -125,28 +166,98 @@ class _HomeNewPageState extends State<HomeNewPage>
         left: MySizes.s_4,
         right: MySizes.s_4,
       ),
-      child: AspectRatio(
-        aspectRatio: 366.0 / 153.0,
-        child: Swiper(
-          itemCount: _list.length,
-          autoplay: true,
-          autoplayDelay: 5000,
-          pagination: SwiperPagination(
-              margin: EdgeInsets.only(bottom: MySizes.s_6),
-              builder: DotSwiperPaginationBuilder(
-                activeColor: MyColors.c_ffa2b1,
-                color: Colors.white,
-                activeSize: MySizes.s_6,
-                size: MySizes.s_6,
-              )),
-          controller: SwiperController(),
-          itemBuilder: (context, index) {
-            return Image.network(
-              _list[index],
-              fit: BoxFit.fill,
-            );
-          },
-        ),
+      child: BannerWidget(_list),
+    );
+  }
+
+  Widget _buildBodyItem() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(
+          MySizes.s_4, MySizes.s_4, MySizes.s_4, MySizes.s_6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(MySizes.s_3),
+      ),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              cachedNetworkImage(
+                  "https://mplanetasset.allyes.com/images/1572248293173n3650_732x306.jpg",
+                  borderRadius: MySizes.s_3),
+              Container(
+                padding: EdgeInsets.all(MySizes.s_5),
+                child: Image(image: MyImagesMultiple.home_media[true]),
+              ),
+              Positioned(
+                right: MySizes.s_5,
+                bottom: MySizes.s_5,
+                child: Container(
+                  padding: EdgeInsets.all(MySizes.s_5),
+                  decoration: BoxDecoration(
+                    color: MyColorsFul.home_tag[0],
+                    borderRadius: BorderRadius.circular(MySizes.s_11),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: MySizes.s_2,
+                    ),
+                  ),
+                  child: Text(
+                    "生长发育指标",
+                    style: TextStyle(
+                        color: Colors.white, fontSize: MyFontSizes.s_12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: MySizes.s_7),
+            child: Text(
+              "新生儿大多50大多50大多50新 生儿大多50大多50",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: MyColors.c_686868, fontSize: MyFontSizes.s_12),
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.only(top: MySizes.s_30),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
+                      child: Image(image: MyImages.ic_homenew_look),
+                    ),
+                    Text(
+                      "128",
+                      style: TextStyle(
+                          color: MyColors.c_7f7f7f, fontSize: MyFontSizes.s_14),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: MySizes.s_6),
+                      color: MyColors.c_7f7f7f,
+                      width: MySizes.s_1,
+                      height: MySizes.s_12,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
+                      child:
+                          Image(image: MyImagesMultiple.home_collection[false]),
+                    ),
+                    Text(
+                      "56",
+                      style: TextStyle(
+                          color: MyColors.c_7f7f7f, fontSize: MyFontSizes.s_14),
+                    ),
+                  ],
+                ),
+              ))
+        ],
       ),
     );
   }

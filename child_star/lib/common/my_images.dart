@@ -21,7 +21,28 @@ class MyImages {
   static const AssetImage ic_home_search =
       AssetImage("images/3.0x/ic_home_search.png");
   static const AssetImage icon_home_tag =
-      AssetImage("images/3.0x/icon_home_tag.png");
+      AssetImage("images/icon_home_tag.png");
   static const AssetImage icon_home_tagall =
-      AssetImage("images/3.0x/icon_home_tagall.png");
+      AssetImage("images/icon_home_tagall.png");
+  static const AssetImage ic_homenew_audio =
+      AssetImage("images/ic_homenew_audio.png");
+  static const AssetImage ic_homenew_video =
+      AssetImage("images/ic_homenew_video.png");
+  static const AssetImage ic_homenew_look =
+      AssetImage("images/ic_homenew_look.png");
+  static const AssetImage ic_homenew_collect =
+      AssetImage("images/ic_homenew_collect.png");
+  static const AssetImage ic_homenew_uncollect =
+      AssetImage("images/ic_homenew_uncollect.png");
+}
+
+class MyImagesMultiple {
+  static const home_media = <bool, AssetImage>{
+    true: MyImages.ic_homenew_video,
+    false: MyImages.ic_homenew_audio,
+  };
+  static const home_collection = <bool, AssetImage>{
+    true: MyImages.ic_homenew_collect,
+    false: MyImages.ic_homenew_uncollect,
+  };
 }
