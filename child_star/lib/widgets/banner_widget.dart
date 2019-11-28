@@ -5,14 +5,15 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 
 class BannerWidget extends StatelessWidget {
   final List imageList;
+  final double aspectRatio;
   final SwiperOnTap onTap;
 
-  BannerWidget(this.imageList, {this.onTap});
+  BannerWidget(this.imageList, {this.aspectRatio = 366.0 / 153.0, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 366.0 / 153.0,
+      aspectRatio: aspectRatio,
       child: Swiper(
         itemCount: imageList.length,
         autoplay: true,
