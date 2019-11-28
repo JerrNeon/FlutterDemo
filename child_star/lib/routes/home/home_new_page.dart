@@ -1,12 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
+import 'package:child_star/common/net/net.dart';
+import 'package:child_star/common/net/net_manager.dart';
+import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/image_utils.dart';
 import 'package:child_star/widgets/banner_widget.dart';
 import 'package:child_star/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeNewPage extends StatefulWidget {
@@ -17,9 +18,16 @@ class HomeNewPage extends StatefulWidget {
 class _HomeNewPageState extends State<HomeNewPage>
     with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController = RefreshController();
+  Future<List<Tag>> _tagList;
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    _tagList = _initRequest();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +36,35 @@ class _HomeNewPageState extends State<HomeNewPage>
       body: Column(
         children: <Widget>[
           SearchWidget(),
-          Container(
-            color: MyColors.c_f0f0f0,
-            child: Column(
-              children: <Widget>[
-                _buildTag(),
-                _buildBody(_refreshController),
-              ],
-            ),
-          )
+          Expanded(
+            child: Container(
+                color: MyColors.c_f0f0f0,
+                child: FutureBuilder(
+                    future: _tagList,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Column(
+                          children: <Widget>[
+                            _buildTag(snapshot.data),
+                            _buildBody(_refreshController),
+                          ],
+                        );
+                      } else {
+                        return Container(
+                            child: Center(child: CircularProgressIndicator()));
+                      }
+                    })),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildTag() {
-    final _list = ["胎儿发育", "女人私房话", "哺乳期饮食"];
+  Future<List<Tag>> _initRequest() async {
+    return await NetManager(context).getHotTagList();
+  }
+
+  Widget _buildTag(List<Tag> tagList) {
     return Padding(
       padding: EdgeInsets.only(
           top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
@@ -76,7 +97,8 @@ class _HomeNewPageState extends State<HomeNewPage>
                       right: MySizes.s_6,
                     ),
                     itemBuilder: (context, index) {
-                      return _buildTagItem(_list[index]);
+                      return _buildTagItem(
+                          tagList != null ? tagList[index].name : "");
                     },
                     itemCount: 3,
                   ),
