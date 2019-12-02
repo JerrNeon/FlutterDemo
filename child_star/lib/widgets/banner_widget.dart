@@ -1,10 +1,11 @@
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_sizes.dart';
+import 'package:child_star/models/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class BannerWidget extends StatelessWidget {
-  final List imageList;
+  final List<Banners> imageList;
   final double aspectRatio;
   final SwiperOnTap onTap;
 
@@ -30,7 +31,7 @@ class BannerWidget extends StatelessWidget {
         onTap: onTap ?? (index) {},
         itemBuilder: (context, index) {
           return Image.network(
-            imageList[index],
+            imageList[index].kvUrl,
             fit: BoxFit.fill,
           );
         },

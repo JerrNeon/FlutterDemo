@@ -7,6 +7,9 @@ class Newslist {
     Newslist();
 
     List<News> resultList;
+    num pageNum;
+    num pageSize;
+    num totalNum;
     
     factory Newslist.fromJson(Map<String,dynamic> json) => _$NewslistFromJson(json);
     Map<String, dynamic> toJson() => _$NewslistToJson(this);

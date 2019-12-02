@@ -37,9 +37,9 @@ class MyImages {
 }
 
 class MyImagesMultiple {
-  static const home_media = <bool, AssetImage>{
-    true: MyImages.ic_homenew_video,
-    false: MyImages.ic_homenew_audio,
+  static const home_media = <int, AssetImage>{
+    1: MyImages.ic_homenew_video,
+    2: MyImages.ic_homenew_audio,
   };
   static const home_collection = <bool, AssetImage>{
     true: MyImages.ic_homenew_collect,

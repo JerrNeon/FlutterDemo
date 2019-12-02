@@ -111,7 +111,9 @@ class Net {
       } else {
         if (params != null && params.isNotEmpty) {
           String sign = "$APP_ID${jsonEncode(params)}$APP_SECRET";
-          params = jsonDecode(generateMd5(sign));
+          params.addAll({
+            "sign": generateMd5(sign),
+          });
         }
         response = await dio.post(url, data: params);
       }

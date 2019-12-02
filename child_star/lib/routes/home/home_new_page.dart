@@ -1,11 +1,13 @@
+import 'dart:core';
+
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
-import 'package:child_star/common/net/net.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/image_utils.dart';
 import 'package:child_star/widgets/banner_widget.dart';
+import 'package:child_star/widgets/empty_widget.dart';
 import 'package:child_star/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -18,14 +20,22 @@ class HomeNewPage extends StatefulWidget {
 class _HomeNewPageState extends State<HomeNewPage>
     with AutomaticKeepAliveClientMixin {
   final RefreshController _refreshController = RefreshController();
+
   Future<List<Tag>> _tagList;
+  Future<List<Banners>> _bannersList;
+  Future<Newslist> _newsList;
+  List<News> _news;
+  var pageIndex = 1;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    _tagList = _initRequest();
+    var netManager = NetManager(context);
+    _tagList = netManager.getHotTagList();
+    _bannersList = netManager.getBannerList();
+    _newsList = netManager.getNewsList(pageIndex);
     super.initState();
   }
 
@@ -38,85 +48,87 @@ class _HomeNewPageState extends State<HomeNewPage>
           SearchWidget(),
           Expanded(
             child: Container(
-                color: MyColors.c_f0f0f0,
-                child: FutureBuilder(
-                    future: _tagList,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Column(
-                          children: <Widget>[
-                            _buildTag(snapshot.data),
-                            _buildBody(_refreshController),
-                          ],
-                        );
-                      } else {
-                        return Container(
-                            child: Center(child: CircularProgressIndicator()));
-                      }
-                    })),
+              color: MyColors.c_f0f0f0,
+              child: Column(
+                children: <Widget>[
+                  _buildTag(),
+                  _buildBody(_refreshController),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Future<List<Tag>> _initRequest() async {
-    return await NetManager(context).getHotTagList();
-  }
-
-  Widget _buildTag(List<Tag> tagList) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(MySizes.s_20),
-            bottomRight: Radius.circular(MySizes.s_20),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MySizes.s_10, vertical: MySizes.s_8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Image(
-                image: MyImages.icon_home_tag,
-                width: MySizes.s_25,
-                height: MySizes.s_20,
-              ),
-              Expanded(
-                child: Container(
-                  height: MySizes.s_20,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(
-                      left: MySizes.s_6,
-                      right: MySizes.s_6,
+  Widget _buildTag() {
+    return FutureBuilder(
+        future: _tagList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              print(snapshot.error.toString());
+              return EmptyWidget();
+            } else {
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(MySizes.s_20),
+                      bottomRight: Radius.circular(MySizes.s_20),
                     ),
-                    itemBuilder: (context, index) {
-                      return _buildTagItem(
-                          tagList != null ? tagList[index].name : "");
-                    },
-                    itemCount: 3,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MySizes.s_10, vertical: MySizes.s_8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Image(
+                          image: MyImages.icon_home_tag,
+                          width: MySizes.s_25,
+                          height: MySizes.s_20,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: MySizes.s_20,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(
+                                left: MySizes.s_6,
+                                right: MySizes.s_6,
+                              ),
+                              itemBuilder: (context, index) {
+                                return _buildTagItem(snapshot.data != null
+                                    ? snapshot.data[index].name
+                                    : "");
+                              },
+                              itemCount: 3,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Image(
+                            image: MyImages.icon_home_tagall,
+                            width: MySizes.s_30,
+                            height: MySizes.s_30,
+                          ),
+                          onTap: () {},
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                child: Image(
-                  image: MyImages.icon_home_tagall,
-                  width: MySizes.s_30,
-                  height: MySizes.s_30,
-                ),
-                onTap: () {},
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              );
+            }
+          } else {
+            return EmptyWidget();
+          }
+        });
   }
 
   Widget _buildTagItem(String text) {
@@ -145,54 +157,77 @@ class _HomeNewPageState extends State<HomeNewPage>
   Widget _buildBody(RefreshController refreshController) {
     return Container(
       height: 500,
-      child: SmartRefresher(
-        controller: _refreshController,
-        header: ClassicHeader(),
-        footer: ClassicFooter(),
-        enablePullUp: true,
-        enablePullDown: true,
-        onRefresh: null,
-        onLoading: null,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: _buildBanner(),
-            ),
-            SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return _buildBodyItem();
-                },
-                childCount: 20,
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: MySizes.s_5,
-                  crossAxisSpacing: MySizes.s_5,
-                  childAspectRatio: 1.1),
-            ),
-          ],
-        ),
+      child: FutureBuilder(
+        future: _newsList,
+        builder: (context, AsyncSnapshot<Newslist> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              print(snapshot.error.toString());
+              return EmptyWidget();
+            } else {
+              _news = snapshot.data.resultList;
+              return SmartRefresher(
+                controller: _refreshController,
+                header: ClassicHeader(),
+                footer: ClassicFooter(),
+                enablePullUp: true,
+                enablePullDown: true,
+                onRefresh: null,
+                onLoading: null,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: _buildBanner(),
+                    ),
+                    SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return _buildBodyItem(_news[index]);
+                        },
+                        childCount: _news?.length ?? 0,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: MySizes.s_5,
+                          crossAxisSpacing: MySizes.s_5,
+                          childAspectRatio: 1.1),
+                    ),
+                  ],
+                ),
+              );
+            }
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
 
   Widget _buildBanner() {
-    final _list = [
-      "https://mplanetasset.allyes.com/images/1572248293173n3650_732x306.jpg",
-      "https://mplanetasset.allyes.com/images/1572248460296n7845_732x306.jpg",
-      "https://mplanetasset.allyes.com/images/1572248581709n4876_732x306.jpg"
-    ];
-    return Padding(
-      padding: EdgeInsets.only(
-        left: MySizes.s_4,
-        right: MySizes.s_4,
-      ),
-      child: BannerWidget(_list),
-    );
+    return FutureBuilder(
+        future: _bannersList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              print(snapshot.error.toString());
+              return EmptyWidget();
+            } else {
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: MySizes.s_4,
+                  right: MySizes.s_4,
+                ),
+                child: BannerWidget(snapshot.data),
+              );
+            }
+          } else {
+            return EmptyWidget();
+          }
+        });
   }
 
-  Widget _buildBodyItem() {
+  Widget _buildBodyItem(News news) {
     return Container(
       padding: EdgeInsets.fromLTRB(
           MySizes.s_4, MySizes.s_4, MySizes.s_4, MySizes.s_6),
@@ -204,13 +239,12 @@ class _HomeNewPageState extends State<HomeNewPage>
         children: <Widget>[
           Stack(
             children: <Widget>[
-              cachedNetworkImage(
-                  "https://mplanetasset.allyes.com/images/1572248293173n3650_732x306.jpg",
-                  borderRadius: MySizes.s_3),
+              cachedNetworkImage(news.headUrl, borderRadius: MySizes.s_3),
               Container(
-                padding: EdgeInsets.all(MySizes.s_5),
-                child: Image(image: MyImagesMultiple.home_media[true]),
-              ),
+                  padding: EdgeInsets.all(MySizes.s_5),
+                  child: (news.type == 1 || news.type == 2)
+                      ? Image(image: MyImagesMultiple.home_media[news.type])
+                      : EmptyWidget()),
               Positioned(
                 right: MySizes.s_5,
                 bottom: MySizes.s_5,
@@ -225,7 +259,7 @@ class _HomeNewPageState extends State<HomeNewPage>
                     ),
                   ),
                   child: Text(
-                    "生长发育指标",
+                    news.innerWord,
                     style: TextStyle(
                         color: Colors.white, fontSize: MyFontSizes.s_12),
                   ),
@@ -236,7 +270,7 @@ class _HomeNewPageState extends State<HomeNewPage>
           Padding(
             padding: EdgeInsets.only(top: MySizes.s_7),
             child: Text(
-              "新生儿大多50大多50大多50新 生儿大多50大多50",
+              news.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -256,7 +290,7 @@ class _HomeNewPageState extends State<HomeNewPage>
                       child: Image(image: MyImages.ic_homenew_look),
                     ),
                     Text(
-                      "128",
+                      news.lookRecord.toString(),
                       style: TextStyle(
                           color: MyColors.c_7f7f7f, fontSize: MyFontSizes.s_14),
                     ),
@@ -268,11 +302,11 @@ class _HomeNewPageState extends State<HomeNewPage>
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
-                      child:
-                          Image(image: MyImagesMultiple.home_collection[false]),
+                      child: Image(
+                          image: MyImagesMultiple.home_collection[news.isLike]),
                     ),
                     Text(
-                      "56",
+                      news.like.toString(),
                       style: TextStyle(
                           color: MyColors.c_7f7f7f, fontSize: MyFontSizes.s_14),
                     ),

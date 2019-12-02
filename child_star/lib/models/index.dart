@@ -1,4 +1,4 @@
-export 'banner.dart' ; 
+export 'banners.dart' ; 
 export 'news.dart' ; 
 export 'newslist.dart' ; 
 export 'profile.dart' ; 
