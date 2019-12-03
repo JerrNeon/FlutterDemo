@@ -13,7 +13,7 @@ class MySystems {
     statusBarBrightness: Brightness.light,
   );
 
-  ///隐藏Scaffold的AppBar(Scaffold如果不设置AppBar的话，widget中的内容会显示到状态栏区域)
+  ///隐藏[Scaffold]的[AppBar] (Scaffold如果不设置AppBar的话，widget中的内容会显示到状态栏区域)
   static PreferredSize get noAppBarPreferredSize {
     return PreferredSize(
       preferredSize: Size.fromHeight(ScreenUtils.topSafeHeight),

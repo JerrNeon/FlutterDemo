@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
           Locale("en", "US"), //美国英语
         ],
         home: MainPage(),
-        routes: {},
       ),
     );
   }

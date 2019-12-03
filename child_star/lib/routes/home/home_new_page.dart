@@ -1,8 +1,10 @@
 import 'dart:core';
+import 'dart:math';
 
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
+import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/image_utils.dart';
@@ -10,6 +12,7 @@ import 'package:child_star/widgets/banner_widget.dart';
 import 'package:child_star/widgets/empty_widget.dart';
 import 'package:child_star/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeNewPage extends StatefulWidget {
@@ -25,7 +28,7 @@ class _HomeNewPageState extends State<HomeNewPage>
   Future<List<Banners>> _bannersList;
   Future<Newslist> _newsList;
   List<News> _news;
-  var pageIndex = 1;
+  var pageIndex;
 
   @override
   bool get wantKeepAlive => true;
@@ -35,7 +38,7 @@ class _HomeNewPageState extends State<HomeNewPage>
     var netManager = NetManager(context);
     _tagList = netManager.getHotTagList();
     _bannersList = netManager.getBannerList();
-    _newsList = netManager.getNewsList(pageIndex);
+    _newsList = netManager.getNewsList(pageIndex = PAGE_INDEX);
     super.initState();
   }
 
@@ -43,21 +46,15 @@ class _HomeNewPageState extends State<HomeNewPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          SearchWidget(),
-          Expanded(
-            child: Container(
-              color: MyColors.c_f0f0f0,
-              child: Column(
-                children: <Widget>[
-                  _buildTag(),
-                  _buildBody(_refreshController),
-                ],
-              ),
-            ),
-          ),
-        ],
+      body: Container(
+        color: MyColors.c_f0f0f0,
+        child: Column(
+          children: <Widget>[
+            SearchWidget(),
+            _buildTag(),
+            _buildBody(_refreshController),
+          ],
+        ),
       ),
     );
   }
@@ -65,63 +62,64 @@ class _HomeNewPageState extends State<HomeNewPage>
   Widget _buildTag() {
     return FutureBuilder(
         future: _tagList,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<List<Tag>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               print(snapshot.error.toString());
               return EmptyWidget();
             } else {
-              return Padding(
-                padding: EdgeInsets.only(
+              List<Tag> tagList = snapshot.data;
+              return Container(
+                height: MySizes.s_44,
+                margin: EdgeInsets.only(
                     top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(MySizes.s_20),
-                      bottomRight: Radius.circular(MySizes.s_20),
-                    ),
+                padding: EdgeInsets.symmetric(
+                    horizontal: MySizes.s_8, vertical: MySizes.s_8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(MySizes.s_40),
+                    bottomRight: Radius.circular(MySizes.s_40),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MySizes.s_10, vertical: MySizes.s_8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image(
-                          image: MyImages.icon_home_tag,
-                          width: MySizes.s_25,
-                          height: MySizes.s_20,
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: MySizes.s_20,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.only(
-                                left: MySizes.s_6,
-                                right: MySizes.s_6,
-                              ),
-                              itemBuilder: (context, index) {
-                                return _buildTagItem(snapshot.data != null
-                                    ? snapshot.data[index].name
-                                    : "");
-                              },
-                              itemCount: 3,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          child: Image(
-                            image: MyImages.icon_home_tagall,
-                            width: MySizes.s_30,
-                            height: MySizes.s_30,
-                          ),
-                          onTap: () {},
-                        )
-                      ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Image(
+                      image: MyImages.icon_home_tag,
+                      width: MySizes.s_25,
+                      height: MySizes.s_20,
                     ),
-                  ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: MySizes.s_4),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.only(
+                            left: MySizes.s_6,
+                            right: MySizes.s_6,
+                          ),
+                          itemBuilder: (context, index) {
+                            return _buildTagItem(
+                                tagList != null ? tagList[index].name : "");
+                          },
+                          itemCount: tagList != null
+                              ? tagList.length > 3 ? 3 : tagList.length
+                              : 0,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      child: Image(
+                        image: MyImages.icon_home_tagall,
+                        width: MySizes.s_30,
+                        height: MySizes.s_30,
+                      ),
+                      onTap: () {},
+                    )
+                  ],
                 ),
               );
             }
@@ -155,8 +153,7 @@ class _HomeNewPageState extends State<HomeNewPage>
   }
 
   Widget _buildBody(RefreshController refreshController) {
-    return Container(
-      height: 500,
+    return Expanded(
       child: FutureBuilder(
         future: _newsList,
         builder: (context, AsyncSnapshot<Newslist> snapshot) {
@@ -172,28 +169,30 @@ class _HomeNewPageState extends State<HomeNewPage>
                 footer: ClassicFooter(),
                 enablePullUp: true,
                 enablePullDown: true,
-                onRefresh: null,
-                onLoading: null,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverToBoxAdapter(
-                      child: _buildBanner(),
+                onRefresh: () => _onRefresh(),
+                onLoading: () => _onLoad(),
+                child: CustomScrollView(shrinkWrap: true, slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: _buildBanner(),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.only(
+                      left: MySizes.s_5,
+                      top: MySizes.s_5,
+                      right: MySizes.s_5,
                     ),
-                    SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return _buildBodyItem(_news[index]);
-                        },
-                        childCount: _news?.length ?? 0,
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: MySizes.s_5,
-                          crossAxisSpacing: MySizes.s_5,
-                          childAspectRatio: 1.1),
+                    sliver: SliverStaggeredGrid.countBuilder(
+                      crossAxisCount: 2,
+                      staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+                      itemBuilder: (context, index) {
+                        return _buildBodyItem(_news[index]);
+                      },
+                      itemCount: _news?.length ?? 0,
+                      mainAxisSpacing: MySizes.s_5,
+                      crossAxisSpacing: MySizes.s_5,
                     ),
-                  ],
-                ),
+                  ),
+                ]),
               );
             }
           } else {
@@ -202,6 +201,39 @@ class _HomeNewPageState extends State<HomeNewPage>
         },
       ),
     );
+  }
+
+  _onRefresh() async {
+    try {
+      Newslist newsList = await NetManager(context).getNewsList(pageIndex = 1);
+      _news?.clear();
+      _news..addAll(newsList.resultList);
+      if (mounted) {
+        setState(() {});
+      }
+      _refreshController.refreshCompleted(resetFooterState: true);
+    } catch (e) {
+      _refreshController.refreshFailed();
+    }
+  }
+
+  _onLoad() async {
+    try {
+      Newslist newsList = await NetManager(context).getNewsList(++pageIndex);
+      var resultList = newsList.resultList;
+      if (resultList != null) {
+        _news.addAll(resultList);
+        if (mounted) {
+          setState(() {});
+        }
+        _refreshController.loadComplete();
+      } else {
+        _refreshController.loadNoData();
+      }
+    } catch (e) {
+      _refreshController.loadFailed();
+      pageIndex--;
+    }
   }
 
   Widget _buildBanner() {
@@ -251,11 +283,11 @@ class _HomeNewPageState extends State<HomeNewPage>
                 child: Container(
                   padding: EdgeInsets.all(MySizes.s_5),
                   decoration: BoxDecoration(
-                    color: MyColorsFul.home_tag[0],
+                    color: MyColorsFul.home_tag[Random().nextInt(6)],
                     borderRadius: BorderRadius.circular(MySizes.s_11),
                     border: Border.all(
                       color: Colors.white,
-                      width: MySizes.s_2,
+                      width: MySizes.s_1,
                     ),
                   ),
                   child: Text(

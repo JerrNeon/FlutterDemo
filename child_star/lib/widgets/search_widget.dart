@@ -12,7 +12,8 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Colors.white,
       padding: EdgeInsets.only(
           left: MySizes.s_4, right: MySizes.s_6, bottom: MySizes.s_8),
       child: GestureDetector(

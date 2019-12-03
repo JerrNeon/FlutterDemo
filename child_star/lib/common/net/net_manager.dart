@@ -27,7 +27,7 @@ class NetManager {
   /// sort	否	string	排序	最新:createTime； 最热：hot
   /// type	否	int	资讯类型	-1：全部；0：图文；1：视频；2：音频；3；百科； 默认：-1
   Future<Newslist> getNewsList(int pageIndex,
-      {int pageSize = 10, String sort = "createTime", int type = -1}) async {
+      {int pageSize = PAGE_SIZE, String sort = "createTime", int type = -1}) async {
     var response = await Net(context).post(NetConfig.GET_NEWS_LIST, params: {
       "pageNum": pageIndex,
       "pageSize": pageSize,
