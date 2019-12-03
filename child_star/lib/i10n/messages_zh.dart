@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "exerciseTitle" : MessageLookupByLibrary.simpleMessage("活动"),
     "homeAttentionTitle" : MessageLookupByLibrary.simpleMessage("关注"),
     "homeCommunityTitle" : MessageLookupByLibrary.simpleMessage("社区"),
+    "homeExitMessage" : MessageLookupByLibrary.simpleMessage("再按一次退出程序"),
     "homeNewTitle" : MessageLookupByLibrary.simpleMessage("最新"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("首页"),
     "knowledgeTitle" : MessageLookupByLibrary.simpleMessage("知识"),

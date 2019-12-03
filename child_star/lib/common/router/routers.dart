@@ -1,11 +1,14 @@
+import 'package:child_star/routes/home/h5_page.dart';
 import 'package:child_star/routes/home/home_search_page.dart';
 import 'package:child_star/routes/main_page.dart';
+import 'package:child_star/utils/encode_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
 
 class Routers {
-  static const String root = "/main";
-  static const String home_search = "/main/home/search";
+  static const String root = "/";
+  static const String home_search = "/home/search";
+  static const String h5 = "/h5";
 
   static var router = Router();
 
@@ -17,6 +20,7 @@ class Routers {
     });
     router.define(root, handler: mainHandler);
     router.define(home_search, handler: homeSearchHandler);
+    router.define(h5, handler: h5Handler);
   }
 }
 
@@ -28,4 +32,10 @@ var mainHandler = Handler(
 var homeSearchHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   return HomeSearchPage();
+});
+
+var h5Handler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  String url = parameters["url"]?.first ?? "";
+  return H5Page(url);
 });

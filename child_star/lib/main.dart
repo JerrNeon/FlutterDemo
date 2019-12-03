@@ -1,6 +1,7 @@
 import 'package:child_star/common/global.dart';
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_systems.dart';
+import 'package:child_star/common/router/routers.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/routes/main_page.dart';
 import 'package:child_star/states/profile_notifier.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         //不显示debug图标
         debugShowCheckedModeBanner: false,
         onGenerateTitle: (context) => GmLocalizations.of(context).appName,
+        onGenerateRoute: Routers.router.generator,
         //手动指定环境为中文简体
         locale: const Locale("zh", "CN"),
         localizationsDelegates: [

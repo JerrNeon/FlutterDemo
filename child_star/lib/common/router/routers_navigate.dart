@@ -24,13 +24,19 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToMain(BuildContext context) {
-    return Routers.router.navigateTo(context, Routers.root,
-        transition: TransitionType.native);
+    Routers.router
+        .navigateTo(context, Routers.root, transition: TransitionType.native);
   }
 
   @override
   navigateToHomeSearch(BuildContext context) {
-    return Routers.router.navigateTo(context, Routers.home_search,
+    Routers.router.navigateTo(context, Routers.home_search,
+        transition: TransitionType.native);
+  }
+
+  @override
+  navigateToH5(BuildContext context, String url) {
+    Routers.router.navigateTo(context, Routers.h5 + "?url=$url",
         transition: TransitionType.native);
   }
 }

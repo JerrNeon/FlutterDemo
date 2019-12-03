@@ -28,6 +28,10 @@ class GmLocalizations {
     return Intl.message('首页', name: 'homeTitle');
   }
 
+  String get homeExitMessage {
+    return Intl.message('再按一次退出程序', name: 'homeExitMessage');
+  }
+
   String get knowledgeTitle {
     return Intl.message('知识', name: 'knowledgeTitle');
   }
