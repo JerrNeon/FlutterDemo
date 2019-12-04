@@ -45,7 +45,7 @@ class AppBarWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              action ?? EmptyWidget(),
+              action ?? EmptyWidget(width: MySizes.s_40),
             ],
           ),
           Divider(

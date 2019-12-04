@@ -14,7 +14,7 @@ class H5Page extends StatefulWidget {
 }
 
 class _H5PageState extends State<H5Page> {
-  var title = "";
+  var title;
   WebViewController _controller;
 
   @override
@@ -24,18 +24,16 @@ class _H5PageState extends State<H5Page> {
           appBar: MySystems.noAppBarPreferredSize,
           body: Column(
             children: <Widget>[
-              AppBarWidget(title),
+              AppBarWidget(title ?? ""),
               Expanded(
                 child: WebView(
-                  initialUrl: widget.url,
+                  initialUrl: decodeFromBase64UrlSafeEncodedString(widget.url),
                   javascriptMode: JavascriptMode.unrestricted,
                   onWebViewCreated: (WebViewController controller) {
                     _controller = controller;
-                    controller.getTitle().then((value) {
-                      setState(() {
-                        title = value;
-                      });
-                    });
+                  },
+                  onPageFinished: (url) {
+                    _getTitle();
                   },
                 ),
               ),
@@ -51,5 +49,10 @@ class _H5PageState extends State<H5Page> {
           }
           return true;
         });
+  }
+
+  _getTitle() async {
+    title = await _controller.getTitle();
+    setState(() {});
   }
 }

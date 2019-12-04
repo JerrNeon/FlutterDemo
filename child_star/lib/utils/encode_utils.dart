@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
+import 'package:fluro/fluro.dart';
 
 ///MD5加密
 String generateMd5(String data) {
@@ -19,4 +20,16 @@ String chineseEncode(String originCn) {
 String chineseDecode(String encodeCn) {
   var list = List<int>();
   return Utf8Decoder().convert(jsonDecode(encodeCn).forEach(list.add));
+}
+
+///处理[Router]中参数带有/报错的问题 (Route builders must never return null)
+String encodeStringToBase64UrlSafeString(final String url) {
+  var base64Codec = Base64Codec.urlSafe();
+  return base64Codec.encode(utf8.encode(url));
+}
+
+///处理[Router]中参数带有/报错的问题 (Route builders must never return null)
+String decodeFromBase64UrlSafeEncodedString(String str) {
+  var base64Codec = Base64Codec.urlSafe();
+  return utf8.decode(base64Codec.decode(str));
 }
