@@ -22,22 +22,26 @@ class _H5PageState extends State<H5Page> {
     return WillPopScope(
         child: Scaffold(
           appBar: MySystems.noAppBarPreferredSize,
-          body: Column(
-            children: <Widget>[
-              AppBarWidget(title ?? ""),
-              Expanded(
-                child: WebView(
-                  initialUrl: decodeFromBase64UrlSafeEncodedString(widget.url),
-                  javascriptMode: JavascriptMode.unrestricted,
-                  onWebViewCreated: (WebViewController controller) {
-                    _controller = controller;
-                  },
-                  onPageFinished: (url) {
-                    _getTitle();
-                  },
+          body: Container(
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                AppBarWidget(title ?? ""),
+                Expanded(
+                  child: WebView(
+                    initialUrl:
+                        decodeFromBase64UrlSafeEncodedString(widget.url),
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (WebViewController controller) {
+                      _controller = controller;
+                    },
+                    onPageFinished: (url) {
+                      _getTitle();
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         onWillPop: () async {
