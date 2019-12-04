@@ -5,6 +5,7 @@ import 'package:child_star/common/global.dart';
 import 'package:child_star/common/net/net_error.dart';
 import 'package:child_star/utils/dialog_utils.dart';
 import 'package:child_star/utils/encode_utils.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -100,11 +101,11 @@ class Net {
       Map<String, dynamic> params,
       bool isShowErrorMsg = false,
       bool isShowDioErrorMsg = false}) async {
-    print("<dio> url :<" + method + ">" + url);
+    LogUtils.i("<dio> url :<" + method + ">" + url);
     try {
       Response response;
       if (params != null && params.isNotEmpty) {
-        print("<dio> request :${params.toString()}");
+        LogUtils.i("<dio> request :${params.toString()}");
       }
       if (method == GET) {
         response = await dio.get(url, queryParameters: params);
@@ -117,7 +118,7 @@ class Net {
         }
         response = await dio.post(url, data: params);
       }
-      print("<dio> response :${response.data.toString()}");
+      LogUtils.i("<dio> response :${response.data.toString()}");
       if (response.statusCode == HttpStatus.ok) {
         int code = response.data[RESPONSE_CODE];
         String message = response.data[RESPONSE_MESSAGE];

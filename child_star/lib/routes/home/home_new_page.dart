@@ -8,6 +8,7 @@ import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/image_utils.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/banner_widget.dart';
 import 'package:child_star/widgets/empty_widget.dart';
 import 'package:child_star/widgets/search_widget.dart';
@@ -65,7 +66,7 @@ class _HomeNewPageState extends State<HomeNewPage>
         builder: (context, AsyncSnapshot<List<Tag>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              print(snapshot.error.toString());
+              LogUtils.e(snapshot.error.toString());
               return EmptyWidget();
             } else {
               List<Tag> tagList = snapshot.data;
@@ -159,7 +160,7 @@ class _HomeNewPageState extends State<HomeNewPage>
         builder: (context, AsyncSnapshot<Newslist> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              print(snapshot.error.toString());
+              LogUtils.e(snapshot.error.toString());
               return EmptyWidget();
             } else {
               _news = snapshot.data.resultList;
@@ -242,7 +243,7 @@ class _HomeNewPageState extends State<HomeNewPage>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              print(snapshot.error.toString());
+              LogUtils.e(snapshot.error.toString());
               return EmptyWidget();
             } else {
               return Padding(
