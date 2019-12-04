@@ -64,54 +64,9 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - images/ic_home.png
-    - images/2.0x/ic_home.png
-    - images/3.0x/ic_home.png
-    - images/ic_home_active.png
-    - images/2.0x/ic_home_active.png
-    - images/3.0x/ic_home_active.png
-    - images/ic_knowledge.png
-    - images/2.0x/ic_knowledge.png
-    - images/3.0x/ic_knowledge.png
-    - images/ic_knowledge_active.png
-    - images/2.0x/ic_knowledge_active.png
-    - images/3.0x/ic_knowledge_active.png
-    - images/ic_exercise.png
-    - images/2.0x/ic_exercise.png
-    - images/3.0x/ic_exercise.png
-    - images/ic_exercise_active.png
-    - images/2.0x/ic_exercise_active.png
-    - images/3.0x/ic_exercise_active.png
-    - images/ic_consultation.png
-    - images/2.0x/ic_consultation.png
-    - images/3.0x/ic_consultation.png
-    - images/ic_consultation_active.png
-    - images/2.0x/ic_consultation_active.png
-    - images/3.0x/ic_consultation_active.png
-    - images/3.0x/ic_home_message.png
-    - images/3.0x/ic_home_personal.png
-    - images/3.0x/ic_home_search.png
-    - images/icon_home_tag.png
-    - images/2.0x/icon_home_tag.png
-    - images/3.0x/icon_home_tag.png
-    - images/icon_home_tagall.png
-    - images/2.0x/icon_home_tagall.png
-    - images/3.0x/icon_home_tagall.png
-    - images/ic_homenew_audio.png
-    - images/2.0x/ic_homenew_audio.png
-    - images/3.0x/ic_homenew_audio.png
-    - images/ic_homenew_collect.png
-    - images/2.0x/ic_homenew_collect.png
-    - images/3.0x/ic_homenew_collect.png
-    - images/ic_homenew_look.png
-    - images/2.0x/ic_homenew_look.png
-    - images/3.0x/ic_homenew_look.png
-    - images/ic_homenew_uncollect.png
-    - images/2.0x/ic_homenew_uncollect.png
-    - images/3.0x/ic_homenew_uncollect.png
-    - images/ic_homenew_video.png
-    - images/2.0x/ic_homenew_video.png
-    - images/3.0x/ic_homenew_video.png
+    - images/
+    - images/2.0x/
+    - images/3.0x/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
