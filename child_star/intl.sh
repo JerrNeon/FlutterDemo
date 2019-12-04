@@ -8,3 +8,13 @@ flutter pub run intl_translation:generate_from_arb --output-dir=lib/i10n --no-us
 
 #根据生成json文件生成model类
 flutter packages pub run json_model
+
+#Android Apk生成
+flutter build apk
+#Android debug模式运行
+flutter run
+#Android release模式运行
+flutter run --release
+
+#IOS ipa生成(会先生成一个Runner.app文件，把它放进文件夹进行压缩，然后修改压缩包后缀为ipa即可)
+flutter build ios --release
