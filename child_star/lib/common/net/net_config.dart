@@ -10,4 +10,10 @@ class NetConfig {
 
   ///获取最新资讯列表
   static const GET_NEWS_LIST = "info/getList";
+
+  ///获取资讯详情
+  static const GET_NEWS_DETAIL = "info/detail";
+
+  ///搜索（相关）资讯列表
+  static const GET_NEWS_SEARCH_LIST = "info/searchList";
 }

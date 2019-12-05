@@ -27,13 +27,53 @@ class NetManager {
   /// sort	否	string	排序	最新:createTime； 最热：hot
   /// type	否	int	资讯类型	-1：全部；0：图文；1：视频；2：音频；3；百科； 默认：-1
   Future<Newslist> getNewsList(int pageIndex,
-      {int pageSize = PAGE_SIZE, String sort = "createTime", int type = -1}) async {
+      {int pageSize = PAGE_SIZE,
+      String sort = "createTime",
+      int type = -1}) async {
     var response = await Net(context).post(NetConfig.GET_NEWS_LIST, params: {
       "pageNum": pageIndex,
       "pageSize": pageSize,
       "sort": sort,
       "type": type,
     });
+    return Newslist.fromJson(response);
+  }
+
+  ///id	是	int	资讯id
+  Future<NewsDetail> getNewsDetail(String newsId) async {
+    var response = await Net(context).post(NetConfig.GET_NEWS_DETAIL, params: {
+      "id": newsId,
+    });
+    return NewsDetail.fromJson(response);
+  }
+
+  ///title和tagIds 至少传一个
+  ///tagIds	否	string	标签id	title和tagIds 至少传一个, 多个标签用逗号隔开。例：1,2
+  ///id	否	int	当前资讯id	用于相关资讯搜索
+  ///pageNum	否	int	页数	默认1
+  ///pageSize	否	int	页码大小	默认10
+  ///sort	否	string	排序	最新:createTime； 最热：hot
+  ///type	否	int	类型	-1：全部；0：图文；1：视频；2：音频；3：百科；默认 -1
+  Future<Newslist> getNewsSearchList({
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+    String title,
+    String tagIds,
+    String id,
+    String sort,
+    int type,
+  }) async {
+    var params = {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+      "title": title,
+      "tagIds": tagIds,
+      "id": id,
+      "sort": sort,
+      "type": type,
+    };
+    var response =
+        await Net(context).post(NetConfig.GET_NEWS_SEARCH_LIST, params: params);
     return Newslist.fromJson(response);
   }
 }

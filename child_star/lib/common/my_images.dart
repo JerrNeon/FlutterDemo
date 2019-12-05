@@ -34,6 +34,16 @@ class MyImages {
       AssetImage("images/ic_homenew_collect.png");
   static const AssetImage ic_homenew_uncollect =
       AssetImage("images/ic_homenew_uncollect.png");
+  static const AssetImage ic_newdetail_authenticate =
+      AssetImage("images/ic_newdetail_authenticate.png");
+  static const AssetImage ic_newdetail_like =
+      AssetImage("images/ic_newdetail_like.png");
+  static const AssetImage ic_newdetail_collection =
+      AssetImage("images/ic_newdetail_collection.png");
+  static const AssetImage ic_newdetail_comment =
+      AssetImage("images/ic_newdetail_comment.png");
+  static const AssetImage ic_newdetail_download =
+      AssetImage("images/ic_newdetail_download.png");
 }
 
 class MyImagesMultiple {

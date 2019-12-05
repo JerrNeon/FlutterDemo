@@ -93,6 +93,13 @@ class MySizes {
   static const double s_49 = 49;
   static const double s_50 = 50;
   static const double s_100 = 100;
+  static const double s_101 = 101;
+  static const double s_102 = 102;
+  static const double s_103 = 103;
+  static const double s_104 = 104;
+  static const double s_105 = 105;
+  static const double s_106 = 106;
   static const double s_150 = 150;
+  static const double s_155 = 155;
   static const double s_200 = 200;
 }

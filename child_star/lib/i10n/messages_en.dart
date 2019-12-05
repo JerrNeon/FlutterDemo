@@ -30,6 +30,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeNewTitle" : MessageLookupByLibrary.simpleMessage("最新"),
     "homeTitle" : MessageLookupByLibrary.simpleMessage("首页"),
     "knowledgeTitle" : MessageLookupByLibrary.simpleMessage("知识"),
+    "loadFailureTitle" : MessageLookupByLibrary.simpleMessage("加载失败,点击重试!"),
+    "newDetailDownloadTitle" : MessageLookupByLibrary.simpleMessage("缓存"),
+    "newDetailFollowTitle" : MessageLookupByLibrary.simpleMessage("已关注"),
+    "newDetailReadingNumTitle" : MessageLookupByLibrary.simpleMessage("阅读量"),
+    "newDetailRelateAudioTitle" : MessageLookupByLibrary.simpleMessage("相关音频"),
+    "newDetailRelateVideoTitle" : MessageLookupByLibrary.simpleMessage("相关视频"),
+    "newDetailUnFollowTitle" : MessageLookupByLibrary.simpleMessage("关注"),
     "searchHintTitle" : MessageLookupByLibrary.simpleMessage("你想找的这里都有...")
   };
 }

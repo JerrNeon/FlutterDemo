@@ -39,4 +39,10 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(context, Routers.h5 + "?url=$url",
         transition: TransitionType.native);
   }
+
+  @override
+  navigateToNewDetail(BuildContext context, String newId) {
+    Routers.router.navigateTo(context, Routers.home_new_detail + "?id=$newId",
+        transition: TransitionType.native);
+  }
 }

@@ -105,6 +105,9 @@ class Net {
     try {
       Response response;
       if (params != null && params.isNotEmpty) {
+        params.removeWhere((key, value) {
+          return value == null;
+        });
         LogUtils.i("<dio> request :${params.toString()}");
       }
       if (method == GET) {

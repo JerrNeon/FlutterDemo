@@ -59,6 +59,34 @@ class GmLocalizations {
   String get homeCommunityTitle {
     return Intl.message("社区", name: "homeCommunityTitle");
   }
+
+  String get loadFailureTitle {
+    return Intl.message("加载失败,点击重试!", name: "loadFailureTitle");
+  }
+
+  String get newDetailUnFollowTitle {
+    return Intl.message("关注", name: "newDetailUnFollowTitle");
+  }
+
+  String get newDetailFollowTitle {
+    return Intl.message("已关注", name: "newDetailFollowTitle");
+  }
+
+  String get newDetailDownloadTitle {
+    return Intl.message("缓存", name: "newDetailDownloadTitle");
+  }
+
+  String get newDetailReadingNumTitle {
+    return Intl.message("阅读量", name: "newDetailReadingNumTitle");
+  }
+
+  String get newDetailRelateVideoTitle {
+    return Intl.message("相关视频", name: "newDetailRelateVideoTitle");
+  }
+
+  String get newDetailRelateAudioTitle {
+    return Intl.message("相关音频", name: "newDetailRelateAudioTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

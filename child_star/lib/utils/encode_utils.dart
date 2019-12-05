@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:fluro/fluro.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 ///MD5加密
 String generateMd5(String data) {
@@ -32,4 +33,10 @@ String encodeStringToBase64UrlSafeString(final String url) {
 String decodeFromBase64UrlSafeEncodedString(String str) {
   var base64Codec = Base64Codec.urlSafe();
   return utf8.decode(base64Codec.decode(str));
+}
+
+///处理[WebView]加载富文本的情况
+String encodeStringToBase64RichText(String htmlText) {
+  var contentBase64 = base64Encode(const Utf8Encoder().convert(htmlText));
+  return "data:text/html;base64,$contentBase64";
 }
