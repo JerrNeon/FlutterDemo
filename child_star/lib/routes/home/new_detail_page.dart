@@ -13,7 +13,7 @@ import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 ///资讯详情
 class NewDetailPage extends StatefulWidget {
@@ -243,8 +243,13 @@ class _NewDetailBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: MySizes.s_10, vertical: MySizes.s_14),
-              child: WebView(
-                initialUrl: encodeStringToBase64RichText(data.content),
+              child: InAppWebView(
+                initialData: InAppWebViewInitialData(
+                  data: transformHtml(data.content),
+                ),
+                initialOptions: InAppWebViewWidgetOptions(
+                  inAppWebViewOptions: InAppWebViewOptions(),
+                ),
               ),
             ),
             Divider(height: MySizes.s_1, color: MyColors.c_d5d5d5),
@@ -261,18 +266,22 @@ class _NewDetailBody extends StatelessWidget {
         ),
       );
     } else {
-      return SliverToBoxAdapter(child: EmptyWidget());
-//      return SliverPadding(
-//        padding: EdgeInsets.symmetric(
-//            horizontal: MySizes.s_10, vertical: MySizes.s_14),
-//        sliver: SliverList(
-//          delegate: SliverChildListDelegate([
-//            WebView(
-//              initialUrl: encodeStringToBase64RichText(data.content),
-//            ),
-//          ]),
-//        ),
-//      );
+      return SliverPadding(
+        padding: EdgeInsets.only(top: MySizes.s_14),
+        sliver: SliverFillViewport(
+          delegate: SliverChildListDelegate([
+            InAppWebView(
+              initialData: InAppWebViewInitialData(
+                data: transformHtml(data.content),
+              ),
+              initialOptions: InAppWebViewWidgetOptions(
+                inAppWebViewOptions:
+                    InAppWebViewOptions(debuggingEnabled: true),
+              ),
+            ),
+          ]),
+        ),
+      );
     }
   }
 
@@ -330,7 +339,7 @@ class _NewDetailBody extends StatelessWidget {
                                       BorderRadius.circular(MySizes.s_3),
                                 ),
                                 child: Text(
-                                  model.mediaTime,
+                                  getTimeFromSecond(model.mediaTime),
                                   style: TextStyle(
                                       color: MyColors.c_777777,
                                       fontSize: MyFontSizes.s_10),

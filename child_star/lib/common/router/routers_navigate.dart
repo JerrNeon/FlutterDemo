@@ -24,25 +24,41 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToMain(BuildContext context) {
-    Routers.router
-        .navigateTo(context, Routers.root, transition: TransitionType.native);
+    Routers.router.navigateTo(
+      context,
+      Routers.root,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
   }
 
   @override
   navigateToHomeSearch(BuildContext context) {
-    Routers.router.navigateTo(context, Routers.home_search,
-        transition: TransitionType.native);
+    Routers.router.navigateTo(
+      context,
+      Routers.home_search,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
   }
 
   @override
   navigateToH5(BuildContext context, String url) {
-    Routers.router.navigateTo(context, Routers.h5 + "?url=$url",
-        transition: TransitionType.native);
+    Routers.router.navigateTo(
+      context,
+      Routers.h5 + "?url=$url",
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
   }
 
   @override
   navigateToNewDetail(BuildContext context, String newId) {
-    Routers.router.navigateTo(context, Routers.home_new_detail + "?id=$newId",
-        transition: TransitionType.native);
+    Routers.router.navigateTo(
+      context,
+      Routers.home_new_detail + "?id=$newId",
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
   }
 }

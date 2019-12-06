@@ -1,8 +1,11 @@
+import 'package:child_star/common/my_colors.dart';
+import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/common/my_systems.dart';
 import 'package:child_star/utils/encode_utils.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class H5Page extends StatefulWidget {
   final String url;
@@ -15,7 +18,8 @@ class H5Page extends StatefulWidget {
 
 class _H5PageState extends State<H5Page> {
   var title;
-  WebViewController _controller;
+  double progress;
+  InAppWebViewController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +31,36 @@ class _H5PageState extends State<H5Page> {
             child: Column(
               children: <Widget>[
                 AppBarWidget(title ?? ""),
+                Offstage(
+                  offstage: progress == 1,
+                  child: SizedBox(
+                    height: MySizes.s_4,
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: Colors.grey[200],
+                      valueColor: AlwaysStoppedAnimation(MyColors.c_ffa2b1),
+                    ),
+                  ),
+                ),
                 Expanded(
-                  child: WebView(
+                  child: InAppWebView(
                     initialUrl:
                         decodeFromBase64UrlSafeEncodedString(widget.url),
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (WebViewController controller) {
+                    initialOptions: InAppWebViewWidgetOptions(
+                      inAppWebViewOptions: InAppWebViewOptions(),
+                    ),
+                    onProgressChanged:
+                        (InAppWebViewController controller, int progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                    //javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (InAppWebViewController controller) {
                       _controller = controller;
                     },
-                    onPageFinished: (url) {
+                    onLoadStop:
+                        (InAppWebViewController controller, String url) {
                       _getTitle();
                     },
                   ),
