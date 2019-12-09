@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "newDetailDownloadTitle" : MessageLookupByLibrary.simpleMessage("缓存"),
     "newDetailFollowTitle" : MessageLookupByLibrary.simpleMessage("已关注"),
     "newDetailReadingNumTitle" : MessageLookupByLibrary.simpleMessage("阅读量"),
+    "newDetailRelateArticleTitle" : MessageLookupByLibrary.simpleMessage("相关图文"),
     "newDetailRelateAudioTitle" : MessageLookupByLibrary.simpleMessage("相关音频"),
     "newDetailRelateVideoTitle" : MessageLookupByLibrary.simpleMessage("相关视频"),
     "newDetailUnFollowTitle" : MessageLookupByLibrary.simpleMessage("关注"),

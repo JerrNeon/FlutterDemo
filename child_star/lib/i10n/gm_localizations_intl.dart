@@ -87,6 +87,10 @@ class GmLocalizations {
   String get newDetailRelateAudioTitle {
     return Intl.message("相关音频", name: "newDetailRelateAudioTitle");
   }
+
+  String get newDetailRelateArticleTitle {
+    return Intl.message("相关图文", name: "newDetailRelateArticleTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {
