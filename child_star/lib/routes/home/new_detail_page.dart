@@ -11,11 +11,11 @@ import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/date_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+typedef OnNewsItemClick(News news);
 
 ///资讯详情
 class NewDetailPage extends StatefulWidget {
@@ -29,7 +29,6 @@ class NewDetailPage extends StatefulWidget {
 
 class _NewDetailPageState extends State<NewDetailPage> {
   Future<NewsDetail> _newsDetailFuture;
-  double webViewHeight = 500;
 
   @override
   void initState() {
@@ -51,7 +50,12 @@ class _NewDetailPageState extends State<NewDetailPage> {
               return Column(
                 children: <Widget>[
                   AppBarWidget(data != null ? data.title : ""),
-                  _NewDetailBody(data, webViewHeight),
+                  _NewDetailBody(data, (news) {
+                    setState(() {
+                      _newsDetailFuture =
+                          NetManager(context).getNewsDetail(news.id.toString());
+                    });
+                  }),
                   _NewDetailBottom(data),
                 ],
               );
@@ -63,9 +67,9 @@ class _NewDetailPageState extends State<NewDetailPage> {
 
 class _NewDetailBody extends StatelessWidget {
   final NewsDetail data;
-  final double webViewHeight;
+  final OnNewsItemClick onNewsItemClick;
 
-  _NewDetailBody(this.data, this.webViewHeight);
+  _NewDetailBody(this.data, this.onNewsItemClick);
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +214,7 @@ class _NewDetailBody extends StatelessWidget {
                   child: Text(
                     data.isConcern
                         ? gm.newDetailFollowTitle
-                        : gm.newDetailUnFollowTitle,
+                        : "+${gm.newDetailUnFollowTitle}",
                     style: TextStyle(
                         color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
                   ),
@@ -253,9 +257,6 @@ class _NewDetailBody extends StatelessWidget {
                 initialOptions: InAppWebViewWidgetOptions(
                   inAppWebViewOptions: InAppWebViewOptions(),
                 ),
-                gestureRecognizers: [
-                  Factory(() => VerticalDragGestureRecognizer()),
-                ].toSet(),
               ),
             ),
           ),
@@ -300,80 +301,88 @@ class _NewDetailBody extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 var model = newsList[index];
-                return Padding(
-                  padding: EdgeInsets.only(
-                      left: MySizes.s_24,
-                      right: MySizes.s_16,
-                      bottom: MySizes.s_14),
-                  child: Row(
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          cachedNetworkImage(
-                            model.headUrl,
-                            borderRadius: MySizes.s_3,
-                            width: MySizes.s_155,
-                            height: MySizes.s_105,
-                            fit: BoxFit.cover,
-                          ),
-                          Positioned(
-                            right: MySizes.s_4,
-                            bottom: MySizes.s_4,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: MySizes.s_8,
-                                  vertical: MySizes.s_4),
-                              decoration: BoxDecoration(
-                                color: Colors.white70,
-                                borderRadius:
-                                    BorderRadius.circular(MySizes.s_3),
-                              ),
-                              child: Text(
-                                getTimeFromSecond(model.mediaTime),
-                                style: TextStyle(
-                                    color: MyColors.c_777777,
-                                    fontSize: MyFontSizes.s_10),
-                              ),
+                return GestureDetector(
+                  onTap: () {
+                    if (onNewsItemClick != null) {
+                      onNewsItemClick(model);
+                    }
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: MySizes.s_24,
+                        right: MySizes.s_16,
+                        bottom: MySizes.s_14),
+                    child: Row(
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            cachedNetworkImage(
+                              model.headUrl,
+                              borderRadius: MySizes.s_3,
+                              width: MySizes.s_155,
+                              height: MySizes.s_105,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: MySizes.s_14),
-                          child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints.expand(height: MySizes.s_104),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  model.title,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: MyColors.c_777777,
-                                    fontSize: MyFontSizes.s_12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            Positioned(
+                              right: MySizes.s_4,
+                              bottom: MySizes.s_4,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: MySizes.s_8,
+                                    vertical: MySizes.s_4),
+                                decoration: BoxDecoration(
+                                  color: Colors.white70,
+                                  borderRadius:
+                                      BorderRadius.circular(MySizes.s_3),
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: MySizes.s_8)),
-                                Text(
-                                  "#${model.innerWord}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                child: Text(
+                                  getTimeFromSecond(model.mediaTime),
                                   style: TextStyle(
                                       color: MyColors.c_777777,
-                                      fontSize: MyFontSizes.s_12),
+                                      fontSize: MyFontSizes.s_10),
                                 ),
-                              ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: MySizes.s_14),
+                            child: ConstrainedBox(
+                              constraints:
+                                  BoxConstraints.expand(height: MySizes.s_104),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    model.title,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: MyColors.c_777777,
+                                      fontSize: MyFontSizes.s_12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Padding(
+                                      padding:
+                                          EdgeInsets.only(top: MySizes.s_8)),
+                                  Text(
+                                    "#${model.innerWord}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: MyColors.c_777777,
+                                        fontSize: MyFontSizes.s_12),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 );
               },
