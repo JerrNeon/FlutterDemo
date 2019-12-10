@@ -69,7 +69,7 @@ class MyImagesMultiple {
   };
 
   static const audio_play = <bool, AssetImage>{
-    true: MyImages.ic_newdetail_audioplay,
-    false: MyImages.ic_newdetail_audiopause,
+    true: MyImages.ic_newdetail_audiopause,
+    false: MyImages.ic_newdetail_audioplay,
   };
 }

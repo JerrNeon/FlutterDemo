@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:child_star/common/config.dart';
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
@@ -73,7 +74,7 @@ class _NewDetailPageState extends State<NewDetailPage> {
 
   Widget _buildVideoPlayer(NewsDetail data) {
     //0：图文 | 1:：视频 | 2：音频 | 3：百科
-    if (data != null && data.type == 1) {
+    if (data != null && data.type == MediaType.VIDEO) {
       return VideoPlayerWidget(data.mediaUrl);
     } else {
       return EmptyWidget();
@@ -94,6 +95,7 @@ class _NewDetailBody extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           _buildHeader(),
+          _buildAudioPlayer(),
           _buildBody(gm),
           _buildBottom(gm),
           _buildList(context),
@@ -104,7 +106,7 @@ class _NewDetailBody extends StatelessWidget {
 
   Widget _buildHeader() {
     //0：图文 | 1:：视频 | 2：音频 | 3：百科
-    if (data.type == 1) {
+    if (data.type == MediaType.VIDEO) {
       return SliverToBoxAdapter(child: EmptyWidget());
     } else {
       return SliverPersistentHeader(
@@ -113,6 +115,25 @@ class _NewDetailBody extends StatelessWidget {
             maxHeight: ScreenUtils.width * 250 / 375,
             child: cachedNetworkImage(data.headUrl, fit: BoxFit.cover)),
       );
+    }
+  }
+
+  Widget _buildAudioPlayer() {
+    //0：图文 | 1:：视频 | 2：音频 | 3：百科
+    if (data.type == MediaType.AUDIO) {
+      return SliverPadding(
+        padding: EdgeInsets.only(top: MySizes.s_6),
+        sliver: SliverPersistentHeader(
+          pinned: true,
+          delegate: CustomSliverPersistentHeaderDelegate(
+            minHeight: MySizes.s_54,
+            maxHeight: MySizes.s_55,
+            child: AudioPlayerWidget(data.mediaUrl),
+          ),
+        ),
+      );
+    } else {
+      return SliverToBoxAdapter(child: EmptyWidget());
     }
   }
 
@@ -251,7 +272,7 @@ class _NewDetailBody extends StatelessWidget {
 
   Widget _buildBottom(GmLocalizations gm) {
     //0：图文 | 1:：视频 | 2：音频 | 3：百科
-    if (data.type == 1) {
+    if (data.type == MediaType.VIDEO) {
       return SliverToBoxAdapter(
         child: Padding(
           padding: EdgeInsets.only(
@@ -286,7 +307,7 @@ class _NewDetailBody extends StatelessWidget {
             padding: EdgeInsets.only(
                 left: MySizes.s_24, top: MySizes.s_16, bottom: MySizes.s_10),
             child: Text(
-              data.type == 2
+              data.type == MediaType.AUDIO
                   ? gm.newDetailRelateAudioTitle
                   : gm.newDetailRelateArticleTitle,
               style: TextStyle(
