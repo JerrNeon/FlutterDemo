@@ -6,7 +6,7 @@ import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class FutureBuilderWidget<T> extends StatefulWidget {
+class FutureBuilderWidget<T> extends StatelessWidget {
   final Widget loadingWidget;
   final Widget errorWidget;
   final GestureTapCallback onErrorRetryTap;
@@ -24,31 +24,27 @@ class FutureBuilderWidget<T> extends StatefulWidget {
   });
 
   @override
-  _FutureBuilderWidgetState createState() => _FutureBuilderWidgetState<T>();
-}
-
-class _FutureBuilderWidgetState<T> extends State<FutureBuilderWidget<T>> {
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<T>(
-      future: widget.future,
-      initialData: widget.initialData,
+      future: future,
+      initialData: initialData,
       builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
             LogUtils.e(snapshot.error.toString());
-            return widget.errorWidget ?? _buildDefaultErrorWidget(snapshot);
+            return errorWidget ?? _buildDefaultErrorWidget(context, snapshot);
           } else {
-            return widget.builder(context, snapshot);
+            return builder(context, snapshot);
           }
         } else {
-          return widget.loadingWidget ?? _buildDefaultLoadingWidget();
+          return loadingWidget ?? _buildDefaultLoadingWidget();
         }
       },
     );
   }
 
-  Widget _buildDefaultErrorWidget(AsyncSnapshot<T> snapshot) {
+  Widget _buildDefaultErrorWidget(
+      BuildContext context, AsyncSnapshot<T> snapshot) {
     LogUtils.e(snapshot.error.toString());
     return GestureDetector(
       child: Container(
@@ -61,10 +57,9 @@ class _FutureBuilderWidgetState<T> extends State<FutureBuilderWidget<T>> {
         ),
       ),
       onTap: () {
-        if (widget.onErrorRetryTap != null) {
-          widget.onErrorRetryTap();
+        if (onErrorRetryTap != null) {
+          onErrorRetryTap();
         }
-        setState(() {});
       },
     );
   }

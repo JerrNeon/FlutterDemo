@@ -44,6 +44,14 @@ class MyImages {
       AssetImage("images/ic_newdetail_comment.png");
   static const AssetImage ic_newdetail_download =
       AssetImage("images/ic_newdetail_download.png");
+  static const AssetImage ic_newdetail_videoplay =
+      AssetImage("images/ic_newdetail_videoplay.png");
+  static const AssetImage ic_newdetail_audioplay =
+      AssetImage("images/ic_newdetail_audioplay.png");
+  static const AssetImage ic_newdetail_audiopause =
+      AssetImage("images/ic_newdetail_audiopause.png");
+  static const AssetImage ic_newdetail_audiowave =
+      AssetImage("images/ic_newdetail_audiowave.png");
 }
 
 class MyImagesMultiple {
@@ -54,5 +62,14 @@ class MyImagesMultiple {
   static const home_collection = <bool, AssetImage>{
     true: MyImages.ic_homenew_collect,
     false: MyImages.ic_homenew_uncollect,
+  };
+  static const video_play = <bool, AssetImage>{
+    true: MyImages.ic_newdetail_audiopause,
+    false: MyImages.ic_newdetail_videoplay,
+  };
+
+  static const audio_play = <bool, AssetImage>{
+    true: MyImages.ic_newdetail_audioplay,
+    false: MyImages.ic_newdetail_audiopause,
   };
 }

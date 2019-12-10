@@ -32,36 +32,52 @@ class _NewDetailPageState extends State<NewDetailPage> {
 
   @override
   void initState() {
-    var netManager = NetManager(context);
-    _newsDetailFuture = netManager.getNewsDetail(widget.newId);
+    _newsDetailFuture = NetManager(context).getNewsDetail(widget.newId);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var onNewsItemClick = (news) {
+      setState(() {
+        _newsDetailFuture =
+            NetManager(context).getNewsDetail(news.id.toString());
+      });
+    };
     return Scaffold(
       appBar: MySystems.noAppBarPreferredSize,
       body: Container(
         color: Colors.white,
         child: FutureBuilderWidget<NewsDetail>(
             future: _newsDetailFuture,
+            onErrorRetryTap: () {
+              setState(() {
+                _newsDetailFuture =
+                    NetManager(context).getNewsDetail(widget.newId);
+              });
+            },
             builder: (context, snapshot) {
               NewsDetail data = snapshot.data;
               return Column(
                 children: <Widget>[
                   AppBarWidget(data != null ? data.title : ""),
-                  _NewDetailBody(data, (news) {
-                    setState(() {
-                      _newsDetailFuture =
-                          NetManager(context).getNewsDetail(news.id.toString());
-                    });
-                  }),
+                  _buildVideoPlayer(data),
+                  _NewDetailBody(data, onNewsItemClick),
                   _NewDetailBottom(data),
                 ],
               );
             }),
       ),
     );
+  }
+
+  Widget _buildVideoPlayer(NewsDetail data) {
+    //0：图文 | 1:：视频 | 2：音频 | 3：百科
+    if (data != null && data.type == 1) {
+      return VideoPlayerWidget(data.mediaUrl);
+    } else {
+      return EmptyWidget();
+    }
   }
 }
 
@@ -87,12 +103,17 @@ class _NewDetailBody extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return SliverPersistentHeader(
-      delegate: CustomSliverPersistentHeaderDelegate(
-          minHeight: 0,
-          maxHeight: ScreenUtils.width * 250 / 375,
-          child: cachedNetworkImage(data.headUrl, fit: BoxFit.cover)),
-    );
+    //0：图文 | 1:：视频 | 2：音频 | 3：百科
+    if (data.type == 1) {
+      return SliverToBoxAdapter(child: EmptyWidget());
+    } else {
+      return SliverPersistentHeader(
+        delegate: CustomSliverPersistentHeaderDelegate(
+            minHeight: 0,
+            maxHeight: ScreenUtils.width * 250 / 375,
+            child: cachedNetworkImage(data.headUrl, fit: BoxFit.cover)),
+      );
+    }
   }
 
   Widget _buildBody(GmLocalizations gm) {

@@ -4,3 +4,4 @@ export 'empty_widget.dart';
 export 'future_widget.dart';
 export 'search_widget.dart';
 export 'sliver_widget.dart';
+export 'media_widget.dart';
