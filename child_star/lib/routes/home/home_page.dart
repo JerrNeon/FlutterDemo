@@ -2,6 +2,7 @@ import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/common/my_systems.dart';
+import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/routes/home/home_attention_page.dart';
 import 'package:child_star/routes/home/home_community_page.dart';
@@ -80,7 +81,8 @@ class _TopBarWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         IconButton(
-            icon: Image(image: MyImages.ic_home_personal), onPressed: () {}),
+            icon: Image(image: MyImages.ic_home_personal),
+            onPressed: () => RoutersNavigate().navigateToLogin(context)),
         DecoratedBox(
           decoration: BoxDecoration(
             color: MyColors.c_f7f7f7,

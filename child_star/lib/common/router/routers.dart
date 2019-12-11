@@ -1,6 +1,9 @@
 import 'package:child_star/routes/home/h5_page.dart';
 import 'package:child_star/routes/home/home_search_page.dart';
 import 'package:child_star/routes/home/new_detail_page.dart';
+import 'package:child_star/routes/login/forgetpassword_page.dart';
+import 'package:child_star/routes/login/login_page.dart';
+import 'package:child_star/routes/login/register_page.dart';
 import 'package:child_star/routes/main_page.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:fluro/fluro.dart';
@@ -11,6 +14,9 @@ class Routers {
   static const String home_search = "/home/search";
   static const String h5 = "/h5";
   static const String home_new_detail = "/home/new_detail";
+  static const String login = "/user/login";
+  static const String register = "/user/register";
+  static const String forget_password = "/user/forget_password";
 
   static var router = Router();
 
@@ -24,6 +30,9 @@ class Routers {
     router.define(home_search, handler: homeSearchHandler);
     router.define(h5, handler: h5Handler);
     router.define(home_new_detail, handler: homeNewDetailHandler);
+    router.define(login, handler: loginHandler);
+    router.define(register, handler: registerHandler);
+    router.define(forget_password, handler: forgetPasswordHandler);
   }
 }
 
@@ -47,4 +56,19 @@ var homeNewDetailHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String id = parameters["id"]?.first ?? "";
   return NewDetailPage(id);
+});
+
+var loginHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return LoginPage();
+});
+
+var registerHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return RegisterPage();
+});
+
+var forgetPasswordHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return ForgetPasswordPage();
 });

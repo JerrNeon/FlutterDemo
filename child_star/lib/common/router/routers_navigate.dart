@@ -61,4 +61,34 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionDuration: const Duration(milliseconds: 500),
     );
   }
+
+  @override
+  navigateToLogin(BuildContext context) {
+    Routers.router.navigateTo(
+      context,
+      Routers.login,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  navigateToRegister(BuildContext context) {
+    Routers.router.navigateTo(
+      context,
+      Routers.register,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  navigateToForgetPassword(BuildContext context) {
+    Routers.router.navigateTo(
+      context,
+      Routers.forget_password,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
+  }
 }

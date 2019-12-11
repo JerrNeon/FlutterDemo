@@ -13,6 +13,11 @@ class MySystems {
     statusBarBrightness: Brightness.light,
   );
 
+  ///透明
+  static const SystemUiOverlayStyle transparent = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  );
+
   ///隐藏[Scaffold]的[AppBar] (Scaffold如果不设置AppBar的话，widget中的内容会显示到状态栏区域)
   static PreferredSize get noAppBarPreferredSize {
     return PreferredSize(

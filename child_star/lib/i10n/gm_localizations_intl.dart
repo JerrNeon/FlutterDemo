@@ -91,6 +91,50 @@ class GmLocalizations {
   String get newDetailRelateArticleTitle {
     return Intl.message("相关图文", name: "newDetailRelateArticleTitle");
   }
+
+  String get loginWelcomeTitle {
+    return Intl.message("欢迎来到好妈咪星球", name: "loginWelcomeTitle");
+  }
+
+  String get loginMobileHintTitle {
+    return Intl.message("请输入手机号码", name: "loginMobileHintTitle");
+  }
+
+  String get loginMobileErrorTitle {
+    return Intl.message("手机号格式不正确", name: "loginMobileErrorTitle");
+  }
+
+  String get loginPasswordHintTitle {
+    return Intl.message("请输入8-16位密码", name: "loginPasswordHintTitle");
+  }
+
+  String get loginPasswordErrorTitle {
+    return Intl.message("密码格式不正确", name: "loginPasswordErrorTitle");
+  }
+
+  String get registerTitle {
+    return Intl.message("注册", name: "registerTitle");
+  }
+
+  String get loginForgetPasswordTitle {
+    return Intl.message("忘记密码？", name: "loginForgetPasswordTitle");
+  }
+
+  String get registerGetVerificationCodeTitle {
+    return Intl.message("获取验证码", name: "registerGetVerificationCodeTitle");
+  }
+
+  String get registerVerificationCodeHintTitle {
+    return Intl.message("验证码", name: "registerVerificationCodeHintTitle");
+  }
+
+  String get registerVerificationCodeErrorTitle {
+    return Intl.message("验证码格式不正确", name: "registerVerificationCodeErrorTitle");
+  }
+
+  String get loginSubmitTitle {
+    return Intl.message("确认", name: "loginSubmitTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

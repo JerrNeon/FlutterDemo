@@ -38,7 +38,7 @@ Widget _buildCachedNetworkImage(
   double borderRadius = 0.0,
   double width,
   double height,
-  BoxFit fit,
+  BoxFit fit = BoxFit.cover,
   Size placeholderSize = const Size(MySizes.s_100, MySizes.s_100),
 }) {
   return CachedNetworkImage(

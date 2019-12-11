@@ -52,6 +52,12 @@ class MyImages {
       AssetImage("images/ic_newdetail_audiopause.png");
   static const AssetImage ic_newdetail_audiowave =
       AssetImage("images/ic_newdetail_audiowave.png");
+  static const AssetImage ic_login_hello =
+      AssetImage("images/ic_login_hello.png");
+  static const AssetImage ic_login_btn = AssetImage("images/ic_login_btn.png");
+  static const AssetImage bg_login = AssetImage("images/bg_login.png");
+  static const AssetImage ic_login_back =
+      AssetImage("images/ic_login_back.png");
 }
 
 class MyImagesMultiple {
