@@ -31,6 +31,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeTitle" : MessageLookupByLibrary.simpleMessage("首页"),
     "knowledgeTitle" : MessageLookupByLibrary.simpleMessage("知识"),
     "loadFailureTitle" : MessageLookupByLibrary.simpleMessage("加载失败,点击重试!"),
+    "loginForgetPasswordTitle" : MessageLookupByLibrary.simpleMessage("忘记密码？"),
+    "loginMobileErrorTitle" : MessageLookupByLibrary.simpleMessage("手机号格式不正确"),
+    "loginMobileHintTitle" : MessageLookupByLibrary.simpleMessage("请输入手机号码"),
+    "loginPasswordErrorTitle" : MessageLookupByLibrary.simpleMessage("密码格式不正确"),
+    "loginPasswordHintTitle" : MessageLookupByLibrary.simpleMessage("请输入8-16位密码"),
+    "loginSubmitTitle" : MessageLookupByLibrary.simpleMessage("确认"),
+    "loginWelcomeTitle" : MessageLookupByLibrary.simpleMessage("欢迎来到好妈咪星球"),
     "newDetailDownloadTitle" : MessageLookupByLibrary.simpleMessage("缓存"),
     "newDetailFollowTitle" : MessageLookupByLibrary.simpleMessage("已关注"),
     "newDetailReadingNumTitle" : MessageLookupByLibrary.simpleMessage("阅读量"),
@@ -38,6 +45,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "newDetailRelateAudioTitle" : MessageLookupByLibrary.simpleMessage("相关音频"),
     "newDetailRelateVideoTitle" : MessageLookupByLibrary.simpleMessage("相关视频"),
     "newDetailUnFollowTitle" : MessageLookupByLibrary.simpleMessage("关注"),
+    "registerGetVerificationCodeTitle" : MessageLookupByLibrary.simpleMessage("获取验证码"),
+    "registerTitle" : MessageLookupByLibrary.simpleMessage("注册"),
+    "registerVerificationCodeErrorTitle" : MessageLookupByLibrary.simpleMessage("验证码格式不正确"),
+    "registerVerificationCodeHintTitle" : MessageLookupByLibrary.simpleMessage("验证码"),
     "searchHintTitle" : MessageLookupByLibrary.simpleMessage("你想找的这里都有...")
   };
 }

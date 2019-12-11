@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-12-09T19:01:42.238569",
+  "@@last_modified": "2019-12-11T18:32:42.390431",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -87,6 +87,61 @@
   },
   "newDetailRelateArticleTitle": "相关图文",
   "@newDetailRelateArticleTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginWelcomeTitle": "欢迎来到好妈咪星球",
+  "@loginWelcomeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginMobileHintTitle": "请输入手机号码",
+  "@loginMobileHintTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginMobileErrorTitle": "手机号格式不正确",
+  "@loginMobileErrorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginPasswordHintTitle": "请输入8-16位密码",
+  "@loginPasswordHintTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginPasswordErrorTitle": "密码格式不正确",
+  "@loginPasswordErrorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "registerTitle": "注册",
+  "@registerTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginForgetPasswordTitle": "忘记密码？",
+  "@loginForgetPasswordTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "registerGetVerificationCodeTitle": "获取验证码",
+  "@registerGetVerificationCodeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "registerVerificationCodeHintTitle": "验证码",
+  "@registerVerificationCodeHintTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "registerVerificationCodeErrorTitle": "验证码格式不正确",
+  "@registerVerificationCodeErrorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginSubmitTitle": "确认",
+  "@loginSubmitTitle": {
     "type": "text",
     "placeholders": {}
   }
