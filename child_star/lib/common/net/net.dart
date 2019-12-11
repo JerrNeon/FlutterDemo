@@ -103,6 +103,8 @@ class Net {
       bool isShowDioErrorMsg = false}) async {
     LogUtils.i("<dio> url :<" + method + ">" + url);
     try {
+      dio.options.headers[HttpHeaders.authorizationHeader] =
+          Global.profile.token;
       Response response;
       if (params != null && params.isNotEmpty) {
         params.removeWhere((key, value) {

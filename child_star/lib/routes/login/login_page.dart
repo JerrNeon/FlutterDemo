@@ -1,10 +1,18 @@
+import 'dart:io';
+
+import 'package:child_star/common/global.dart';
+import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
+import 'package:child_star/models/index.dart';
+import 'package:child_star/states/states_index.dart';
+import 'package:child_star/utils/net_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -228,13 +236,30 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _login() {
+  _login() async {
     if (_globalKey.currentState.validate()) {
-      showLoading(context);
       var mobile = _phoneController.text;
       var password = _passwordController.text;
-      LogUtils.d("mobile: $mobile , password: $password");
-      //Provider.of<UserProvider>(context, listen: true).user = null;
+      try {
+        showLoading(context);
+        NetManager netManager = NetManager(context);
+        Token token = await netManager.login(
+          mobile: mobile,
+          password: password,
+        );
+        UserProvider userProvider =
+            Provider.of<UserProvider>(context, listen: false);
+        userProvider.token = token.token;
+        User user = await netManager.getUserInfo();
+        userProvider.user = user;
+        //退出登录界面
+        Navigator.of(context).pop();
+      } catch (e) {
+        LogUtils.e(e);
+      } finally {
+        //关闭对话框
+        Navigator.of(context).pop();
+      }
     }
   }
 }

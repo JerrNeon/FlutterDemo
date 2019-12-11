@@ -1,5 +1,6 @@
 import 'package:child_star/common/net/net.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/material.dart';
 
 import 'net_config.dart';
@@ -75,5 +76,71 @@ class NetManager {
     var response =
         await Net(context).post(NetConfig.GET_NEWS_SEARCH_LIST, params: params);
     return Newslist.fromJson(response);
+  }
+
+  ///mobile	是	string	手机号
+  ///password	是	string	密码
+  ///deviceId	是	string	设备id
+  ///ipAddress	是	string	ip地址
+  Future<Token> login({
+    @required String mobile,
+    @required String password,
+    String deviceId,
+    String ipAddress,
+  }) async {
+    var uniqueId = await NetUtils.getUniqueId(context);
+    var ip = await NetUtils.getIpAddress();
+    LogUtils.d("uniqueId: $uniqueId ip: $ip");
+    var response = await Net(context).post(NetConfig.LOGIN, params: {
+      "mobile": mobile,
+      "password": password,
+      "deviceId": deviceId ?? uniqueId,
+      "ipAddress": ipAddress ?? ip,
+    });
+    return Token.fromJson(response);
+  }
+
+  ///mobile	是	string	手机号
+  ///password	是	string	密码
+  ///code	是	int	验证码
+  ///deviceId	是	string	设备id
+  ///ipAddress	是	string	ip地址
+  Future<Token> register({
+    @required String mobile,
+    @required String password,
+    @required String code,
+    @required String deviceId,
+    String ipAddress,
+  }) async {
+    deviceId = await NetUtils.getUniqueId(context);
+    ipAddress = await NetUtils.getIpAddress();
+    var response = await Net(context).post(NetConfig.REGISTER, params: {
+      "mobile": mobile,
+      "password": password,
+      "code": code,
+      "deviceId": deviceId,
+      "ipAddress": ipAddress,
+    });
+    return Token.fromJson(response);
+  }
+
+  ///mobile	是	string	手机号
+  ///newPassword	是	string	新密码
+  ///code	是	int	验证码
+  Future forgetPassword({
+    @required String mobile,
+    @required String password,
+    @required String code,
+  }) async {
+    return await Net(context).post(NetConfig.FORGET_PASSWORD, params: {
+      "mobile": mobile,
+      "newPassword": password,
+      "code": code,
+    });
+  }
+
+  Future<User> getUserInfo() async {
+    var response = await Net(context).post(NetConfig.GET_USER_INFO);
+    return User.fromJson(response);
   }
 }

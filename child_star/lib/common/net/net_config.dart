@@ -16,4 +16,16 @@ class NetConfig {
 
   ///搜索（相关）资讯列表
   static const GET_NEWS_SEARCH_LIST = "info/searchList";
+
+  ///登录
+  static const LOGIN = "auth/login";
+
+  ///注册
+  static const REGISTER = "auth/register";
+
+  ///忘记密码
+  static const FORGET_PASSWORD = "auth/forgetPassword";
+
+  ///获取用户信息
+  static const GET_USER_INFO = "user/info";
 }

@@ -17,6 +17,11 @@ class UserProvider extends ProfileNotifierProvider {
 
   bool get isLogin => user != null;
 
+  set token(String token) {
+    _profile.token = token;
+    notifyListeners();
+  }
+
   set user(User user) {
     _profile.user = user;
     notifyListeners();
