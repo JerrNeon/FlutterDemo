@@ -6,7 +6,7 @@ part 'user.g.dart';
 class User {
     User();
 
-    String id;
+    num id;
     String nickName;
     String headUrl;
     num role;
