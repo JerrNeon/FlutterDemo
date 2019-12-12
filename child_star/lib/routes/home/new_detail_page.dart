@@ -113,7 +113,7 @@ class _NewDetailBody extends StatelessWidget {
         delegate: CustomSliverPersistentHeaderDelegate(
             minHeight: 0,
             maxHeight: ScreenUtils.width * 250 / 375,
-            child: cachedNetworkImage(data.headUrl, fit: BoxFit.cover)),
+            child: loadImage(data.headUrl, fit: BoxFit.cover)),
       );
     }
   }
@@ -199,9 +199,9 @@ class _NewDetailBody extends StatelessWidget {
               children: <Widget>[
                 Stack(
                   children: <Widget>[
-                    cachedNetworkImage(
+                    loadImage(
                       data.authorHeadUrl,
-                      isCircle: true,
+                      shape: BoxShape.circle,
                       width: MySizes.s_46,
                       height: MySizes.s_46,
                     ),
@@ -358,9 +358,9 @@ class _NewDetailBody extends StatelessWidget {
                       children: <Widget>[
                         Stack(
                           children: <Widget>[
-                            cachedNetworkImage(
+                            loadImage(
                               model.headUrl,
-                              borderRadius: MySizes.s_3,
+                              borderRadius: BorderRadius.circular(MySizes.s_3),
                               width: MySizes.s_155,
                               height: MySizes.s_105,
                               fit: BoxFit.cover,

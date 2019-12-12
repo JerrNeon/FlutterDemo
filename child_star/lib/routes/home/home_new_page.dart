@@ -276,7 +276,11 @@ class _HomeNewPageState extends State<HomeNewPage>
           children: <Widget>[
             Stack(
               children: <Widget>[
-                cachedNetworkImage(news.headUrl, borderRadius: MySizes.s_3),
+                loadImage(
+                  news.headUrl,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(MySizes.s_3),
+                ),
                 Container(
                     padding: EdgeInsets.all(MySizes.s_5),
                     child: (news.type == 1 || news.type == 2)
