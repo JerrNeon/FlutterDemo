@@ -1,13 +1,10 @@
-import 'dart:io';
 
-import 'package:child_star/common/global.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/states/states_index.dart';
-import 'package:child_star/utils/net_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

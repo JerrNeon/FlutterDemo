@@ -1,6 +1,6 @@
 class MediaType {
-  static final ARTICLE = 0;
-  static final VIDEO = 1;
-  static final AUDIO = 2;
-  static final ENCYCLOPEDIA = 3;
+  static const ARTICLE = 0;
+  static const VIDEO = 1;
+  static const AUDIO = 2;
+  static const ENCYCLOPEDIA = 3;
 }

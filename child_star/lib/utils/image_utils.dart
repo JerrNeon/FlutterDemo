@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:child_star/common/my_sizes.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 Widget cachedNetworkImage(
@@ -41,28 +41,31 @@ Widget _buildCachedNetworkImage(
   BoxFit fit = BoxFit.cover,
   Size placeholderSize = const Size(MySizes.s_100, MySizes.s_100),
 }) {
-  return CachedNetworkImage(
-    imageUrl: imageUrl,
+  return ExtendedImage.network(
+    imageUrl,
     width: width,
     height: height,
     fit: fit,
-    placeholder: (context, url) {
-      return Container(
-        width: placeholderSize.width,
-        height: placeholderSize.height,
-        child: UnconstrainedBox(
-          child: SizedBox(
-            width: MySizes.s_20,
-            height: MySizes.s_20,
-            child: CircularProgressIndicator(strokeWidth: MySizes.s_1),
+    loadStateChanged: (ExtendedImageState state) {
+      if (state.extendedImageLoadState == LoadState.loading) {
+        return Container(
+          width: placeholderSize.width,
+          height: placeholderSize.height,
+          child: UnconstrainedBox(
+            child: SizedBox(
+              width: MySizes.s_20,
+              height: MySizes.s_20,
+              child: CircularProgressIndicator(strokeWidth: MySizes.s_1),
+            ),
           ),
-        ),
-      );
-    },
-    errorWidget: (context, url, error) {
-      return Container(
-        color: Colors.grey[400],
-      );
+        );
+      } else if (state.extendedImageLoadState == LoadState.failed) {
+        return Container(
+          color: Colors.grey[400],
+        );
+      } else {
+        return null;
+      }
     },
   );
 }

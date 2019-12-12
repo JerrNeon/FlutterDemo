@@ -10,11 +10,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-void main() => Global.init().then((value) {
-      runApp(MyApp());
-      //设置状态栏颜色(白底黑字黑色图标)
-      SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
-    });
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Global.init().then((value) {
+    runApp(MyApp());
+    //设置状态栏颜色(白底黑字黑色图标)
+    SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
+  });
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
