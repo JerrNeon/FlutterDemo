@@ -18,7 +18,6 @@ class _DemoStateWidgetState extends State<DemoStateWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
       setState(() {
@@ -29,19 +28,16 @@ class _DemoStateWidgetState extends State<DemoStateWidget> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       home: new Scaffold(
         backgroundColor: Colors.white,

@@ -5,7 +5,6 @@ import 'DemoItem.dart';
 class DemoPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _DemoPageState();
   }
 }
@@ -13,7 +12,6 @@ class DemoPage extends StatefulWidget {
 class _DemoPageState extends State<DemoPage> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(

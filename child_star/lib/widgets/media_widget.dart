@@ -170,6 +170,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   PlayerMode mode;
 
   AudioPlayer _audioPlayer;
+  // ignore: unused_field
   AudioPlayerState _audioPlayerState;
   Duration _duration;
   Duration _position;
@@ -181,13 +182,13 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   StreamSubscription _playerErrorSubscription;
   StreamSubscription _playerStateSubscription;
 
-  get _isPlaying => _playerState == PlayerState.playing;
+  get isPlaying => _playerState == PlayerState.playing;
 
-  get _isPaused => _playerState == PlayerState.paused;
+  get isPaused => _playerState == PlayerState.paused;
 
-  get _durationText => _duration?.toString()?.split('.')?.first ?? '';
+  get durationText => _duration?.toString()?.split('.')?.first ?? '';
 
-  get _positionText => _position?.toString()?.split('.')?.first ?? '';
+  get positionText => _position?.toString()?.split('.')?.first ?? '';
 
   _AudioPlayerWidgetState(this.url, this.isAutoPlay, this.isLocal, this.mode);
 
@@ -336,6 +337,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     return result;
   }
 
+  // ignore: unused_element
   Future<int> _stop() async {
     final result = await _audioPlayer.stop();
     if (result == 1) {
