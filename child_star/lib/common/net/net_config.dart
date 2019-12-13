@@ -28,4 +28,7 @@ class NetConfig {
 
   ///获取用户信息
   static const GET_USER_INFO = "user/info";
+
+  ///退出登录
+  static const LOGOUT = "auth/loginOut";
 }

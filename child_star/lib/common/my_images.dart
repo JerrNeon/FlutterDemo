@@ -58,6 +58,31 @@ class MyImages {
   static const AssetImage bg_login = AssetImage("images/bg_login.png");
   static const AssetImage ic_login_back =
       AssetImage("images/ic_login_back.png");
+  static const AssetImage ic_mine_book = AssetImage("images/ic_mine_book.png");
+  static const AssetImage ic_mine_collection =
+      AssetImage("images/ic_mine_collection.png");
+  static const AssetImage ic_mine_course =
+      AssetImage("images/ic_mine_course.png");
+  static const AssetImage ic_mine_download =
+      AssetImage("images/ic_mine_download.png");
+  static const AssetImage ic_mine_edit = AssetImage("images/ic_mine_edit.png");
+  static const AssetImage ic_mine_equity =
+      AssetImage("images/ic_mine_equity.png");
+  static const AssetImage ic_mine_focus =
+      AssetImage("images/ic_mine_focus.png");
+  static const AssetImage ic_mine_mall = AssetImage("images/ic_mine_mall.png");
+  static const AssetImage ic_mine_message =
+      AssetImage("images/ic_mine_message.png");
+  static const AssetImage ic_mine_order =
+      AssetImage("images/ic_mine_order.png");
+  static const AssetImage ic_mine_point =
+      AssetImage("images/ic_mine_point.png");
+  static const AssetImage ic_mine_score =
+      AssetImage("images/ic_mine_score.png");
+  static const AssetImage ic_mine_set = AssetImage("images/ic_mine_set.png");
+  static const AssetImage ic_mine_vip = AssetImage("images/ic_mine_vip.png");
+  static const AssetImage ic_mine_arrow = AssetImage("images/ic_mine_arrow.png");
+  static const AssetImage ic_mine_banner = AssetImage("images/ic_mine_banner.png");
 }
 
 class MyImagesMultiple {

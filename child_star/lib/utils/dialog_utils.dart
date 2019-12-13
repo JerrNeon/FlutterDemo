@@ -1,3 +1,6 @@
+import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/i10n/gm_localizations_intl.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -50,6 +53,89 @@ showLoading(context, [String text]) {
               ],
             ),
           ),
+        );
+      });
+}
+
+Future showCupertinoAlertDialog(
+  BuildContext context, {
+  String title,
+  @required String content,
+  String negativeTitle,
+  String positiveTitle,
+  GestureTapCallback onNegativeTap,
+  GestureTapCallback onPositiveTap,
+}) async {
+  assert(context != null);
+  GmLocalizations gm = GmLocalizations.of(context);
+  if (title == null) title = gm.dialogTipsTitle;
+  if (negativeTitle == null) negativeTitle = gm.dialogNagativeTitle;
+  if (positiveTitle == null) positiveTitle = gm.dialogPositiveTitle;
+  return await showCupertinoDialog<int>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text(
+            title,
+            style: TextStyle(
+              color: MyColors.c_686868,
+              fontSize: MyFontSizes.s_18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            content,
+            style: TextStyle(
+              color: MyColors.c_686868,
+              fontSize: MyFontSizes.s_15,
+            ),
+          ),
+          actions: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                if (onNegativeTap != null) {
+                  onNegativeTap();
+                }
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                height: MySizes.s_40,
+                alignment: Alignment.center,
+                child: Text(
+                  negativeTitle,
+                  style: TextStyle(
+                    color: Colors.blue[400],
+                    fontSize: MyFontSizes.s_16,
+                    fontWeight: FontWeight.normal,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                if (onPositiveTap != null) {
+                  onPositiveTap();
+                }
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                height: MySizes.s_40,
+                alignment: Alignment.center,
+                child: Text(
+                  positiveTitle,
+                  style: TextStyle(
+                    color: Colors.blue[400],
+                    fontSize: MyFontSizes.s_16,
+                    fontWeight: FontWeight.normal,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       });
 }

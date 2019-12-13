@@ -91,4 +91,24 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionDuration: const Duration(milliseconds: 500),
     );
   }
+
+  @override
+  navigateToMine(BuildContext context) {
+    Routers.router.navigateTo(
+      context,
+      Routers.mine,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  navigateToMineSet(BuildContext context) {
+    Routers.router.navigateTo(
+      context,
+      Routers.mine_set,
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
+  }
 }

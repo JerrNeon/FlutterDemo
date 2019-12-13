@@ -82,7 +82,7 @@ class _TopBarWidget extends StatelessWidget {
       children: <Widget>[
         IconButton(
             icon: Image(image: MyImages.ic_home_personal),
-            onPressed: () => RoutersNavigate().navigateToLogin(context)),
+            onPressed: () => RoutersNavigate().navigateToMine(context)),
         DecoratedBox(
           decoration: BoxDecoration(
             color: MyColors.c_f7f7f7,

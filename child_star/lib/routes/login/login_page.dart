@@ -1,4 +1,3 @@
-
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/common/router/routers_navigate.dart';

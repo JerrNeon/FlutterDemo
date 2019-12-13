@@ -135,6 +135,102 @@ class GmLocalizations {
   String get loginSubmitTitle {
     return Intl.message("确认", name: "loginSubmitTitle");
   }
+
+  String get mineTitle {
+    return Intl.message("个人中心", name: "mineTitle");
+  }
+
+  String get mineFocus {
+    return Intl.message("我的关注", name: "mineFocus");
+  }
+
+  String get mineScoreUnit {
+    return Intl.message("颗", name: "mineScoreUnit");
+  }
+
+  String get mineScore {
+    return Intl.message("积分规则", name: "mineScore");
+  }
+
+  String get minePointUnit {
+    return Intl.message("个", name: "minePointUnit");
+  }
+
+  String get minePoint {
+    return Intl.message("充值知识点", name: "minePoint");
+  }
+
+  String get mineEquity {
+    return Intl.message("我的权益", name: "mineEquity");
+  }
+
+  String get mineCourse {
+    return Intl.message("我的课程", name: "mineCourse");
+  }
+
+  String get mineMall {
+    return Intl.message("福利商城", name: "mineMall");
+  }
+
+  String get mineOrder {
+    return Intl.message("我的订单", name: "mineOrder");
+  }
+
+  String get mineBook {
+    return Intl.message("绘本书籍", name: "mineBook");
+  }
+
+  String get mineDownload {
+    return Intl.message("离线缓存", name: "mineDownload");
+  }
+
+  String get mineCollection {
+    return Intl.message("我的收藏", name: "mineCollection");
+  }
+
+  String get mineSetTitle {
+    return Intl.message("用户设置", name: "mineSetTitle");
+  }
+
+  String get mineSetPush {
+    return Intl.message("消息推送设置", name: "mineSetPush");
+  }
+
+  String get mineSetGeneral {
+    return Intl.message("通用", name: "mineSetGeneral");
+  }
+
+  String get mineSetAboutUs {
+    return Intl.message("关于我们", name: "mineSetAboutUs");
+  }
+
+  String get mineSetFeedback {
+    return Intl.message("意见反馈", name: "mineSetFeedback");
+  }
+
+  String get mineSetLogout {
+    return Intl.message("登出", name: "mineSetLogout");
+  }
+
+  String get mineSetLogoutDialogContent {
+    return Intl.message("确认退出？", name: "mineSetLogoutDialogContent");
+  }
+
+   String get mineSetLogoutSuccess {
+    return Intl.message("退出成功", name: "mineSetLogoutSuccess");
+  }
+
+  String get dialogTipsTitle {
+    return Intl.message("温馨提示", name: "dialogTipsTitle");
+  }
+
+  String get dialogNagativeTitle {
+    return Intl.message("取消", name: "dialogNagativeTitle");
+  }
+
+  String get dialogPositiveTitle {
+    return Intl.message("确认", name: "dialogPositiveTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

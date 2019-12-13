@@ -24,6 +24,14 @@ class MyColors {
   static const Color c_777777 = Color(0xFF777777);
   static const Color c_d5d5d5 = Color(0xFFD5D5D5);
   static const Color c_a1a1a1 = Color(0xFFA1A1A1);
+  static const Color c_f3f2f1 = Color(0xFFF3F2F1);
+  static const Color c_febfc9 = Color(0xFFFEBFC9);
+  static const Color c_c1c1c1 = Color(0xFFC1C1C1);
+  static const Color c_e6e6e6 = Color(0xFFE6E6E6);
+  static const Color c_c8c8c8 = Color(0xFFC8C8C8);
+  static const Color c_fafafa = Color(0xFFFAFAFA);
+  static const Color c_dadada = Color(0xFFDADADA);
+  static const Color c_8a8a8a = Color(0xFF8A8A8A);
 }
 
 class MyColorsFul {

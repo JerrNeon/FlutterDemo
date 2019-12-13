@@ -143,4 +143,8 @@ class NetManager {
     var response = await Net(context).post(NetConfig.GET_USER_INFO);
     return User.fromJson(response);
   }
+
+  Future logout() async {
+    return await Net(context).post(NetConfig.LOGOUT);
+  }
 }

@@ -2,9 +2,11 @@ import 'package:child_star/common/global.dart';
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_systems.dart';
 import 'package:child_star/common/router/routers.dart';
+import 'package:child_star/i10n/cupertino_localizations.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/routes/main_page.dart';
 import 'package:child_star/states/profile_notifier.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -48,6 +50,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GmLocalizations.delegate,
+          GmCupertinoLocalizations.delegate,
         ],
         supportedLocales: [
           Locale("zh", "CN"), //中文简体

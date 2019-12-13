@@ -1,10 +1,12 @@
-import 'package:child_star/common/my_colors.dart';
-import 'package:child_star/common/my_sizes.dart';
+import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
+import 'package:child_star/states/profile_notifier.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class FutureBuilderWidget<T> extends StatelessWidget {
   final Widget loadingWidget;
@@ -52,8 +54,10 @@ class FutureBuilderWidget<T> extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           GmLocalizations.of(context).loadFailureTitle,
-          style:
-              TextStyle(color: MyColors.c_686868, fontSize: MyFontSizes.s_14),
+          style: TextStyle(
+            color: MyColors.c_686868,
+            fontSize: MyFontSizes.s_14,
+          ),
         ),
       ),
       onTap: () {
@@ -107,4 +111,36 @@ class SliverEmptyFutureBuilderWidget<T> extends FutureBuilderWidget<T> {
           initialData: initialData,
           builder: builder,
         );
+}
+
+class UserWidget extends StatelessWidget {
+  final Widget child;
+
+  const UserWidget({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    if (userProvider.isLogin) {
+      return child;
+    } else {
+      return Center(
+        child: GestureDetector(
+          onTap: () => RoutersNavigate().navigateToLogin(context),
+          child: Container(
+            width: MySizes.s_200,
+            height: MySizes.s_200,
+            color: Colors.white,
+            child: Text(
+              "请登录",
+              style: TextStyle(
+                color: MyColors.c_686868,
+                fontSize: MyFontSizes.s_16,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
 }

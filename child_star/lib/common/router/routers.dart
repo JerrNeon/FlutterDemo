@@ -5,9 +5,13 @@ import 'package:child_star/routes/login/forgetpassword_page.dart';
 import 'package:child_star/routes/login/login_page.dart';
 import 'package:child_star/routes/login/register_page.dart';
 import 'package:child_star/routes/main_page.dart';
+import 'package:child_star/routes/user/mine_page.dart';
+import 'package:child_star/routes/user/mine_set_page.dart';
+import 'package:child_star/states/profile_notifier.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class Routers {
   static const String root = "/";
@@ -17,6 +21,8 @@ class Routers {
   static const String login = "/user/login";
   static const String register = "/user/register";
   static const String forget_password = "/user/forget_password";
+  static const String mine = "/user/mine";
+  static const String mine_set = "/user/mine/set";
 
   static var router = Router();
 
@@ -33,6 +39,8 @@ class Routers {
     router.define(login, handler: loginHandler);
     router.define(register, handler: registerHandler);
     router.define(forget_password, handler: forgetPasswordHandler);
+    router.define(mine, handler: mineHandler);
+    router.define(mine_set, handler: mineSetHandler);
   }
 }
 
@@ -71,4 +79,15 @@ var registerHandler = Handler(
 var forgetPasswordHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   return ForgetPasswordPage();
+});
+
+var mineHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  UserProvider userProvider = Provider.of<UserProvider>(context);
+  return userProvider.isLogin ? MinePage() : LoginPage();
+});
+
+var mineSetHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return MineSetPage();
 });
