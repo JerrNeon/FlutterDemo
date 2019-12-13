@@ -109,7 +109,7 @@ class NetManager {
     @required String mobile,
     @required String password,
     @required String code,
-    @required String deviceId,
+    String deviceId,
     String ipAddress,
   }) async {
     deviceId = await NetUtils.getUniqueId(context);
@@ -146,5 +146,23 @@ class NetManager {
 
   Future logout() async {
     return await Net(context).post(NetConfig.LOGOUT);
+  }
+
+  ///mobile	是	String	手机号	—
+  ///time	是	int（或者string）	当前时间戳	—
+  ///type	否	int	验证码类型	1：注册；2：绑定； 默认：1
+  Future getVerifyCode({
+    @required String mobile,
+    String time,
+    String type,
+  }) async {
+    if (time == null) {
+      time = DateTime.now().millisecond.toString();
+    }
+    return await Net(context).post(NetConfig.GET_VERIFY_CODE, params: {
+      "mobile": mobile,
+      "time": time,
+      "type": type,
+    });
   }
 }

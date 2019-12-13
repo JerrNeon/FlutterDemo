@@ -31,4 +31,7 @@ class NetConfig {
 
   ///退出登录
   static const LOGOUT = "auth/loginOut";
+
+  ///获取验证码
+  static const GET_VERIFY_CODE = "sapi/send_sms_code";
 }

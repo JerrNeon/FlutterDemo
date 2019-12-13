@@ -73,8 +73,8 @@ class RoutersNavigate extends IRoutersNavigate {
   }
 
   @override
-  navigateToRegister(BuildContext context) {
-    Routers.router.navigateTo(
+  Future navigateToRegister(BuildContext context) async {
+    return await Routers.router.navigateTo(
       context,
       Routers.register,
       transition: TransitionType.nativeModal,

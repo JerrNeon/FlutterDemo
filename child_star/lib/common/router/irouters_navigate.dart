@@ -20,7 +20,7 @@ abstract class IRoutersNavigate {
   navigateToLogin(BuildContext context);
 
   ///跳转到注册界面[RegisterPage]
-  navigateToRegister(BuildContext context);
+  Future navigateToRegister(BuildContext context);
 
   ///跳转到忘记密码界面[ForgetPasswordPage]
   navigateToForgetPassword(BuildContext context);

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-12-11T18:32:42.390431",
+  "@@last_modified": "2019-12-13T19:12:55.283531",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -140,8 +140,133 @@
     "type": "text",
     "placeholders": {}
   },
+  "registerVerificationCodeSendSuccess": "验证码发送成功",
+  "@registerVerificationCodeSendSuccess": {
+    "type": "text",
+    "placeholders": {}
+  },
   "loginSubmitTitle": "确认",
   "@loginSubmitTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineTitle": "个人中心",
+  "@mineTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineFocus": "我的关注",
+  "@mineFocus": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineScoreUnit": "颗",
+  "@mineScoreUnit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineScore": "积分规则",
+  "@mineScore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "minePointUnit": "个",
+  "@minePointUnit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "minePoint": "充值知识点",
+  "@minePoint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineEquity": "我的权益",
+  "@mineEquity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineCourse": "我的课程",
+  "@mineCourse": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineMall": "福利商城",
+  "@mineMall": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineOrder": "我的订单",
+  "@mineOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineBook": "绘本书籍",
+  "@mineBook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineDownload": "离线缓存",
+  "@mineDownload": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineCollection": "我的收藏",
+  "@mineCollection": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetTitle": "用户设置",
+  "@mineSetTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetPush": "消息推送设置",
+  "@mineSetPush": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetGeneral": "通用",
+  "@mineSetGeneral": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetAboutUs": "关于我们",
+  "@mineSetAboutUs": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetFeedback": "意见反馈",
+  "@mineSetFeedback": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetLogout": "登出",
+  "@mineSetLogout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetLogoutDialogContent": "确认退出？",
+  "@mineSetLogoutDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mineSetLogoutSuccess": "退出成功",
+  "@mineSetLogoutSuccess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dialogTipsTitle": "温馨提示",
+  "@dialogTipsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dialogNagativeTitle": "取消",
+  "@dialogNagativeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dialogPositiveTitle": "确认",
+  "@dialogPositiveTitle": {
     "type": "text",
     "placeholders": {}
   }

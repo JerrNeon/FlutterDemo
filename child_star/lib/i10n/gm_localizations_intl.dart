@@ -132,6 +132,10 @@ class GmLocalizations {
     return Intl.message("验证码格式不正确", name: "registerVerificationCodeErrorTitle");
   }
 
+  String get registerVerificationCodeSendSuccess {
+    return Intl.message("验证码发送成功", name: "registerVerificationCodeSendSuccess");
+  }
+
   String get loginSubmitTitle {
     return Intl.message("确认", name: "loginSubmitTitle");
   }

@@ -1,9 +1,13 @@
+import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
+import 'package:child_star/models/index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -156,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   margin: EdgeInsets.symmetric(vertical: MySizes.s_2),
                 ),
                 GestureDetector(
-                  onTap: () => _getVerifyCode(),
+                  onTap: () => _getVerifyCode(gm),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: MySizes.s_10,
@@ -286,22 +290,41 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  _getVerifyCode() {
+  _getVerifyCode(GmLocalizations gm) async {
     if (_phoneGlobalKey.currentState.validate()) {
       var mobile = _phoneController.text;
       showLoading(context);
       LogUtils.d("mobile: $mobile");
+      try {
+        await NetManager(context).getVerifyCode(mobile: mobile);
+        showToast(gm.registerVerificationCodeSendSuccess);
+      } catch (e) {} finally {
+        Navigator.of(context).pop();
+      }
     }
   }
 
-  _register() {
+  _register() async {
     if (_globalKey.currentState.validate()) {
       var mobile = _phoneController.text;
       var password = _passwordController.text;
       var code = _verifyCodeController.text;
       showLoading(context);
       LogUtils.d("mobile: $mobile , password: $password , code: $code");
-      //Provider.of<UserProvider>(context, listen: true).user = null;
+      try {
+        NetManager netManager = NetManager(context);
+        Token token = await netManager.register(
+            mobile: mobile, password: password, code: code);
+        UserProvider userProvider =
+            Provider.of<UserProvider>(context, listen: false);
+        userProvider.token = token.token;
+        User user = await netManager.getUserInfo();
+        userProvider.user = user;
+        //退出注册界面
+        Navigator.of(context).pop('');
+      } catch (e) {} finally {
+        Navigator.of(context).pop();
+      }
     }
   }
 }

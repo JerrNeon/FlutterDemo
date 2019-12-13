@@ -188,7 +188,12 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => RoutersNavigate().navigateToRegister(context),
+            onTap: () async {
+              var result = await RoutersNavigate().navigateToRegister(context);
+              if (result != null) {
+                Navigator.of(context).pop();
+              }
+            },
             child: Padding(
               padding: EdgeInsets.only(
                 left: MySizes.s_6,
