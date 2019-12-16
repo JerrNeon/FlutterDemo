@@ -18,3 +18,11 @@ flutter run --release
 
 #IOS ipa生成(会先生成一个Runner.app文件，把它放进文件夹进行压缩，然后修改压缩包后缀为ipa即可)
 flutter build ios --release
+
+#Flutter创建(补全)
+flutter create .
+
+#支持web
+flutter config --enable-web
+#Web运行
+flutter run -d chrome
