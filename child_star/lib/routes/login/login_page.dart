@@ -97,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
         key: _globalKey,
         child: Column(
           children: <Widget>[
+            //手机号
             TextFormField(
               controller: _phoneController,
               focusNode: _phoneFocusNode,
@@ -107,7 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(MySizes.s_24),
                 ),
-                contentPadding: EdgeInsets.all(MySizes.s_14),
+                contentPadding: EdgeInsets.all(MySizes.s_12),
+                isDense: true,
                 hintText: gm.loginMobileHintTitle,
                 hintStyle: TextStyle(
                   fontSize: MyFontSizes.s_12,
@@ -138,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
             Padding(padding: EdgeInsets.only(top: MySizes.s_22)),
+            //密码
             TextFormField(
               controller: _passwordController,
               focusNode: _passwordFocusNode,
@@ -148,7 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(MySizes.s_24),
                 ),
-                contentPadding: EdgeInsets.all(MySizes.s_14),
+                contentPadding: EdgeInsets.all(MySizes.s_12),
+                isDense: true,
                 hintText: gm.loginPasswordHintTitle,
                 hintStyle: TextStyle(
                   fontSize: MyFontSizes.s_12,

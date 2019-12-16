@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
@@ -24,11 +26,24 @@ class _RegisterPageState extends State<RegisterPage> {
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _verifyCodeFocusNode = FocusNode();
 
+  static const TOTAL_TIME = 60; //总倒计时时长(单位：s)
+  Timer _timer; //倒计时
+  var _currentTime = 0; //当前倒计时剩余时长(单位：s)
+
   @override
   void initState() {
     super.initState();
     //设置状态栏透明
     SystemChrome.setSystemUIOverlayStyle(MySystems.transparent);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null && _timer.isActive) {
+      _timer.cancel();
+      _timer = null;
+    }
   }
 
   @override
@@ -104,6 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
         key: _globalKey,
         child: Column(
           children: <Widget>[
+            //手机号、获取验证码
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -122,7 +138,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           bottomLeft: Radius.circular(MySizes.s_24),
                         ),
                       ),
-                      contentPadding: EdgeInsets.all(MySizes.s_14),
+                      contentPadding: EdgeInsets.all(MySizes.s_12),
+                      isDense: true,
                       hintText: gm.loginMobileHintTitle,
                       hintStyle: TextStyle(
                         fontSize: MyFontSizes.s_12,
@@ -162,10 +179,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 GestureDetector(
                   onTap: () => _getVerifyCode(gm),
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MySizes.s_10,
-                      vertical: MySizes.s_15,
-                    ),
+                    width: MySizes.s_82,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: MySizes.s_13),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -174,7 +190,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     child: Text(
-                      gm.registerGetVerificationCodeTitle,
+                      _currentTime == 0
+                          ? gm.registerGetVerificationCodeTitle
+                          : "${_currentTime}s",
                       style: TextStyle(
                         color: MyColors.c_a1a1a1,
                         fontSize: MyFontSizes.s_12,
@@ -185,6 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
             Padding(padding: EdgeInsets.only(top: MySizes.s_22)),
+            //验证码
             TextFormField(
               controller: _verifyCodeController,
               focusNode: _verifyCodeFocusNode,
@@ -195,7 +214,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(MySizes.s_24),
                 ),
-                contentPadding: EdgeInsets.all(MySizes.s_14),
+                contentPadding: EdgeInsets.all(MySizes.s_12),
+                isDense: true,
                 hintText: gm.registerVerificationCodeHintTitle,
                 hintStyle: TextStyle(
                   fontSize: MyFontSizes.s_12,
@@ -225,6 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
             ),
             Padding(padding: EdgeInsets.only(top: MySizes.s_22)),
+            //密码
             TextFormField(
               controller: _passwordController,
               focusNode: _passwordFocusNode,
@@ -235,7 +256,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(MySizes.s_24),
                 ),
-                contentPadding: EdgeInsets.all(MySizes.s_14),
+                contentPadding: EdgeInsets.all(MySizes.s_12),
+                isDense: true,
                 hintText: gm.loginPasswordHintTitle,
                 hintStyle: TextStyle(
                   fontSize: MyFontSizes.s_12,
@@ -291,12 +313,20 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _getVerifyCode(GmLocalizations gm) async {
-    if (_phoneGlobalKey.currentState.validate()) {
+    if (_currentTime == 0 && _phoneGlobalKey.currentState.validate()) {
       var mobile = _phoneController.text;
       showLoading(context);
       LogUtils.d("mobile: $mobile");
       try {
         await NetManager(context).getVerifyCode(mobile: mobile);
+        _currentTime = TOTAL_TIME;
+        _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+          _currentTime--;
+          if (_currentTime == 0) {
+            timer.cancel();
+          }
+          setState(() {});
+        });
         showToast(gm.registerVerificationCodeSendSuccess);
       } catch (e) {} finally {
         Navigator.of(context).pop();
