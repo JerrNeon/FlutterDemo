@@ -1,12 +1,9 @@
-import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
-import 'package:child_star/models/pagelist.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class KnowledgePage extends StatefulWidget {
   @override
@@ -16,10 +13,6 @@ class KnowledgePage extends StatefulWidget {
 class _KnowledgePageState extends State<KnowledgePage>
     with AutomaticKeepAliveClientMixin {
   Future<List<Banners>> _bannerFuture;
-  Future<PageList<Lecture>> _listFuture;
-  RefreshController _refreshController = RefreshController();
-  List<Lecture> _lectureList;
-  var _pageIndex = PAGE_INDEX;
 
   @override
   bool get wantKeepAlive => true;
@@ -31,9 +24,7 @@ class _KnowledgePageState extends State<KnowledgePage>
   }
 
   _initFuture() {
-    NetManager netManager = NetManager(context);
-    _bannerFuture = netManager.getBannerList(id: 2);
-    _listFuture = netManager.getLectureList(pageIndex: _pageIndex);
+    _bannerFuture = NetManager(context).getBannerList(id: 2);
   }
 
   @override
@@ -55,65 +46,23 @@ class _KnowledgePageState extends State<KnowledgePage>
 
   Widget _buildBody() {
     return Expanded(
-      child: FutureBuilderWidget(
-        future: _listFuture,
-        builder:
-            (BuildContext context, AsyncSnapshot<PageList<Lecture>> snapshot) {
-          _lectureList = snapshot.data.resultList;
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: MySizes.s_4),
-            child: SmartRefresher(
-              controller: _refreshController,
-              enablePullUp: true,
-              onRefresh: () => _onRefresh(),
-              onLoading: () => _onLoad(),
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  _buildBanner(),
-                  _buildList(),
-                ],
-              ),
-            ),
-          );
-        },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: MySizes.s_4),
+        child: SmartRefresherWidget<Lecture>(
+          onRefreshLoading: (pageIndex) =>
+              NetManager(context).getLectureList(pageIndex: pageIndex),
+          onErrorRetryTap: () => _initFuture(),
+          builder: (context, data) {
+            return CustomScrollView(
+              slivers: <Widget>[
+                _buildBanner(),
+                _buildList(data),
+              ],
+            );
+          },
+        ),
       ),
     );
-  }
-
-  _onRefresh() async {
-    try {
-      _pageIndex = PAGE_INDEX;
-      PageList<Lecture> pageList =
-          await NetManager(context).getLectureList(pageIndex: _pageIndex);
-      _lectureList?.clear();
-      _lectureList?.addAll(pageList.resultList);
-      if (mounted) {
-        setState(() {});
-      }
-      _refreshController.refreshCompleted(resetFooterState: true);
-    } catch (e) {
-      _refreshController.refreshFailed();
-    }
-  }
-
-  _onLoad() async {
-    try {
-      PageList<Lecture> pageList =
-          await NetManager(context).getLectureList(pageIndex: ++_pageIndex);
-      var list = pageList.resultList;
-      if (list != null && list.isNotEmpty) {
-        _lectureList?.addAll(list);
-        if (mounted) {
-          setState(() {});
-        }
-        _refreshController.loadComplete();
-      } else {
-        _refreshController.loadNoData();
-      }
-    } catch (e) {
-      _refreshController.loadFailed();
-      _pageIndex--;
-    }
   }
 
   Widget _buildBanner() {
@@ -130,11 +79,11 @@ class _KnowledgePageState extends State<KnowledgePage>
     );
   }
 
-  Widget _buildList() {
+  Widget _buildList(List<Lecture> list) {
     return SliverList(
       delegate: SliverChildBuilderDelegate((context, index) {
-        return _buildItem(_lectureList[index]);
-      }, childCount: _lectureList?.length ?? 0),
+        return _buildItem(list[index]);
+      }, childCount: list?.length ?? 0),
     );
   }
 
