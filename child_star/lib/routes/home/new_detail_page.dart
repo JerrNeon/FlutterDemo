@@ -9,6 +9,7 @@ import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/date_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
@@ -335,7 +336,7 @@ class _NewDetailBody extends StatelessWidget {
       id: data.id.toString(),
       type: data.type,
     );
-    return SliverEmptyFutureBuilderWidget<Newslist>(
+    return SliverEmptyFutureBuilderWidget<PageList<News>>(
         future: future,
         builder: (context, snapshot) {
           List<News> newsList = snapshot.data.resultList;

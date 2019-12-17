@@ -83,6 +83,7 @@ class MyImages {
   static const AssetImage ic_mine_vip = AssetImage("images/ic_mine_vip.png");
   static const AssetImage ic_mine_arrow = AssetImage("images/ic_mine_arrow.png");
   static const AssetImage ic_mine_banner = AssetImage("images/ic_mine_banner.png");
+  static const AssetImage ic_lecture_new = AssetImage("images/ic_lecture_new.png");
 }
 
 class MyImagesMultiple {

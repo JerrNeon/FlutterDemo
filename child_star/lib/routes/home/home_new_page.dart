@@ -8,6 +8,7 @@ import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/image_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/banner_widget.dart';
@@ -28,7 +29,7 @@ class _HomeNewPageState extends State<HomeNewPage>
 
   Future<List<Tag>> _tagList;
   Future<List<Banners>> _bannersList;
-  Future<Newslist> _newsList;
+  Future<PageList<News>> _newsList;
   List<News> _news;
   var pageIndex;
 
@@ -158,7 +159,7 @@ class _HomeNewPageState extends State<HomeNewPage>
     return Expanded(
       child: FutureBuilder(
         future: _newsList,
-        builder: (context, AsyncSnapshot<Newslist> snapshot) {
+        builder: (context, AsyncSnapshot<PageList<News>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               LogUtils.e(snapshot.error.toString());
@@ -167,34 +168,34 @@ class _HomeNewPageState extends State<HomeNewPage>
               _news = snapshot.data.resultList;
               return SmartRefresher(
                 controller: _refreshController,
-                header: ClassicHeader(),
-                footer: ClassicFooter(),
                 enablePullUp: true,
-                enablePullDown: true,
                 onRefresh: () => _onRefresh(),
                 onLoading: () => _onLoad(),
-                child: CustomScrollView(shrinkWrap: true, slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: _buildBanner(),
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.only(
-                      left: MySizes.s_5,
-                      top: MySizes.s_5,
-                      right: MySizes.s_5,
+                child: CustomScrollView(
+                  shrinkWrap: true,
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: _buildBanner(),
                     ),
-                    sliver: SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 2,
-                      staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
-                        return _buildBodyItem(_news[index]);
-                      },
-                      itemCount: _news?.length ?? 0,
-                      mainAxisSpacing: MySizes.s_5,
-                      crossAxisSpacing: MySizes.s_5,
+                    SliverPadding(
+                      padding: EdgeInsets.only(
+                        left: MySizes.s_5,
+                        top: MySizes.s_5,
+                        right: MySizes.s_5,
+                      ),
+                      sliver: SliverStaggeredGrid.countBuilder(
+                        crossAxisCount: 2,
+                        staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+                        itemBuilder: (context, index) {
+                          return _buildBodyItem(_news[index]);
+                        },
+                        itemCount: _news?.length ?? 0,
+                        mainAxisSpacing: MySizes.s_5,
+                        crossAxisSpacing: MySizes.s_5,
+                      ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
               );
             }
           } else {
@@ -207,9 +208,10 @@ class _HomeNewPageState extends State<HomeNewPage>
 
   _onRefresh() async {
     try {
-      Newslist newsList = await NetManager(context).getNewsList(pageIndex = 1);
+      PageList<News> newsList =
+          await NetManager(context).getNewsList(pageIndex = 1);
       _news?.clear();
-      _news..addAll(newsList.resultList);
+      _news?.addAll(newsList.resultList);
       if (mounted) {
         setState(() {});
       }
@@ -221,10 +223,11 @@ class _HomeNewPageState extends State<HomeNewPage>
 
   _onLoad() async {
     try {
-      Newslist newsList = await NetManager(context).getNewsList(++pageIndex);
-      var resultList = newsList.resultList;
-      if (resultList != null) {
-        _news.addAll(resultList);
+      PageList<News> newsList =
+          await NetManager(context).getNewsList(++pageIndex);
+      var list = newsList.resultList;
+      if (list != null && list.isNotEmpty) {
+        _news.addAll(list);
         if (mounted) {
           setState(() {});
         }

@@ -7,7 +7,7 @@ Widget loadImage(
   double width,
   double height,
   Color color,
-  BoxFit fit,
+  BoxFit fit = BoxFit.cover,
   BoxBorder border,
   BoxShape shape,
   BorderRadiusGeometry borderRadius,

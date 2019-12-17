@@ -34,4 +34,7 @@ class NetConfig {
 
   ///获取验证码
   static const GET_VERIFY_CODE = "sapi/send_sms_code";
+
+  ///获取讲堂列表
+  static const GET_LECTURE_LIST = "course/getList";
 }

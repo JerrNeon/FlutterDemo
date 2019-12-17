@@ -152,6 +152,8 @@ class MySizes {
   static const double s_108 = 108;
   static const double s_109 = 109;
   static const double s_110 = 110;
+  static const double s_140 = 140;
+  static const double s_144 = 144;
   static const double s_150 = 150;
   static const double s_155 = 155;
   static const double s_200 = 200;

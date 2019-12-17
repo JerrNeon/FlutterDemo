@@ -1,5 +1,6 @@
 import 'package:child_star/common/net/net.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class NetManager {
   /// pageSize	否	int	页码大小	默认10
   /// sort	否	string	排序	最新:createTime； 最热：hot
   /// type	否	int	资讯类型	-1：全部；0：图文；1：视频；2：音频；3；百科； 默认：-1
-  Future<Newslist> getNewsList(int pageIndex,
+  Future<PageList<News>> getNewsList(int pageIndex,
       {int pageSize = PAGE_SIZE,
       String sort = "createTime",
       int type = -1}) async {
@@ -37,7 +38,7 @@ class NetManager {
       "sort": sort,
       "type": type,
     });
-    return Newslist.fromJson(response);
+    return PageList<News>.page(response, (e) => News.fromJson(e));
   }
 
   ///id	是	int	资讯id
@@ -55,7 +56,7 @@ class NetManager {
   ///pageSize	否	int	页码大小	默认10
   ///sort	否	string	排序	最新:createTime； 最热：hot
   ///type	否	int	类型	-1：全部；0：图文；1：视频；2：音频；3：百科；默认 -1
-  Future<Newslist> getNewsSearchList({
+  Future<PageList<News>> getNewsSearchList({
     @required int pageIndex,
     int pageSize = PAGE_SIZE,
     String title,
@@ -75,7 +76,7 @@ class NetManager {
     };
     var response =
         await Net(context).post(NetConfig.GET_NEWS_SEARCH_LIST, params: params);
-    return Newslist.fromJson(response);
+    return PageList<News>.page(response, (e) => News.fromJson(e));
   }
 
   ///mobile	是	string	手机号
@@ -164,5 +165,16 @@ class NetManager {
       "time": time,
       "type": type,
     });
+  }
+
+  Future<PageList<Lecture>> getLectureList({
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response = await Net(context).post(NetConfig.GET_LECTURE_LIST, params: {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList<Lecture>.page(response, (e) => Lecture.fromJson(e));
   }
 }

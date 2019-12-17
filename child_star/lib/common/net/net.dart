@@ -28,21 +28,21 @@ class Net {
   static const RESPONSE_MESSAGE = "message";
   static const RESPONSE_DATA = "data";
 
-  static const String CODE_200 = "200"; //Success
-  static const String CODE_201 = "201"; //Created
-  static const String CODE_400 = "400"; //Failure
-  static const String CODE_401 = "401"; //Unauthorized
-  static const String CODE_403 = "403"; //Forbidden
-  static const String CODE_404 = "404"; //Not Found
-  static const String CODE_10001 = "10001"; //参数错误
-  static const String CODE_10002 = "10002"; //未登陆(Token Invalid)
-  static const String CODE_10003 = "10003"; //没有权限
-  static const String CODE_10004 = "10004"; //系统繁忙
-  static const String CODE_10005 = "10005"; //请充值（知识点）
-  static const String CODE_10006 = "10006"; //需要VIP
-  static const String CODE_10007 = "10007"; //第三方登录需要绑定手机号
-  static const String CODE_11003 = "11003"; //第三方登录需要重新授权
-  static const String CODE_10013 = "10013"; //没有浏览权限（资讯）(Need Purchase Vip)
+  static const CODE_200 = "200"; //Success
+  static const CODE_201 = "201"; //Created
+  static const CODE_400 = "400"; //Failure
+  static const CODE_401 = "401"; //Unauthorized
+  static const CODE_403 = "403"; //Forbidden
+  static const CODE_404 = "404"; //Not Found
+  static const CODE_10001 = "10001"; //参数错误
+  static const CODE_10002 = "10002"; //未登陆(Token Invalid)
+  static const CODE_10003 = "10003"; //没有权限
+  static const CODE_10004 = "10004"; //系统繁忙
+  static const CODE_10005 = "10005"; //请充值（知识点）
+  static const CODE_10006 = "10006"; //需要VIP
+  static const CODE_10007 = "10007"; //第三方登录需要绑定手机号
+  static const CODE_11003 = "11003"; //第三方登录需要重新授权
+  static const CODE_10013 = "10013"; //没有浏览权限（资讯）(Need Purchase Vip)
 
   BuildContext context;
 
