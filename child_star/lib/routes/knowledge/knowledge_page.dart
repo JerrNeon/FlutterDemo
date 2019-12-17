@@ -54,13 +54,13 @@ class _KnowledgePageState extends State<KnowledgePage>
   }
 
   Widget _buildBody() {
-    return FutureBuilderWidget(
-      future: _listFuture,
-      builder:
-          (BuildContext context, AsyncSnapshot<PageList<Lecture>> snapshot) {
-        _lectureList = snapshot.data.resultList;
-        return Expanded(
-          child: Padding(
+    return Expanded(
+      child: FutureBuilderWidget(
+        future: _listFuture,
+        builder:
+            (BuildContext context, AsyncSnapshot<PageList<Lecture>> snapshot) {
+          _lectureList = snapshot.data.resultList;
+          return Padding(
             padding: EdgeInsets.symmetric(horizontal: MySizes.s_4),
             child: SmartRefresher(
               controller: _refreshController,
@@ -74,9 +74,9 @@ class _KnowledgePageState extends State<KnowledgePage>
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
