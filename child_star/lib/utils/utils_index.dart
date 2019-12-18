@@ -5,3 +5,4 @@ export 'log_utils.dart';
 export 'screen_utils.dart';
 export 'regex_utils.dart';
 export 'net_utils.dart';
+export 'number_utils.dart';

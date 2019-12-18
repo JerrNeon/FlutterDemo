@@ -177,4 +177,44 @@ class NetManager {
     });
     return PageList<Lecture>.page(response, (e) => Lecture.fromJson(e));
   }
+
+  Future<PageList<ExerciseTag>> getExerciseTagList({
+    int pageIndex = PAGE_INDEX,
+    int pageSize = PAGE_SIZE * 2,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_EXERCISE_TAG_LIST, params: {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList<ExerciseTag>.page(response, (e) => ExerciseTag.fromJson(e));
+  }
+
+  ///tagId	否	int	主题标签id	默认:0 (全部)
+  ///pageNum	否	int	分页	默认：1
+  ///pageSize	否	int	分页大小	默认：10
+  Future<PageList<Exercise>> getExerciseList({
+    @required int tagId,
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_EXERCISE_LIST, params: {
+      "tagId": tagId,
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList<Exercise>.page(response, (e) => Exercise.fromJson(e));
+  }
+
+  ///id	是	int	活动id
+  Future<Exercise> getExerciseDetail({
+    @required int id,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_EXERCISE_DETAIL, params: {
+      "id": id,
+    });
+    return Exercise.fromJson(response);
+  }
 }

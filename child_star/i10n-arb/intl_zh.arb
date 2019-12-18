@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-12-13T19:12:55.283531",
+  "@@last_modified": "2019-12-18T17:36:24.390508",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -267,6 +267,16 @@
   },
   "dialogPositiveTitle": "确认",
   "@dialogPositiveTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseAllTitle": "全部活动",
+  "@exerciseAllTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseBookDescribeTitle": "绘本介绍",
+  "@exerciseBookDescribeTitle": {
     "type": "text",
     "placeholders": {}
   }

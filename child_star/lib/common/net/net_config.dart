@@ -37,4 +37,13 @@ class NetConfig {
 
   ///获取讲堂列表
   static const GET_LECTURE_LIST = "course/getList";
+
+  ///活动主题标签列表
+  static const GET_EXERCISE_TAG_LIST = "activity/getTags";
+
+  ///活动列表
+  static const GET_EXERCISE_LIST = "activity/getList";
+
+  ///活动详情
+  static const GET_EXERCISE_DETAIL = "activity/detail";
 }

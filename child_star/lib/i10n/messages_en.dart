@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "dialogNagativeTitle" : MessageLookupByLibrary.simpleMessage("取消"),
     "dialogPositiveTitle" : MessageLookupByLibrary.simpleMessage("确认"),
     "dialogTipsTitle" : MessageLookupByLibrary.simpleMessage("温馨提示"),
+    "exerciseAllTitle" : MessageLookupByLibrary.simpleMessage("全部活动"),
+    "exerciseBookDescribeTitle" : MessageLookupByLibrary.simpleMessage("绘本介绍"),
     "exerciseTitle" : MessageLookupByLibrary.simpleMessage("活动"),
     "homeAttentionTitle" : MessageLookupByLibrary.simpleMessage("关注"),
     "homeCommunityTitle" : MessageLookupByLibrary.simpleMessage("社区"),

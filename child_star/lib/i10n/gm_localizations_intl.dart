@@ -220,7 +220,7 @@ class GmLocalizations {
     return Intl.message("确认退出？", name: "mineSetLogoutDialogContent");
   }
 
-   String get mineSetLogoutSuccess {
+  String get mineSetLogoutSuccess {
     return Intl.message("退出成功", name: "mineSetLogoutSuccess");
   }
 
@@ -234,6 +234,14 @@ class GmLocalizations {
 
   String get dialogPositiveTitle {
     return Intl.message("确认", name: "dialogPositiveTitle");
+  }
+
+  String get exerciseAllTitle {
+    return Intl.message("全部活动", name: "exerciseAllTitle");
+  }
+
+  String get exerciseBookDescribeTitle {
+    return Intl.message("绘本介绍", name: "exerciseBookDescribeTitle");
   }
 }
 

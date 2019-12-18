@@ -1,3 +1,5 @@
+import 'package:child_star/widgets/widget_index.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 ///类似Material组件带滑动效果的头部
@@ -14,7 +16,7 @@ class CustomSliverPersistentHeaderDelegate
   })  : assert(minHeight != null),
         assert(maxHeight != null),
         assert(child != null),
-        assert(minHeight < maxHeight),
+        assert(minHeight <= maxHeight),
         super();
 
   @override
@@ -36,5 +38,31 @@ class CustomSliverPersistentHeaderDelegate
     return minHeight != oldDelegate.minHeight ||
         maxHeight != oldDelegate.maxHeight ||
         child != oldDelegate.child;
+  }
+}
+
+///类似Material组件带滑动效果的头部(TabBar)
+class TabBarSliverPersistentHeaderDelegate
+    extends SliverPersistentHeaderDelegate {
+  final TabBar tabBar;
+  BannerWidget ban;
+
+  TabBarSliverPersistentHeaderDelegate(this.tabBar);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return tabBar;
+  }
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
