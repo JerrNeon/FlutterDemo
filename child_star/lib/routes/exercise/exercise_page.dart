@@ -1,5 +1,6 @@
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/pagelist.dart';
@@ -19,6 +20,7 @@ class _ExercisePageState extends State<ExercisePage>
   Future<List<Banners>> _bannerFuture;
   Future<PageList<ExerciseTag>> _exerciseTagFuture;
   TabController _tabController;
+  List<ExerciseTag> _exerciseTagList = [];
 
   @override
   bool get wantKeepAlive => true;
@@ -55,13 +57,14 @@ class _ExercisePageState extends State<ExercisePage>
             setState(() {});
           },
           builder: (context, snapshot) {
-            List<ExerciseTag> list = snapshot.data.resultList;
+            _exerciseTagList.clear();
+            _exerciseTagList.addAll(snapshot.data.resultList);
             ExerciseTag tag = ExerciseTag();
             tag.id = 0;
             tag.name = GmLocalizations.of(context).exerciseAllTitle;
-            list ??= [];
-            list?.insert(0, tag);
-            _tabController ??= TabController(length: list.length, vsync: this);
+            _exerciseTagList?.insert(0, tag);
+            _tabController ??=
+                TabController(length: _exerciseTagList.length, vsync: this);
             return EmptyFutureBuilderWidget<List<Banners>>(
                 future: _bannerFuture,
                 builder: (context, snapshot) {
@@ -69,10 +72,10 @@ class _ExercisePageState extends State<ExercisePage>
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return [
                         _buildBanner(snapshot.data),
-                        _buildTabBar(list),
+                        _buildTabBar(),
                       ];
                     },
-                    body: _buildTabBarView(list),
+                    body: _buildTabBarView(),
                   );
                 });
           },
@@ -94,7 +97,7 @@ class _ExercisePageState extends State<ExercisePage>
     );
   }
 
-  Widget _buildTabBar(List<ExerciseTag> list) {
+  Widget _buildTabBar() {
     return SliverPersistentHeader(
       pinned: true,
       delegate: TabBarSliverPersistentHeaderDelegate(
@@ -114,7 +117,7 @@ class _ExercisePageState extends State<ExercisePage>
             fontSize: MyFontSizes.s_15,
             fontWeight: FontWeight.bold,
           ),
-          tabs: list.map((e) {
+          tabs: _exerciseTagList.map((e) {
             return Tab(text: e.name);
           }).toList(),
         ),
@@ -122,10 +125,10 @@ class _ExercisePageState extends State<ExercisePage>
     );
   }
 
-  Widget _buildTabBarView(List<ExerciseTag> list) {
+  Widget _buildTabBarView() {
     return TabBarView(
       controller: _tabController,
-      children: list.map((e) => _buildList(e)).toList(),
+      children: _exerciseTagList.map((e) => _buildList(e)).toList(),
     );
   }
 
@@ -133,78 +136,88 @@ class _ExercisePageState extends State<ExercisePage>
     return SmartRefresherWidget<Exercise>.list(
       onRefreshLoading: (pageIndex) => NetManager(context)
           .getExerciseList(tagId: tag.id, pageIndex: pageIndex),
+      keepAlive: true,
       listItemBuilder: (context, index, data) {
-        return Container(
-          height: MySizes.s_98,
-          margin: EdgeInsets.only(
-            left: MySizes.s_4,
-            top: MySizes.s_4,
-            right: MySizes.s_10,
-            bottom: MySizes.s_4,
-          ),
-          child: Row(
-            children: <Widget>[
-              loadImage(
-                data.headUrl,
-                width: MySizes.s_144,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(MySizes.s_4),
-              ),
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.centerLeft,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: MySizes.s_12,
-                        right: MySizes.s_8,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            data.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: MyColors.c_686868,
-                              fontSize: MyFontSizes.s_12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: MySizes.s_6),
-                            child: Text(
-                              data.descr,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: MyColors.c_686868,
-                                fontSize: MyFontSizes.s_12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: MySizes.s_4,
-                      right: 0,
-                      child: Text(
-                        data.tagWord,
-                        style: TextStyle(
-                          color: data.tagWordColor.hexStrToInt().hexColor(),
-                          fontSize: MyFontSizes.s_12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => RoutersNavigate()
+              .navigateToExerciseDetail(context, data.id.toString()),
+          child: _buildItem(data),
         );
       },
+    );
+  }
+
+  Widget _buildItem(Exercise data) {
+    return Container(
+      height: MySizes.s_98,
+      margin: EdgeInsets.only(
+        left: MySizes.s_4,
+        top: MySizes.s_4,
+        right: MySizes.s_10,
+        bottom: MySizes.s_4,
+      ),
+      child: Row(
+        children: <Widget>[
+          loadImage(
+            data.headUrl,
+            width: MySizes.s_144,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(MySizes.s_4),
+          ),
+          Expanded(
+            child: Stack(
+              alignment: Alignment.centerLeft,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: MySizes.s_12,
+                    right: MySizes.s_8,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        data.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: MyColors.c_686868,
+                          fontSize: MyFontSizes.s_12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: MySizes.s_6),
+                        child: Text(
+                          data.descr,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: MyColors.c_686868,
+                            fontSize: MyFontSizes.s_12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: MySizes.s_4,
+                  right: 0,
+                  child: Text(
+                    data.tagWord,
+                    style: TextStyle(
+                      color: data.tagWordColor.hexStrToInt().hexColor(),
+                      fontSize: MyFontSizes.s_12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

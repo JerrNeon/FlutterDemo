@@ -1,3 +1,4 @@
+import 'package:child_star/routes/exercise/exercise_detail_page.dart';
 import 'package:child_star/routes/home/h5_page.dart';
 import 'package:child_star/routes/home/home_search_page.dart';
 import 'package:child_star/routes/home/new_detail_page.dart';
@@ -23,6 +24,7 @@ class Routers {
   static const String forget_password = "/user/forget_password";
   static const String mine = "/user/mine";
   static const String mine_set = "/user/mine/set";
+  static const String exercise_detail = "/exercise/detail";
 
   static var router = Router();
 
@@ -41,6 +43,7 @@ class Routers {
     router.define(forget_password, handler: forgetPasswordHandler);
     router.define(mine, handler: mineHandler);
     router.define(mine_set, handler: mineSetHandler);
+    router.define(exercise_detail, handler: exerciseDetailHandler);
   }
 }
 
@@ -90,4 +93,10 @@ var mineHandler = Handler(
 var mineSetHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   return MineSetPage();
+});
+
+var exerciseDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  String id = parameters["id"]?.first ?? "";
+  return ExerciseDetailPage(id);
 });

@@ -22,6 +22,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
   final VoidCallback onRefresh;
   final VoidCallback onLoading;
   final GestureTapCallback onErrorRetryTap;
+  final bool keepAlive;
 
   SmartRefresherWidget({
     Key key,
@@ -32,6 +33,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onRefresh,
     this.onLoading,
     this.onErrorRetryTap,
+    this.keepAlive = false,
   })  : listItemBuilder = null,
         super(key: key);
 
@@ -44,6 +46,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onRefresh,
     this.onLoading,
     this.onErrorRetryTap,
+    this.keepAlive = false,
   })  : builder = null,
         super(key: key);
 
@@ -57,10 +60,12 @@ class SmartRefresherWidget<T> extends StatefulWidget {
         onRefresh,
         onLoading,
         onErrorRetryTap,
+        keepAlive,
       );
 }
 
-class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget> {
+class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
+    with AutomaticKeepAliveClientMixin {
   final OnRefreshLoading<T> onRefreshLoading;
   final RefreshedChildWidgetBuilder<T> builder;
   final ListedWidgetBuilder<T> listItemBuilder;
@@ -69,6 +74,8 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget> {
   final VoidCallback onRefresh;
   final VoidCallback onLoading;
   final GestureTapCallback onErrorRetryTap;
+  final bool keepAlive;
+
   Future<PageList<T>> _future;
   RefreshController _refreshController = RefreshController();
   var _pageIndex;
@@ -83,7 +90,11 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget> {
     this.onRefresh,
     this.onLoading,
     this.onErrorRetryTap,
+    this.keepAlive,
   );
+
+  @override
+  bool get wantKeepAlive => keepAlive;
 
   @override
   void initState() {
@@ -98,6 +109,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilderWidget<PageList<T>>(
       future: _future,
       onErrorRetryTap: () {

@@ -209,7 +209,7 @@ class NetManager {
 
   ///id	是	int	活动id
   Future<Exercise> getExerciseDetail({
-    @required int id,
+    @required String id,
   }) async {
     var response =
         await Net(context).post(NetConfig.GET_EXERCISE_DETAIL, params: {

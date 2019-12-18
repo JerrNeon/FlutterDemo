@@ -111,4 +111,14 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionDuration: const Duration(milliseconds: 500),
     );
   }
+
+  @override
+  navigateToExerciseDetail(BuildContext context, String exerciseId) {
+    Routers.router.navigateTo(
+      context,
+      Routers.exercise_detail + "?id=$exerciseId",
+      transition: TransitionType.nativeModal,
+      transitionDuration: const Duration(milliseconds: 500),
+    );
+  }
 }
