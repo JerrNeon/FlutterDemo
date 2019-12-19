@@ -131,6 +131,7 @@ class _ConsultationPageState extends State<ConsultationPage>
   Widget _buildTabBarView() {
     return TabBarView(
       controller: _tabController,
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         SmartRefresherWidget<News>.list(
           enablePullUp: false,
