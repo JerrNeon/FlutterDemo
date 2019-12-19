@@ -1,4 +1,5 @@
 import 'package:child_star/common/router/irouters_navigate.dart';
+import 'package:child_star/utils/route_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,8 +28,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.root,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -37,8 +38,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.home_search,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -47,8 +48,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.h5 + "?url=$url",
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -57,8 +58,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.home_new_detail + "?id=$newId",
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -67,8 +68,10 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.login,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(
+        animationType: RouteAnimation.ANIMATION_SLIDE_BOTTOM_TOP,
+      ),
     );
   }
 
@@ -77,8 +80,8 @@ class RoutersNavigate extends IRoutersNavigate {
     return await Routers.router.navigateTo(
       context,
       Routers.register,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -87,8 +90,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.forget_password,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -97,8 +100,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.mine,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -107,8 +110,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.mine_set,
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 
@@ -117,8 +120,8 @@ class RoutersNavigate extends IRoutersNavigate {
     Routers.router.navigateTo(
       context,
       Routers.exercise_detail + "?id=$exerciseId",
-      transition: TransitionType.nativeModal,
-      transitionDuration: const Duration(milliseconds: 500),
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
     );
   }
 }
