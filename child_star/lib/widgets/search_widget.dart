@@ -6,9 +6,10 @@ import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatelessWidget {
+  final String text;
   final GestureTapCallback onTap;
 
-  const SearchWidget({this.onTap});
+  const SearchWidget({this.text, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class SearchWidget extends StatelessWidget {
                   ),
                 )),
             Text(
-              GmLocalizations.of(context).searchHintTitle,
+              text ?? GmLocalizations.of(context).searchHintTitle,
               style: TextStyle(
                   color: MyColors.c_b6b6b6, fontSize: MyFontSizes.s_13),
             )

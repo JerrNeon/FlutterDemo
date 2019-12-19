@@ -243,6 +243,22 @@ class GmLocalizations {
   String get exerciseBookDescribeTitle {
     return Intl.message("绘本介绍", name: "exerciseBookDescribeTitle");
   }
+
+  String get consultationSearchHint {
+    return Intl.message("查找育儿资料", name: "consultationSearchHint");
+  }
+
+  String get consultationEncyclopediaTitle {
+    return Intl.message("育儿百科", name: "consultationEncyclopediaTitle");
+  }
+
+  String get consultationQuestionTitle {
+    return Intl.message("精选问答", name: "consultationQuestionTitle");
+  }
+
+  String get consultationBrowseNumTitle {
+    return Intl.message("次浏览", name: "consultationBrowseNumTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

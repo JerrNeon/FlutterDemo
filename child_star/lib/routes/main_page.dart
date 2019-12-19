@@ -90,7 +90,7 @@ class _MainPageState extends State<MainPage> {
       activeIcon: Image(image: activeIcon),
       title: Text(
         title,
-        style: TextStyle(color: MyColors.c_92992, fontSize: MyFontSizes.s_11),
+        style: TextStyle(color: MyColors.c_929292, fontSize: MyFontSizes.s_11),
       ),
     );
   }

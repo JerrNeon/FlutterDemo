@@ -160,6 +160,12 @@ class MySizes {
   static const double s_153 = 153;
   static const double s_154 = 154;
   static const double s_155 = 155;
+  static const double s_170 = 170;
+  static const double s_171 = 171;
+  static const double s_172 = 172;
+  static const double s_173 = 173;
+  static const double s_174 = 174;
+  static const double s_175 = 175;
   static const double s_200 = 200;
   static const double s_240 = 240;
   static const double s_241 = 241;

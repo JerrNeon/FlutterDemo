@@ -81,9 +81,18 @@ class MyImages {
       AssetImage("images/ic_mine_score.png");
   static const AssetImage ic_mine_set = AssetImage("images/ic_mine_set.png");
   static const AssetImage ic_mine_vip = AssetImage("images/ic_mine_vip.png");
-  static const AssetImage ic_mine_arrow = AssetImage("images/ic_mine_arrow.png");
-  static const AssetImage ic_mine_banner = AssetImage("images/ic_mine_banner.png");
-  static const AssetImage ic_lecture_new = AssetImage("images/ic_lecture_new.png");
+  static const AssetImage ic_mine_arrow =
+      AssetImage("images/ic_mine_arrow.png");
+  static const AssetImage ic_mine_banner =
+      AssetImage("images/ic_mine_banner.png");
+  static const AssetImage ic_lecture_new =
+      AssetImage("images/ic_lecture_new.png");
+  static const AssetImage ic_consulation_ask =
+      AssetImage("images/ic_consulation_ask.png");
+  static const AssetImage ic_consulation_growth =
+      AssetImage("images/ic_consulation_growth.png");
+  static const AssetImage ic_consulation_vaccine =
+      AssetImage("images/ic_consulation_vaccine.png");
 }
 
 class MyImagesMultiple {

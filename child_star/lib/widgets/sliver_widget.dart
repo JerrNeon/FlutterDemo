@@ -45,14 +45,14 @@ class CustomSliverPersistentHeaderDelegate
 class TabBarSliverPersistentHeaderDelegate
     extends SliverPersistentHeaderDelegate {
   final TabBar tabBar;
-  BannerWidget ban;
+  final Colors backgroundColor;
 
-  TabBarSliverPersistentHeaderDelegate(this.tabBar);
+  TabBarSliverPersistentHeaderDelegate(this.tabBar, {this.backgroundColor});
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return tabBar;
+    return Container(color: backgroundColor ?? Colors.white, child: tabBar);
   }
 
   @override

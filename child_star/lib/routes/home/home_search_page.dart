@@ -60,6 +60,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                               top: MySizes.s_6,
                               bottom: MySizes.s_6),
                           border: InputBorder.none,
+                          isDense: true,
                         ),
                       ),
                     ),
