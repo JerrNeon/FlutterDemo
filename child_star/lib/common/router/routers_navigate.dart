@@ -25,7 +25,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToMain(BuildContext context) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.root,
       transition: TransitionType.custom,
@@ -35,7 +35,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToHomeSearch(BuildContext context) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.home_search,
       transition: TransitionType.custom,
@@ -45,7 +45,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToH5(BuildContext context, String url) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.h5 + "?url=$url",
       transition: TransitionType.custom,
@@ -55,7 +55,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToNewDetail(BuildContext context, String newId) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.home_new_detail + "?id=$newId",
       transition: TransitionType.custom,
@@ -65,7 +65,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToLogin(BuildContext context) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.login,
       transition: TransitionType.custom,
@@ -87,7 +87,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToForgetPassword(BuildContext context) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.forget_password,
       transition: TransitionType.custom,
@@ -97,7 +97,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToMine(BuildContext context) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.mine,
       transition: TransitionType.custom,
@@ -107,7 +107,7 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToMineSet(BuildContext context) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.mine_set,
       transition: TransitionType.custom,
@@ -117,9 +117,19 @@ class RoutersNavigate extends IRoutersNavigate {
 
   @override
   navigateToExerciseDetail(BuildContext context, String exerciseId) {
-    Routers.router.navigateTo(
+    return Routers.router.navigateTo(
       context,
       Routers.exercise_detail + "?id=$exerciseId",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToLectureDetail(BuildContext context, String lectureId) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.lecture_detail + "?id=$lectureId",
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );

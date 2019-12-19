@@ -93,6 +93,18 @@ class MyImages {
       AssetImage("images/ic_consulation_growth.png");
   static const AssetImage ic_consulation_vaccine =
       AssetImage("images/ic_consulation_vaccine.png");
+  static const AssetImage ic_course_lock =
+      AssetImage("images/ic_course_lock.png");
+  static const AssetImage ic_course_play =
+      AssetImage("images/ic_course_play.png");
+  static const AssetImage ic_lecture_buy =
+      AssetImage("images/ic_lecture_buy.png");
+  static const AssetImage ic_lecture_comment_tag =
+      AssetImage("images/ic_lecture_comment_tag.png");
+  static const AssetImage ic_lecture_part =
+      AssetImage("images/ic_lecture_part.png");
+  static const AssetImage ic_lecture_tag =
+      AssetImage("images/ic_lecture_tag.png");
 }
 
 class MyImagesMultiple {
@@ -112,5 +124,10 @@ class MyImagesMultiple {
   static const audio_play = <bool, AssetImage>{
     true: MyImages.ic_newdetail_audiopause,
     false: MyImages.ic_newdetail_audioplay,
+  };
+
+  static const course_status = <bool, AssetImage>{
+    true: MyImages.ic_course_play,
+    false: MyImages.ic_course_lock,
   };
 }

@@ -259,6 +259,54 @@ class GmLocalizations {
   String get consultationBrowseNumTitle {
     return Intl.message("次浏览", name: "consultationBrowseNumTitle");
   }
+
+  String get lectureBuyNumberTitle {
+    return Intl.message("购课人数:", name: "lectureBuyNumberTitle");
+  }
+
+  String get lectureRecommendNumberTitle {
+    return Intl.message("推荐:", name: "lectureRecommendNumberTitle");
+  }
+
+  String get lectureSalePriceTitle {
+    return Intl.message("课程售价:", name: "lectureSalePriceTitle");
+  }
+
+  String get lectureFreePriceTitle {
+    return Intl.message("VIP免费课程", name: "lectureFreePriceTitle");
+  }
+
+  String get lectureIntroductionTitle {
+    return Intl.message("介绍", name: "lectureIntroductionTitle");
+  }
+
+  String get lectureCourseTitle {
+    return Intl.message("课程", name: "lectureCourseTitle");
+  }
+
+  String get lectureCommentTitle {
+    return Intl.message("交流", name: "lectureCommentTitle");
+  }
+
+  String get lectureCourseIntroductionTitle {
+    return Intl.message("课程介绍", name: "lectureCourseIntroductionTitle");
+  }
+
+  String get lectureAuthorIntroductionTitle {
+    return Intl.message("讲师介绍", name: "lectureAuthorIntroductionTitle");
+  }
+
+  String get lectureCourseListTitle {
+    return Intl.message("课程列表", name: "lectureCourseListTitle");
+  }
+
+  String get lectureCourseDetailTitle {
+    return Intl.message("课程详情", name: "lectureCourseDetailTitle");
+  }
+
+  String get lecturePartUnitTitle {
+    return Intl.message("篇", name: "lecturePartUnitTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

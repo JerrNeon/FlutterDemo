@@ -1,5 +1,6 @@
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
@@ -82,7 +83,12 @@ class _KnowledgePageState extends State<KnowledgePage>
   Widget _buildList(List<Lecture> list) {
     return SliverList(
       delegate: SliverChildBuilderDelegate((context, index) {
-        return _buildItem(list[index]);
+        Lecture data = list[index];
+        return GestureDetector(
+          onTap: () => RoutersNavigate()
+              .navigateToLectureDetail(context, data.id.toString()),
+          child: _buildItem(data),
+        );
       }, childCount: list?.length ?? 0),
     );
   }

@@ -217,4 +217,56 @@ class NetManager {
     });
     return Exercise.fromJson(response);
   }
+
+  ///id	是	int	讲堂id
+  Future<LectureDetail> getLectureDetail({
+    @required String id,
+  }) async {
+    var response = await Net(context).post(
+      NetConfig.GET_LECTURE_DETAIL,
+      params: {
+        "id": id,
+      },
+    );
+    return LectureDetail.fromJson(response);
+  }
+
+  ///id	是	int	讲堂id
+  Future<PageList<Course>> getLectureCourseList({
+    @required String id,
+  }) async {
+    var response = await Net(context).post(
+      NetConfig.GET_LECTURE_COURSE_LIST,
+      params: {
+        "id": id,
+      },
+    );
+    return PageList<Course>.page(response, (e) => Course.fromJson(e));
+  }
+
+  ///id	是	int	讲堂id
+  ///pageNum	否	int	评论分页	默认：1
+  ///pageSize	否	int	评论分页大小	默认：10
+  ///replyPageNum	否	int	楼层回复分页	默认：1
+  ///replyPageSize	否	int	楼层回复分页大小	默认：10
+  Future<PageList<CourseComment>> getLectureCommentList({
+    @required String id,
+    @required int pageIndex,
+    int pageSize,
+    int replyPageIndex,
+    int replyPageSize,
+  }) async {
+    var response = await Net(context).post(
+      NetConfig.GET_LECTURE_COMMENT_LIST,
+      params: {
+        "id": id,
+        "pageNum": pageIndex,
+        "pageSize": pageSize,
+        "replyPageNum": replyPageIndex,
+        "replyPageSize": replyPageSize,
+      },
+    );
+    return PageList<CourseComment>.page(
+        response, (e) => CourseComment.fromJson(e));
+  }
 }

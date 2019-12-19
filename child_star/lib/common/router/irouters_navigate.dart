@@ -2,6 +2,7 @@ import 'package:child_star/routes/home/home_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
 import 'package:child_star/routes/user/mine_index.dart';
 import 'package:child_star/routes/exercise/exercise_index.dart';
+import 'package:child_star/routes/knowledge/knowledge_index.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IRoutersNavigate {
@@ -34,4 +35,7 @@ abstract class IRoutersNavigate {
 
   ///跳转到我的-设置界面[ExerciseDetailPage]
   navigateToExerciseDetail(BuildContext context, String exerciseId);
+
+  ///跳转到讲堂详情界面[LectureDetailPage]
+  navigateToLectureDetail(BuildContext context, String lectureId);
 }

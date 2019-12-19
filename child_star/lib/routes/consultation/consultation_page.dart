@@ -139,6 +139,7 @@ class _ConsultationPageState extends State<ConsultationPage>
           onRefreshLoading: (pageIndex) =>
               NetManager(context).getNewsList(pageIndex, type: 3),
           listItemBuilder: (context, index, data) => GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () => RoutersNavigate()
                 .navigateToNewDetail(context, data.id.toString()),
             child: _buildItem(data),
