@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-12-18T17:36:24.390508",
+  "@@last_modified": "2019-12-20T18:26:59.826524",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -277,6 +277,106 @@
   },
   "exerciseBookDescribeTitle": "绘本介绍",
   "@exerciseBookDescribeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "consultationSearchHint": "查找育儿资料",
+  "@consultationSearchHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "consultationEncyclopediaTitle": "育儿百科",
+  "@consultationEncyclopediaTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "consultationQuestionTitle": "精选问答",
+  "@consultationQuestionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "consultationBrowseNumTitle": "次浏览",
+  "@consultationBrowseNumTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureBuyNumberTitle": "购课人数:",
+  "@lectureBuyNumberTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureRecommendNumberTitle": "推荐:",
+  "@lectureRecommendNumberTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureSalePriceTitle": "课程售价:",
+  "@lectureSalePriceTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureFreePriceTitle": "VIP免费课程",
+  "@lectureFreePriceTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureIntroductionTitle": "介绍",
+  "@lectureIntroductionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureCourseTitle": "课程",
+  "@lectureCourseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureCommentTitle": "交流",
+  "@lectureCommentTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureCourseIntroductionTitle": "课程介绍",
+  "@lectureCourseIntroductionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureAuthorIntroductionTitle": "讲师介绍",
+  "@lectureAuthorIntroductionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureCourseListTitle": "课程列表",
+  "@lectureCourseListTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureCourseDetailTitle": "课程详情",
+  "@lectureCourseDetailTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lecturePartUnitTitle": "篇",
+  "@lecturePartUnitTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lectureBuyToast": "请先购买课程",
+  "@lectureBuyToast": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "courseRelateTitle": "系列课程",
+  "@courseRelateTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "courseCommentTitle": "课程评论",
+  "@courseCommentTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "courseCommentNoDataText": "暂无评论~",
+  "@courseCommentNoDataText": {
     "type": "text",
     "placeholders": {}
   }
