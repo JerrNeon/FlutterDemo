@@ -1,10 +1,8 @@
-import 'package:child_star/common/net/net.dart';
+import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/material.dart';
-
-import 'net_config.dart';
 
 class NetManager {
   NetManager([this.context]);
@@ -258,6 +256,59 @@ class NetManager {
   }) async {
     var response = await Net(context).post(
       NetConfig.GET_LECTURE_COMMENT_LIST,
+      params: {
+        "id": id,
+        "pageNum": pageIndex,
+        "pageSize": pageSize,
+        "replyPageNum": replyPageIndex,
+        "replyPageSize": replyPageSize,
+      },
+    );
+    return PageList<CourseComment>.page(
+        response, (e) => CourseComment.fromJson(e));
+  }
+
+  ///id	是	int	课程id
+  Future<CourseDetail> getCourseDetail(String id) async {
+    var response = await Net(context).post(
+      NetConfig.GET_COURSE_DETAIL,
+      params: {
+        "id": id,
+      },
+    );
+    return CourseDetail.fromJson(response);
+  }
+
+  ///id	是	int	讲堂id
+  ///partNo	是	int	章节序号
+  Future<PageList<Course>> getCoursePartList({
+    @required String id,
+    @required int partNo,
+  }) async {
+    var response = await Net(context).post(
+      NetConfig.GET_COURSE_PART_LIST,
+      params: {
+        "id": id,
+        "partNo": partNo,
+      },
+    );
+    return PageList<Course>.page(response, (e) => Course.fromJson(e));
+  }
+
+  ///id	是	int	课程id
+  ///pageNum	否	int	评论分页	默认：1
+  ///pageSize	否	int	评论分页大小	默认：10
+  ///replyPageNum	否	int	楼层回复分页	默认：1
+  ///replyPageSize	否	int	楼层回复分页大小	默认：10
+  Future<PageList<CourseComment>> getCourseCommentList({
+    @required String id,
+    @required int pageIndex,
+    int pageSize,
+    int replyPageIndex,
+    int replyPageSize,
+  }) async {
+    var response = await Net(context).post(
+      NetConfig.GET_COURSE_COMMENT_LIST,
       params: {
         "id": id,
         "pageNum": pageIndex,

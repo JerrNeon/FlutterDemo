@@ -7,3 +7,4 @@ export 'regex_utils.dart';
 export 'net_utils.dart';
 export 'number_utils.dart';
 export 'route_utils.dart';
+export 'date_utils.dart';

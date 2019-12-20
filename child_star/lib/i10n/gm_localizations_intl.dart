@@ -307,6 +307,22 @@ class GmLocalizations {
   String get lecturePartUnitTitle {
     return Intl.message("篇", name: "lecturePartUnitTitle");
   }
+
+  String get lectureBuyToast {
+    return Intl.message("请先购买课程", name: "lectureBuyToast");
+  }
+
+  String get courseRelateTitle {
+    return Intl.message("系列课程", name: "courseRelateTitle");
+  }
+
+  String get courseCommentTitle {
+    return Intl.message("课程评论", name: "courseCommentTitle");
+  }
+
+  String get courseCommentNoDataText {
+    return Intl.message("暂无评论~", name: "courseCommentNoDataText");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

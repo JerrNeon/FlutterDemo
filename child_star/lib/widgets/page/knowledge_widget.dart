@@ -1,4 +1,5 @@
 import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/date_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
@@ -21,7 +22,15 @@ class CourseItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (data.isLock) {
+          showToast(GmLocalizations.of(context).lectureBuyToast);
+          return;
+        }
+        if (onTap != null) {
+          onTap();
+        }
+      },
       behavior: HitTestBehavior.opaque,
       child: Container(
         color: Colors.white,
@@ -57,10 +66,7 @@ class CourseItemWidget extends StatelessWidget {
                         children: <Widget>[
                           Image(image: MyImages.ic_course_time),
                           Text(
-                            DateUtils.formatDateMs(
-                              int.tryParse(data.mediaTime) ?? 0 * 1000,
-                              format: DataFormats.m_s,
-                            ),
+                            TimeUtils.formatDateS(data.mediaTime),
                             style: TextStyle(
                               color: MyColors.c_b1b1b1,
                               fontSize: MyFontSizes.s_8,
@@ -117,10 +123,10 @@ class CourseItemWidget extends StatelessWidget {
       );
     } else {
       return Text(
-        "Part${data.partNo}",
+        data.sNo < 10 ? "C0${data.sNo}" : "C${data.sNo}",
         style: TextStyle(
           color: MyColors.c_f99fae,
-          fontSize: MyFontSizes.s_8,
+          fontSize: MyFontSizes.s_10,
         ),
       );
     }

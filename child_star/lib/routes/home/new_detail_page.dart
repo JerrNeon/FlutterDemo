@@ -1,23 +1,15 @@
 import 'dart:ui';
 
-import 'package:child_star/common/config.dart';
-import 'package:child_star/common/my_colors.dart';
-import 'package:child_star/common/my_images.dart';
-import 'package:child_star/common/my_sizes.dart';
-import 'package:child_star/common/my_systems.dart';
-import 'package:child_star/common/net/net_config.dart';
-import 'package:child_star/common/net/net_manager.dart';
-import 'package:child_star/i10n/gm_localizations_intl.dart';
+import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
-import 'package:child_star/utils/date_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
-typedef OnNewsItemClick(News news);
 
 ///资讯详情
 class NewDetailPage extends StatefulWidget {
@@ -26,24 +18,27 @@ class NewDetailPage extends StatefulWidget {
   NewDetailPage(this.newId);
 
   @override
-  _NewDetailPageState createState() => _NewDetailPageState();
+  _NewDetailPageState createState() => _NewDetailPageState(newId);
 }
 
 class _NewDetailPageState extends State<NewDetailPage> {
+  final String id;
   Future<NewsDetail> _newsDetailFuture;
+
+  _NewDetailPageState(this.id);
 
   @override
   void initState() {
-    _newsDetailFuture = NetManager(context).getNewsDetail(widget.newId);
+    _newsDetailFuture = NetManager(context).getNewsDetail(id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var onNewsItemClick = (news) {
+    var onItemClick = (context, data) {
       setState(() {
         _newsDetailFuture =
-            NetManager(context).getNewsDetail(news.id.toString());
+            NetManager(context).getNewsDetail(data.id.toString());
       });
     };
     return Scaffold(
@@ -54,8 +49,7 @@ class _NewDetailPageState extends State<NewDetailPage> {
             future: _newsDetailFuture,
             onErrorRetryTap: () {
               setState(() {
-                _newsDetailFuture =
-                    NetManager(context).getNewsDetail(widget.newId);
+                _newsDetailFuture = NetManager(context).getNewsDetail(id);
               });
             },
             builder: (context, snapshot) {
@@ -64,8 +58,12 @@ class _NewDetailPageState extends State<NewDetailPage> {
                 children: <Widget>[
                   AppBarWidget(data != null ? data.title : ""),
                   _buildVideoPlayer(data),
-                  _NewDetailBody(data, onNewsItemClick),
-                  _NewDetailBottom(data),
+                  _NewDetailBody(data, onItemClick),
+                  NewsInteractionWidget(
+                    like: data.like.toString(),
+                    collect: data.collect.toString(),
+                    comment: data.comment.toString(),
+                  ),
                 ],
               );
             }),
@@ -85,9 +83,9 @@ class _NewDetailPageState extends State<NewDetailPage> {
 
 class _NewDetailBody extends StatelessWidget {
   final NewsDetail data;
-  final OnNewsItemClick onNewsItemClick;
+  final OnItemClick<News> onItemClick;
 
-  _NewDetailBody(this.data, this.onNewsItemClick);
+  _NewDetailBody(this.data, this.onItemClick);
 
   @override
   Widget build(BuildContext context) {
@@ -346,147 +344,16 @@ class _NewDetailBody extends StatelessWidget {
                 var model = newsList[index];
                 return GestureDetector(
                   onTap: () {
-                    if (onNewsItemClick != null) {
-                      onNewsItemClick(model);
+                    if (onItemClick != null) {
+                      onItemClick(context, model);
                     }
                   },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: MySizes.s_24,
-                        right: MySizes.s_16,
-                        bottom: MySizes.s_14),
-                    child: Row(
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            loadImage(
-                              model.headUrl,
-                              borderRadius: BorderRadius.circular(MySizes.s_3),
-                              width: MySizes.s_155,
-                              height: MySizes.s_105,
-                              fit: BoxFit.cover,
-                            ),
-                            model.mediaTime.isEmpty
-                                ? EmptyWidget()
-                                : Positioned(
-                                    right: MySizes.s_4,
-                                    bottom: MySizes.s_4,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: MySizes.s_8,
-                                          vertical: MySizes.s_4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius:
-                                            BorderRadius.circular(MySizes.s_3),
-                                      ),
-                                      child: Text(
-                                        DateUtils.formatDateMs(
-                                          int.tryParse(model.mediaTime) * 1000,
-                                          format: DataFormats.m_s,
-                                        ),
-                                        style: TextStyle(
-                                            color: MyColors.c_777777,
-                                            fontSize: MyFontSizes.s_10),
-                                      ),
-                                    ),
-                                  ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: MySizes.s_14),
-                            child: ConstrainedBox(
-                              constraints:
-                                  BoxConstraints.expand(height: MySizes.s_104),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    model.title,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: MyColors.c_777777,
-                                      fontSize: MyFontSizes.s_12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.only(top: MySizes.s_8)),
-                                  Text(
-                                    "#${model.innerWord}",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: MyColors.c_777777,
-                                        fontSize: MyFontSizes.s_12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  child: NewsItemWidget(model),
                 );
               },
               childCount: newsList.length,
             ),
           );
         });
-  }
-}
-
-class _NewDetailBottom extends StatelessWidget {
-  final NewsDetail newsDetail;
-
-  _NewDetailBottom(this.newsDetail);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Divider(height: MySizes.s_1, color: MyColors.c_d5d5d5),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: MySizes.s_10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _buildItem(MyImages.ic_newdetail_like,
-                    newsDetail?.like.toString() ?? ""),
-                _buildItem(MyImages.ic_newdetail_collection,
-                    newsDetail?.collect.toString() ?? ""),
-                _buildItem(MyImages.ic_newdetail_comment,
-                    newsDetail?.comment.toString() ?? ""),
-                _buildItem(MyImages.ic_newdetail_download,
-                    GmLocalizations.of(context).newDetailDownloadTitle),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildItem(AssetImage image, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Image(image: image),
-        Padding(padding: EdgeInsets.only(left: MySizes.s_8)),
-        Text(
-          text,
-          style:
-              TextStyle(color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
-        ),
-      ],
-    );
   }
 }

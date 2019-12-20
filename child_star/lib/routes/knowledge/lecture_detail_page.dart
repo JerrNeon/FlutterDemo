@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class LectureDetailPage extends StatefulWidget {
   final String id;
 
-  const LectureDetailPage({Key key, this.id}) : super(key: key);
+  const LectureDetailPage(this.id, {Key key}) : super(key: key);
 
   @override
   _LectureDetailPageState createState() => _LectureDetailPageState(id);
@@ -554,7 +554,8 @@ class _CourseWidget extends StatelessWidget {
         return CourseItemWidget(
           data,
           lectureDetail.partNum,
-          onTap: () {},
+          onTap: () => RoutersNavigate()
+              .navigateToCourseDetail(context, data.id.toString()),
         );
       },
       listSeparatorBuilder: (context, index, data) {

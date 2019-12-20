@@ -1,6 +1,6 @@
 class TimeUtils {
   ///秒格式化（时分秒）
-  String getTimeFromSecond(dynamic secondTime) {
+  static String getTimeFromSecond(dynamic secondTime) {
     try {
       int second;
       if (secondTime is String) {
@@ -57,6 +57,29 @@ class TimeUtils {
         return "$hour$minute:0$second";
       }
       return "$hour$minute:$second";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  ///秒格式化（时分秒）
+  static String formatDateS(dynamic secondTime) {
+    try {
+      int second;
+      if (secondTime is String) {
+        second = int.tryParse(secondTime);
+      } else if (secondTime is int) {
+        second = secondTime;
+      } else if (secondTime is double) {
+        second = secondTime.toInt();
+      } else {
+        return "";
+      }
+      var format = DataFormats.m_s;
+      if (second >= 1 * 60 * 60) {
+        format = DataFormats.h_m_s;
+      }
+      return DateUtils.formatDateMs(second * 1000, format: format);
     } catch (e) {
       return "";
     }

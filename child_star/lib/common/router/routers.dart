@@ -1,14 +1,9 @@
-import 'package:child_star/routes/exercise/exercise_detail_page.dart';
-import 'package:child_star/routes/home/h5_page.dart';
-import 'package:child_star/routes/home/home_search_page.dart';
-import 'package:child_star/routes/home/new_detail_page.dart';
-import 'package:child_star/routes/knowledge/lecture_detail_page.dart';
-import 'package:child_star/routes/login/forgetpassword_page.dart';
-import 'package:child_star/routes/login/login_page.dart';
-import 'package:child_star/routes/login/register_page.dart';
+import 'package:child_star/routes/exercise/exercise_index.dart';
+import 'package:child_star/routes/home/home_index.dart';
+import 'package:child_star/routes/knowledge/knowledge_index.dart';
+import 'package:child_star/routes/login/login_index.dart';
 import 'package:child_star/routes/main_page.dart';
-import 'package:child_star/routes/user/mine_page.dart';
-import 'package:child_star/routes/user/mine_set_page.dart';
+import 'package:child_star/routes/user/mine_index.dart';
 import 'package:child_star/states/profile_notifier.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:fluro/fluro.dart';
@@ -27,6 +22,7 @@ class Routers {
   static const String mine_set = "/user/mine/set";
   static const String exercise_detail = "/exercise/detail";
   static const String lecture_detail = "/lecture/detail";
+  static const String course_detail = "/lecture/detail/course_detail";
 
   static var router = Router();
 
@@ -47,6 +43,7 @@ class Routers {
     router.define(mine_set, handler: mineSetHandler);
     router.define(exercise_detail, handler: exerciseDetailHandler);
     router.define(lecture_detail, handler: lectureDetailHandler);
+    router.define(course_detail, handler: courseDetailHandler);
   }
 }
 
@@ -107,5 +104,11 @@ var exerciseDetailHandler = Handler(
 var lectureDetailHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String id = parameters["id"]?.first ?? "";
-  return LectureDetailPage(id: id);
+  return LectureDetailPage(id);
+});
+
+var courseDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  String id = parameters["id"]?.first ?? "";
+  return CourseDetailPage(id);
 });

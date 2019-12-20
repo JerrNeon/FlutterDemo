@@ -1,6 +1,7 @@
 export 'banners.dart' ; 
 export 'course.dart' ; 
 export 'courseComment.dart' ; 
+export 'courseDetail.dart' ; 
 export 'courseReply.dart' ; 
 export 'exercise.dart' ; 
 export 'exerciseTag.dart' ; 

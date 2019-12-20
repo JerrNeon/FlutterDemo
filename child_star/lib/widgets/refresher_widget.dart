@@ -25,6 +25,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
   final VoidCallback onLoading;
   final GestureTapCallback onErrorRetryTap;
   final bool keepAlive;
+  final bool isShowNoData;
 
   SmartRefresherWidget({
     Key key,
@@ -36,6 +37,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onLoading,
     this.onErrorRetryTap,
     this.keepAlive = false,
+    this.isShowNoData = false,
   })  : listItemBuilder = null,
         listSeparatorBuilder = null,
         itemExtent = null,
@@ -52,6 +54,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onLoading,
     this.onErrorRetryTap,
     this.keepAlive = false,
+    this.isShowNoData = true,
   })  : builder = null,
         listSeparatorBuilder = null,
         super(key: key);
@@ -68,6 +71,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onLoading,
     this.onErrorRetryTap,
     this.keepAlive = false,
+    this.isShowNoData = true,
   })  : builder = null,
         super(key: key);
 
@@ -84,6 +88,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
         onLoading,
         onErrorRetryTap,
         keepAlive,
+        isShowNoData,
       );
 }
 
@@ -100,6 +105,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   final VoidCallback onLoading;
   final GestureTapCallback onErrorRetryTap;
   final bool keepAlive;
+  final bool isShowNoData;
 
   Future<PageList<T>> _future;
   RefreshController _refreshController = RefreshController();
@@ -118,6 +124,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
     this.onLoading,
     this.onErrorRetryTap,
     this.keepAlive,
+    this.isShowNoData,
   );
 
   List<T> get data => _list;
@@ -150,8 +157,9 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
       },
       builder: (BuildContext context, AsyncSnapshot<PageList<T>> snapshot) {
         _list = snapshot.data.resultList;
-        return _list != null && _list.isNotEmpty
-            ? SmartRefresher(
+        return isShowNoData && _list == null && _list.isEmpty
+            ? _buildNoData()
+            : SmartRefresher(
                 controller: _refreshController,
                 enablePullUp: enablePullUp,
                 enablePullDown: enablePullDown,
@@ -170,8 +178,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
                 child: listSeparatorBuilder != null
                     ? _buildSeparatedListView()
                     : listItemBuilder != null ? _buildListView() : _buildView(),
-              )
-            : _buildNoData();
+              );
       },
     );
   }

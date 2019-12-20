@@ -38,4 +38,7 @@ abstract class IRoutersNavigate {
 
   ///跳转到讲堂详情界面[LectureDetailPage]
   navigateToLectureDetail(BuildContext context, String lectureId);
+
+  ///跳转到课程详情界面[CourseDetailPage]
+  navigateToCourseDetail(BuildContext context, String courseId);
 }
