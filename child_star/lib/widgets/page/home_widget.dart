@@ -5,6 +5,7 @@ import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 ///资讯点赞、收藏、评论、下载Widget 互动
 class NewsInteractionWidget extends StatelessWidget {
@@ -136,6 +137,51 @@ class NewsItemWidget extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class WebViewWidget extends StatefulWidget {
+  final String data;
+
+  const WebViewWidget({Key key, this.data}) : super(key: key);
+
+  @override
+  _WebViewWidgetState createState() => _WebViewWidgetState(data);
+}
+
+class _WebViewWidgetState extends State<WebViewWidget> {
+  final String data;
+  double height;
+
+  _WebViewWidgetState(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    return Container(
+      height: height ?? screenHeight,
+      child: InAppWebView(
+        initialData: InAppWebViewInitialData(
+          data: transformHtml(data),
+        ),
+        initialOptions: InAppWebViewWidgetOptions(
+          inAppWebViewOptions: InAppWebViewOptions(
+            disableVerticalScroll: true,
+            verticalScrollBarEnabled: false,
+          ),
+        ),
+        onLoadStop: (controller, url) {
+          controller.evaluateJavascript(source: JS_HTML_HEIGHT).then((value) {
+            var valueDp = value / devicePixelRatio;
+            if (valueDp < screenHeight) {
+              height = valueDp;
+              setState(() {});
+            }
+          });
+        },
       ),
     );
   }

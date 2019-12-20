@@ -9,7 +9,6 @@ import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 ///资讯详情
 class NewDetailPage extends StatefulWidget {
@@ -286,20 +285,10 @@ class _NewDetailBody extends StatelessWidget {
     } else {
       return SliverList(
         delegate: SliverChildListDelegate([
-          Container(
-            height: ScreenUtils.height,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MySizes.s_10, vertical: MySizes.s_14),
-              child: InAppWebView(
-                initialData: InAppWebViewInitialData(
-                  data: transformHtml(data.content),
-                ),
-                initialOptions: InAppWebViewWidgetOptions(
-                  inAppWebViewOptions: InAppWebViewOptions(),
-                ),
-              ),
-            ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MySizes.s_10, vertical: MySizes.s_14),
+            child: WebViewWidget(data: data.content),
           ),
           Divider(height: MySizes.s_1, color: MyColors.c_d5d5d5),
           Padding(
