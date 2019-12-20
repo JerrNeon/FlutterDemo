@@ -18,7 +18,7 @@ class Course {
     String partHeadUrl;
     String partName;
     num partNo;
-    String sNo;
+    num sNo;
     String title;
     num type;
     String updatedAt;

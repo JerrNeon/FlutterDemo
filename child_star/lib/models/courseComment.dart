@@ -18,7 +18,7 @@ class CourseComment {
     num replyId;
     String replyName;
     num sId;
-    String sNo;
+    num sNo;
     String sTitle;
     num uid;
     List<CourseReply> replyList;

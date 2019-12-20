@@ -5,7 +5,7 @@ import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/dialog_utils.dart';
 import 'package:child_star/widgets/appbar_widget.dart';
-import 'package:child_star/widgets/empty_widget.dart';
+import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -18,7 +18,7 @@ class CourseReply {
     num replyId;
     String replyName;
     num sId;
-    String sNo;
+    num sNo;
     String sTitle;
     num uid;
     

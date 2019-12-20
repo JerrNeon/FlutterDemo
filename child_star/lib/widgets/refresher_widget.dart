@@ -17,6 +17,8 @@ class SmartRefresherWidget<T> extends StatefulWidget {
   final OnRefreshLoading<T> onRefreshLoading;
   final RefreshedChildWidgetBuilder<T> builder;
   final ListedWidgetBuilder<T> listItemBuilder;
+  final ListedWidgetBuilder<T> listSeparatorBuilder;
+  final double itemExtent;
   final bool enablePullUp;
   final bool enablePullDown;
   final VoidCallback onRefresh;
@@ -35,12 +37,31 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onErrorRetryTap,
     this.keepAlive = false,
   })  : listItemBuilder = null,
+        listSeparatorBuilder = null,
+        itemExtent = null,
         super(key: key);
 
   SmartRefresherWidget.list({
     Key key,
     @required this.onRefreshLoading,
     @required this.listItemBuilder,
+    this.itemExtent,
+    this.enablePullUp: true,
+    this.enablePullDown: true,
+    this.onRefresh,
+    this.onLoading,
+    this.onErrorRetryTap,
+    this.keepAlive = false,
+  })  : builder = null,
+        listSeparatorBuilder = null,
+        super(key: key);
+
+  SmartRefresherWidget.listSeparated({
+    Key key,
+    @required this.onRefreshLoading,
+    @required this.listItemBuilder,
+    @required this.listSeparatorBuilder,
+    this.itemExtent,
     this.enablePullUp: true,
     this.enablePullDown: true,
     this.onRefresh,
@@ -55,6 +76,8 @@ class SmartRefresherWidget<T> extends StatefulWidget {
         onRefreshLoading,
         builder,
         listItemBuilder,
+        listSeparatorBuilder,
+        itemExtent,
         enablePullUp,
         enablePullDown,
         onRefresh,
@@ -69,6 +92,8 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   final OnRefreshLoading<T> onRefreshLoading;
   final RefreshedChildWidgetBuilder<T> builder;
   final ListedWidgetBuilder<T> listItemBuilder;
+  final ListedWidgetBuilder<T> listSeparatorBuilder;
+  final double itemExtent;
   final bool enablePullUp;
   final bool enablePullDown;
   final VoidCallback onRefresh;
@@ -79,12 +104,14 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   Future<PageList<T>> _future;
   RefreshController _refreshController = RefreshController();
   var _pageIndex;
-  List<T> list;
+  List<T> _list;
 
   _SmartRefresherWidgetState(
     this.onRefreshLoading,
     this.builder,
     this.listItemBuilder,
+    this.listSeparatorBuilder,
+    this.itemExtent,
     this.enablePullUp,
     this.enablePullDown,
     this.onRefresh,
@@ -92,6 +119,8 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
     this.onErrorRetryTap,
     this.keepAlive,
   );
+
+  List<T> get data => _list;
 
   @override
   bool get wantKeepAlive => keepAlive;
@@ -120,8 +149,8 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
         setState(() {});
       },
       builder: (BuildContext context, AsyncSnapshot<PageList<T>> snapshot) {
-        list = snapshot.data.resultList;
-        return list != null && list.isNotEmpty
+        _list = snapshot.data.resultList;
+        return _list != null && _list.isNotEmpty
             ? SmartRefresher(
                 controller: _refreshController,
                 enablePullUp: enablePullUp,
@@ -138,21 +167,37 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
                     onLoading();
                   }
                 },
-                child: listItemBuilder != null
-                    ? _buildListView()
-                    : builder(context, list),
+                child: listSeparatorBuilder != null
+                    ? _buildSeparatedListView()
+                    : listItemBuilder != null ? _buildListView() : _buildView(),
               )
             : _buildNoData();
       },
     );
   }
 
+  Widget _buildView() {
+    return builder(context, _list);
+  }
+
   Widget _buildListView() {
     return ListView.builder(
-      itemCount: list?.length ?? 0,
-      shrinkWrap: true,
+      itemCount: _list?.length ?? 0,
+      shrinkWrap: itemExtent ?? true,
+      itemExtent: itemExtent,
       itemBuilder: (context, index) =>
-          listItemBuilder(context, index, list[index]),
+          listItemBuilder(context, index, _list[index]),
+    );
+  }
+
+  Widget _buildSeparatedListView() {
+    return ListView.separated(
+      itemCount: _list?.length ?? 0,
+      shrinkWrap: itemExtent ?? true,
+      itemBuilder: (context, index) =>
+          listItemBuilder(context, index, _list[index]),
+      separatorBuilder: (context, index) =>
+          listSeparatorBuilder(context, index, _list[index]),
     );
   }
 
@@ -173,9 +218,9 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
       _pageIndex = PAGE_INDEX;
       PageList<T> pageList = await onRefreshLoading(_pageIndex);
       List<T> resultList = pageList.resultList;
-      list?.clear();
+      _list?.clear();
       if (resultList != null && resultList.isNotEmpty) {
-        list?.addAll(pageList.resultList);
+        _list?.addAll(pageList.resultList);
       } else {}
       if (mounted) {
         setState(() {});
@@ -191,7 +236,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
       PageList<T> pageList = await onRefreshLoading(++_pageIndex);
       List<T> resultList = pageList.resultList;
       if (resultList != null && resultList.isNotEmpty) {
-        list?.addAll(pageList.resultList);
+        _list?.addAll(pageList.resultList);
         if (mounted) {
           setState(() {});
         }

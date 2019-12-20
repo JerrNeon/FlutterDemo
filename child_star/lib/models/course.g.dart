@@ -20,7 +20,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) {
     ..partHeadUrl = json['partHeadUrl'] as String
     ..partName = json['partName'] as String
     ..partNo = json['partNo'] as num
-    ..sNo = json['sNo'] as String
+    ..sNo = json['sNo'] as num
     ..title = json['title'] as String
     ..type = json['type'] as num
     ..updatedAt = json['updatedAt'] as String

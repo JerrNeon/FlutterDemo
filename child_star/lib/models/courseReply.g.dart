@@ -20,7 +20,7 @@ CourseReply _$CourseReplyFromJson(Map<String, dynamic> json) {
     ..replyId = json['replyId'] as num
     ..replyName = json['replyName'] as String
     ..sId = json['sId'] as num
-    ..sNo = json['sNo'] as String
+    ..sNo = json['sNo'] as num
     ..sTitle = json['sTitle'] as String
     ..uid = json['uid'] as num;
 }

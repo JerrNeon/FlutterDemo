@@ -105,6 +105,10 @@ class MyImages {
       AssetImage("images/ic_lecture_part.png");
   static const AssetImage ic_lecture_tag =
       AssetImage("images/ic_lecture_tag.png");
+  static const AssetImage ic_course_time =
+      AssetImage("images/ic_course_time.png");
+  static const AssetImage ic_course_playnum =
+      AssetImage("images/ic_course_playnum.png");
 }
 
 class MyImagesMultiple {
@@ -127,7 +131,7 @@ class MyImagesMultiple {
   };
 
   static const course_status = <bool, AssetImage>{
-    true: MyImages.ic_course_play,
-    false: MyImages.ic_course_lock,
+    true: MyImages.ic_course_lock,
+    false: MyImages.ic_course_play,
   };
 }

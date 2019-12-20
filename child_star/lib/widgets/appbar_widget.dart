@@ -1,6 +1,6 @@
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_sizes.dart';
-import 'package:child_star/widgets/empty_widget.dart';
+import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 
 class AppBarWidget extends StatelessWidget {

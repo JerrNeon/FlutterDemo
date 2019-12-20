@@ -366,26 +366,31 @@ class _NewDetailBody extends StatelessWidget {
                               height: MySizes.s_105,
                               fit: BoxFit.cover,
                             ),
-                            Positioned(
-                              right: MySizes.s_4,
-                              bottom: MySizes.s_4,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: MySizes.s_8,
-                                    vertical: MySizes.s_4),
-                                decoration: BoxDecoration(
-                                  color: Colors.white70,
-                                  borderRadius:
-                                      BorderRadius.circular(MySizes.s_3),
-                                ),
-                                child: Text(
-                                  getTimeFromSecond(model.mediaTime),
-                                  style: TextStyle(
-                                      color: MyColors.c_777777,
-                                      fontSize: MyFontSizes.s_10),
-                                ),
-                              ),
-                            ),
+                            model.mediaTime.isEmpty
+                                ? EmptyWidget()
+                                : Positioned(
+                                    right: MySizes.s_4,
+                                    bottom: MySizes.s_4,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: MySizes.s_8,
+                                          vertical: MySizes.s_4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white70,
+                                        borderRadius:
+                                            BorderRadius.circular(MySizes.s_3),
+                                      ),
+                                      child: Text(
+                                        DateUtils.formatDateMs(
+                                          int.tryParse(model.mediaTime) * 1000,
+                                          format: DataFormats.m_s,
+                                        ),
+                                        style: TextStyle(
+                                            color: MyColors.c_777777,
+                                            fontSize: MyFontSizes.s_10),
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                         Expanded(

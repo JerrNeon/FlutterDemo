@@ -3,6 +3,7 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 
@@ -65,6 +66,7 @@ class _LectureDetailPageState extends State<LectureDetailPage>
                         return [
                           _buildHeader(gm, data),
                           _buildTabBar(data),
+                          _buildBottom(),
                         ];
                       },
                       body: _buildTabBarView(data),
@@ -237,6 +239,20 @@ class _LectureDetailPageState extends State<LectureDetailPage>
     );
   }
 
+  Widget _buildBottom() {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: CustomSliverPersistentHeaderDelegate(
+        minHeight: MySizes.s_1,
+        maxHeight: MySizes.s_1,
+        child: Divider(
+          height: MySizes.s_1,
+          color: MyColors.c_e5e5e5,
+        ),
+      ),
+    );
+  }
+
   Widget _buildTabBarItem(String text, LectureDetail data) {
     if (text == _tabList[_tabList.length - 1] && data.comment > 0) {
       return Row(
@@ -272,8 +288,11 @@ class _LectureDetailPageState extends State<LectureDetailPage>
     return TabBarView(
       controller: _tabController,
       children: <Widget>[
-        _IntroductionWidget(data),
-        _CourseWidget(id),
+        _IntroductionWidget(
+          data,
+          tabController: _tabController,
+        ),
+        _CourseWidget(id, data),
         _CommentWidget(id),
       ],
     );
@@ -282,8 +301,13 @@ class _LectureDetailPageState extends State<LectureDetailPage>
 
 class _IntroductionWidget extends StatelessWidget {
   final LectureDetail data;
+  final TabController tabController;
 
-  const _IntroductionWidget(this.data, {Key key}) : super(key: key);
+  const _IntroductionWidget(
+    this.data, {
+    Key key,
+    this.tabController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -327,13 +351,15 @@ class _IntroductionWidget extends StatelessWidget {
           ),
           _buildText(data.lecturerInstruction),
           _buildDivider(),
-          _buildTag(
-            gm.lectureCourseListTitle,
-            padding: EdgeInsets.only(
-              top: MySizes.s_18,
-              bottom: MySizes.s_14,
-            ),
-          ),
+          data.partNum > 2
+              ? _buildTag(
+                  gm.lectureCourseListTitle,
+                  padding: EdgeInsets.only(
+                    top: MySizes.s_18,
+                    bottom: MySizes.s_14,
+                  ),
+                )
+              : EmptyWidget(),
         ],
       ),
     );
@@ -345,69 +371,73 @@ class _IntroductionWidget extends StatelessWidget {
       return SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           LecturePart part = list[index];
-          return Container(
-            height: MySizes.s_60,
-            margin: EdgeInsets.only(
-              left: MySizes.s_8,
-              right: MySizes.s_20,
-              bottom: MySizes.s_10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                loadImage(
-                  part.partHeadUrl,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(MySizes.s_4),
-                ),
-                Expanded(
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: MySizes.s_15),
-                        child: Text(
-                          part.partName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: MyColors.c_878778,
-                            fontSize: MyFontSizes.s_12,
-                            fontWeight: FontWeight.bold,
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => tabController?.index = 1,
+            child: Container(
+              height: MySizes.s_60,
+              margin: EdgeInsets.only(
+                left: MySizes.s_8,
+                right: MySizes.s_20,
+                bottom: MySizes.s_10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  loadImage(
+                    part.partHeadUrl,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(MySizes.s_4),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: MySizes.s_15),
+                          child: Text(
+                            part.partName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: MyColors.c_878778,
+                              fontSize: MyFontSizes.s_12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: MySizes.s_1,
-                        height: MySizes.s_8,
-                        color: MyColors.c_878778,
-                        margin: EdgeInsets.symmetric(horizontal: MySizes.s_8),
-                      ),
-                      Image(image: MyImages.ic_lecture_part),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: MySizes.s_3,
-                          right: MySizes.s_10,
+                        Container(
+                          width: MySizes.s_1,
+                          height: MySizes.s_8,
+                          color: MyColors.c_878778,
+                          margin: EdgeInsets.symmetric(horizontal: MySizes.s_8),
                         ),
-                        child: Text(
-                          "${part.subjectNum}${gm.lecturePartUnitTitle}",
-                          style: TextStyle(
-                            color: MyColors.c_878778,
-                            fontSize: MyFontSizes.s_12,
-                            fontWeight: FontWeight.bold,
+                        Image(image: MyImages.ic_lecture_part),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: MySizes.s_3,
+                            right: MySizes.s_10,
+                          ),
+                          child: Text(
+                            "${part.subjectNum}${gm.lecturePartUnitTitle}",
+                            style: TextStyle(
+                              color: MyColors.c_878778,
+                              fontSize: MyFontSizes.s_12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Text(
-                  "part ${part.partNo}",
-                  style: TextStyle(
-                    color: MyColors.c_ffa2b1,
-                    fontSize: MyFontSizes.s_12,
+                  Text(
+                    "part ${part.partNo}",
+                    style: TextStyle(
+                      color: MyColors.c_ffa2b1,
+                      fontSize: MyFontSizes.s_12,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }, childCount: list?.length ?? 0),
@@ -422,10 +452,10 @@ class _IntroductionWidget extends StatelessWidget {
       child: Align(
         alignment: Alignment.topLeft,
         child: _buildTag(
-          gm.lectureCourseIntroductionTitle,
+          gm.lectureCourseDetailTitle,
           padding: EdgeInsets.only(
             top: MySizes.s_20,
-            bottom: MySizes.s_4,
+            bottom: MySizes.s_18,
           ),
         ),
       ),
@@ -509,12 +539,31 @@ class _IntroductionWidget extends StatelessWidget {
 
 class _CourseWidget extends StatelessWidget {
   final String id;
+  final LectureDetail lectureDetail;
 
-  const _CourseWidget(this.id, {Key key}) : super(key: key);
+  const _CourseWidget(this.id, this.lectureDetail, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SmartRefresherWidget<Course>.listSeparated(
+      enablePullUp: false,
+      keepAlive: true,
+      onRefreshLoading: (pageIndex) =>
+          NetManager(context).getLectureCourseList(id: id),
+      listItemBuilder: (context, index, data) {
+        return CourseItemWidget(
+          data,
+          lectureDetail.partNum,
+          onTap: () {},
+        );
+      },
+      listSeparatorBuilder: (context, index, data) {
+        return Divider(
+          color: MyColors.c_e5e5e5,
+          height: MySizes.s_1,
+        );
+      },
+    );
   }
 }
 
@@ -525,6 +574,19 @@ class _CommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SmartRefresherWidget<CourseComment>.listSeparated(
+      keepAlive: true,
+      onRefreshLoading: (pageIndex) => NetManager(context)
+          .getLectureCommentList(id: id, pageIndex: pageIndex),
+      listItemBuilder: (context, index, data) {
+        return CourseCommentWidget(data);
+      },
+      listSeparatorBuilder: (context, index, data) {
+        return Divider(
+          color: MyColors.c_e5e5e5,
+          height: MySizes.s_1,
+        );
+      },
+    );
   }
 }
