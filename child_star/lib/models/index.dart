@@ -1,3 +1,4 @@
+export 'author.dart' ; 
 export 'banners.dart' ; 
 export 'course.dart' ; 
 export 'courseComment.dart' ; 

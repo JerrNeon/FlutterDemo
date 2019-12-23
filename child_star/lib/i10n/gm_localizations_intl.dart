@@ -56,6 +56,10 @@ class GmLocalizations {
     return Intl.message("关注", name: "homeAttentionTitle");
   }
 
+  String get homeAttentionRecommendTitle {
+    return Intl.message("为您推荐母婴达人", name: "homeAttentionRecommendTitle");
+  }
+
   String get homeCommunityTitle {
     return Intl.message("社区", name: "homeCommunityTitle");
   }

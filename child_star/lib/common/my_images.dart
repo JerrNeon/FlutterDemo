@@ -109,6 +109,16 @@ class MyImages {
       AssetImage("images/ic_course_time.png");
   static const AssetImage ic_course_playnum =
       AssetImage("images/ic_course_playnum.png");
+  static const AssetImage ic_attention_article =
+      AssetImage("images/ic_attention_article.png");
+  static const AssetImage ic_attention_bg =
+      AssetImage("images/ic_attention_bg.png");
+  static const AssetImage ic_attention_fans =
+      AssetImage("images/ic_attention_fans.png");
+  static const AssetImage ic_attention_followed =
+      AssetImage("images/ic_attention_followed.png");
+  static const AssetImage ic_attention_unfollowed =
+      AssetImage("images/ic_attention_unfollowed.png");
 }
 
 class MyImagesMultiple {
@@ -133,5 +143,10 @@ class MyImagesMultiple {
   static const course_status = <bool, AssetImage>{
     true: MyImages.ic_course_lock,
     false: MyImages.ic_course_play,
+  };
+
+  static const attention_status = <bool, AssetImage>{
+    true: MyImages.ic_attention_followed,
+    false: MyImages.ic_attention_unfollowed,
   };
 }

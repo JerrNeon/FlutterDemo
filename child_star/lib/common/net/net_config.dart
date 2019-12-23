@@ -64,4 +64,16 @@ class NetConfig {
 
   ///活动详情
   static const GET_EXERCISE_DETAIL = "activity/detail";
+
+  ///关注作者资讯列表
+  static const GET_ATTENTION_AUTHOR_NEWS_LIST = "info/followedList";
+
+  ///推荐关注作者列表
+  static const GET_RECOMMEND_AUTHOR_NEWS_LIST = "info/recommendAuthorList";
+
+  ///作者详情页
+  static const GET_AUTHOR_DETAIL = "author/detail";
+
+  ///作者文章列表
+  static const GET_AUTHOR_NEWS_LIST = "info/getAuthorInfoList";
 }

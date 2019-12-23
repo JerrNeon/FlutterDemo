@@ -320,4 +320,50 @@ class NetManager {
     return PageList<CourseComment>.page(
         response, (e) => CourseComment.fromJson(e));
   }
+
+  ///pageNum	否	int	页数	默认1
+  ///pageSize	否	int	页码大小	默认10
+  Future<PageList<Author>> getAttentionAuthorNewsList({
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response = await Net(context)
+        .post(NetConfig.GET_ATTENTION_AUTHOR_NEWS_LIST, params: {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList<Author>.page(response, (e) => Author.fromJson(e));
+  }
+
+  ///pageNum	否	int	页数	默认1
+  ///pageSize	否	int	页码大小	默认10
+  Future<PageList<Author>> getRecommendAuthorNewsList({
+    int pageIndex = PAGE_INDEX,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response = await Net(context)
+        .post(NetConfig.GET_RECOMMEND_AUTHOR_NEWS_LIST, params: {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList<Author>.page(response, (e) => Author.fromJson(e));
+  }
+
+  ///id	是	int	作者id
+  Future<Author> getAuthorDetail(String id) async {
+    var response =
+        await Net(context).post(NetConfig.GET_AUTHOR_DETAIL, params: {
+      "id": id,
+    });
+    return Author.fromJson(response);
+  }
+
+  ///authorId	是	int	作者id
+  Future<PageList<News>> getAuthorNewsList(String authorId) async {
+    var response =
+        await Net(context).post(NetConfig.GET_AUTHOR_NEWS_LIST, params: {
+      "authorId": authorId,
+    });
+    return PageList<News>.page(response, (e) => News.fromJson(e));
+  }
 }
