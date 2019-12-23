@@ -157,7 +157,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
       },
       builder: (BuildContext context, AsyncSnapshot<PageList<T>> snapshot) {
         _list = snapshot.data.resultList;
-        return isShowNoData && _list == null && _list.isEmpty
+        return isShowNoData && (_list == null || _list.isEmpty)
             ? _buildNoData()
             : SmartRefresher(
                 controller: _refreshController,

@@ -53,19 +53,20 @@ class BannerWidget extends StatelessWidget {
   _handlerBannerClick(BuildContext context, Banners banners) {
     switch (banners.elementType) {
       case VIDEO:
-        break;
       case AUDIO:
-        break;
       case CONTENT:
+        RoutersNavigate().navigateToNewDetail(context, banners.params);
         break;
       case H5:
-        RoutersNavigate().navigateToH5(context, encodeStringToBase64UrlSafeString(banners.params));
+        RoutersNavigate().navigateToH5(
+            context, encodeStringToBase64UrlSafeString(banners.params));
         break;
-      case INNER:
+      case INNER: //我的会员界面
         break;
-      case SPRINGRAIN:
+      case SPRINGRAIN: //春雨医生
         break;
-      case COURSE:
+      case COURSE: //讲堂详情
+        RoutersNavigate().navigateToLectureDetail(context, banners.params);
         break;
       default:
         break;

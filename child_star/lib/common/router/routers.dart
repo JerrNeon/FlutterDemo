@@ -47,6 +47,11 @@ class Routers {
   }
 }
 
+bool _isLogin(BuildContext context) {
+  UserProvider userProvider = Provider.of<UserProvider>(context);
+  return userProvider.isLogin;
+}
+
 var mainHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   return MainPage();
@@ -86,8 +91,7 @@ var forgetPasswordHandler = Handler(
 
 var mineHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
-  UserProvider userProvider = Provider.of<UserProvider>(context);
-  return userProvider.isLogin ? MinePage() : LoginPage();
+  return _isLogin(context) ? MinePage() : LoginPage();
 });
 
 var mineSetHandler = Handler(
@@ -104,11 +108,11 @@ var exerciseDetailHandler = Handler(
 var lectureDetailHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String id = parameters["id"]?.first ?? "";
-  return LectureDetailPage(id);
+  return _isLogin(context) ? LectureDetailPage(id) : LoginPage();
 });
 
 var courseDetailHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String id = parameters["id"]?.first ?? "";
-  return CourseDetailPage(id);
+  return _isLogin(context) ? CourseDetailPage(id) : LoginPage();
 });
