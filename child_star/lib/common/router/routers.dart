@@ -1,4 +1,5 @@
 import 'package:child_star/routes/exercise/exercise_index.dart';
+import 'package:child_star/routes/home/author_page.dart';
 import 'package:child_star/routes/home/home_index.dart';
 import 'package:child_star/routes/knowledge/knowledge_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
@@ -23,6 +24,7 @@ class Routers {
   static const String exercise_detail = "/exercise/detail";
   static const String lecture_detail = "/lecture/detail";
   static const String course_detail = "/lecture/detail/course_detail";
+  static const String author_homepage = "/home/attention/author";
 
   static var router = Router();
 
@@ -44,6 +46,7 @@ class Routers {
     router.define(exercise_detail, handler: exerciseDetailHandler);
     router.define(lecture_detail, handler: lectureDetailHandler);
     router.define(course_detail, handler: courseDetailHandler);
+    router.define(author_homepage, handler: authorHomePageHandler);
   }
 }
 
@@ -115,4 +118,10 @@ var courseDetailHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String id = parameters["id"]?.first ?? "";
   return _isLogin(context) ? CourseDetailPage(id) : LoginPage();
+});
+
+var authorHomePageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  String id = parameters["id"]?.first ?? "";
+  return _isLogin(context) ? AuthorPage(id) : LoginPage();
 });

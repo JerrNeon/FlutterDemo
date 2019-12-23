@@ -143,7 +143,8 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
                 Column(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => RoutersNavigate()
+                          .navigateToAuthorPage(context, data.id.toString()),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[

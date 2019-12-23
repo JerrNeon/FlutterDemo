@@ -94,7 +94,7 @@ class _NewDetailBody extends StatelessWidget {
         slivers: <Widget>[
           _buildHeader(),
           _buildAudioPlayer(),
-          _buildBody(gm),
+          _buildBody(context, gm),
           _buildBottom(gm),
           _buildList(context),
         ],
@@ -135,7 +135,7 @@ class _NewDetailBody extends StatelessWidget {
     }
   }
 
-  Widget _buildBody(GmLocalizations gm) {
+  Widget _buildBody(BuildContext context, GmLocalizations gm) {
     var tags = "# ";
     final readNum = "${gm.newDetailReadingNumTitle} : ${data.lookRecord}";
     List<Tag> tagList = data.tags;
@@ -186,80 +186,85 @@ class _NewDetailBody extends StatelessWidget {
             ),
           ),
           Divider(height: MySizes.s_1, color: MyColors.c_d5d5d5),
-          Padding(
-            padding: EdgeInsets.only(
-              left: MySizes.s_20,
-              top: MySizes.s_6,
-              right: MySizes.s_14,
-              bottom: MySizes.s_6,
-            ),
-            child: Row(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    loadImage(
-                      data.authorHeadUrl,
-                      shape: BoxShape.circle,
-                      width: MySizes.s_46,
-                      height: MySizes.s_46,
-                    ),
-                    Positioned(
-                      right: -MySizes.s_2,
-                      bottom: -MySizes.s_2,
-                      child: Image(image: MyImages.ic_newdetail_authenticate),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: MySizes.s_12,
-                        top: MySizes.s_16,
-                        bottom: MySizes.s_16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          data.authorName,
-                          style: TextStyle(
-                              color: MyColors.c_777777,
-                              fontSize: MyFontSizes.s_12,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: MySizes.s_6),
-                          child: Text(
-                            data.authorIntroduction,
+          GestureDetector(
+            onTap: () => RoutersNavigate()
+                .navigateToAuthorPage(context, data.authorId.toString()),
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: MySizes.s_20,
+                top: MySizes.s_6,
+                right: MySizes.s_14,
+                bottom: MySizes.s_6,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      loadImage(
+                        data.authorHeadUrl,
+                        shape: BoxShape.circle,
+                        width: MySizes.s_46,
+                        height: MySizes.s_46,
+                      ),
+                      Positioned(
+                        right: -MySizes.s_2,
+                        bottom: -MySizes.s_2,
+                        child: Image(image: MyImages.ic_newdetail_authenticate),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: MySizes.s_12,
+                          top: MySizes.s_16,
+                          bottom: MySizes.s_16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            data.authorName,
                             style: TextStyle(
                                 color: MyColors.c_777777,
-                                fontSize: MyFontSizes.s_10),
+                                fontSize: MyFontSizes.s_12,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.only(top: MySizes.s_6),
+                            child: Text(
+                              data.authorIntroduction,
+                              style: TextStyle(
+                                  color: MyColors.c_777777,
+                                  fontSize: MyFontSizes.s_10),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: MySizes.s_8, top: MySizes.s_8),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MySizes.s_8, vertical: MySizes.s_4),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: MyColors.c_777777,
-                      width: MySizes.s_1,
+                  Container(
+                    margin:
+                        EdgeInsets.only(left: MySizes.s_8, top: MySizes.s_8),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MySizes.s_8, vertical: MySizes.s_4),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: MyColors.c_777777,
+                        width: MySizes.s_1,
+                      ),
+                      borderRadius: BorderRadius.circular(MySizes.s_3),
                     ),
-                    borderRadius: BorderRadius.circular(MySizes.s_3),
+                    child: Text(
+                      data.isConcern
+                          ? gm.newDetailFollowTitle
+                          : "+${gm.newDetailUnFollowTitle}",
+                      style: TextStyle(
+                          color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
+                    ),
                   ),
-                  child: Text(
-                    data.isConcern
-                        ? gm.newDetailFollowTitle
-                        : "+${gm.newDetailUnFollowTitle}",
-                    style: TextStyle(
-                        color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Divider(height: MySizes.s_1, color: MyColors.c_d5d5d5),
@@ -331,13 +336,13 @@ class _NewDetailBody extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 var model = newsList[index];
-                return GestureDetector(
+                return NewsItemWidget(
+                  model,
                   onTap: () {
                     if (onItemClick != null) {
                       onItemClick(context, model);
                     }
                   },
-                  child: NewsItemWidget(model),
                 );
               },
               childCount: newsList.length,

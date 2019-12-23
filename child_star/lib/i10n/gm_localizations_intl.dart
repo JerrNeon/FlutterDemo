@@ -327,6 +327,26 @@ class GmLocalizations {
   String get courseCommentNoDataText {
     return Intl.message("暂无评论~", name: "courseCommentNoDataText");
   }
+
+  String get authorTitle {
+    return Intl.message("个人主页", name: "authorTitle");
+  }
+
+  String get authorDescTitle {
+    return Intl.message("作者简介", name: "authorDescTitle");
+  }
+
+  String get authorUnfollowedTitle {
+    return Intl.message("关注", name: "authorUnfollowedTitle");
+  }
+
+  String get authorFollowedTitle {
+    return Intl.message("取消关注", name: "authorFollowedTitle");
+  }
+
+  String get authorRecommendTitle {
+    return Intl.message("内容推荐", name: "authorRecommendTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

@@ -63,80 +63,91 @@ class NewsInteractionWidget extends StatelessWidget {
 
 class NewsItemWidget extends StatelessWidget {
   final News data;
+  final GestureTapCallback onTap;
 
-  const NewsItemWidget(this.data, {Key key}) : super(key: key);
+  const NewsItemWidget(this.data, {Key key, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-          left: MySizes.s_24, right: MySizes.s_16, bottom: MySizes.s_14),
-      child: Row(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              loadImage(
-                data.headUrl,
-                borderRadius: BorderRadius.circular(MySizes.s_3),
-                width: MySizes.s_155,
-                height: MySizes.s_105,
-                fit: BoxFit.cover,
-              ),
-              data.mediaTime.isEmpty
-                  ? EmptyWidget()
-                  : Positioned(
-                      right: MySizes.s_4,
-                      bottom: MySizes.s_4,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MySizes.s_8, vertical: MySizes.s_4),
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(MySizes.s_3),
-                        ),
-                        child: Text(
-                          TimeUtils.formatDateS(data.mediaTime),
-                          style: TextStyle(
-                              color: MyColors.c_777777,
-                              fontSize: MyFontSizes.s_10),
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          onTap();
+        } else {
+          RoutersNavigate().navigateToNewDetail(context, data.id.toString());
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: MySizes.s_24, right: MySizes.s_16, bottom: MySizes.s_14),
+        child: Row(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                loadImage(
+                  data.headUrl,
+                  borderRadius: BorderRadius.circular(MySizes.s_3),
+                  width: MySizes.s_155,
+                  height: MySizes.s_105,
+                  fit: BoxFit.cover,
+                ),
+                data.mediaTime.isEmpty
+                    ? EmptyWidget()
+                    : Positioned(
+                        right: MySizes.s_4,
+                        bottom: MySizes.s_4,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: MySizes.s_8, vertical: MySizes.s_4),
+                          decoration: BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.circular(MySizes.s_3),
+                          ),
+                          child: Text(
+                            TimeUtils.formatDateS(data.mediaTime),
+                            style: TextStyle(
+                                color: MyColors.c_777777,
+                                fontSize: MyFontSizes.s_10),
+                          ),
                         ),
                       ),
-                    ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: MySizes.s_14),
-              child: ConstrainedBox(
-                constraints: BoxConstraints.expand(height: MySizes.s_104),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      data.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: MyColors.c_777777,
-                        fontSize: MyFontSizes.s_12,
-                        fontWeight: FontWeight.bold,
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: MySizes.s_14),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: MySizes.s_104),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        data.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: MyColors.c_777777,
+                          fontSize: MyFontSizes.s_12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: MySizes.s_8)),
-                    Text(
-                      "#${data.innerWord}",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
-                    ),
-                  ],
+                      Padding(padding: EdgeInsets.only(top: MySizes.s_8)),
+                      Text(
+                        "#${data.innerWord}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: MyColors.c_777777,
+                            fontSize: MyFontSizes.s_12),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

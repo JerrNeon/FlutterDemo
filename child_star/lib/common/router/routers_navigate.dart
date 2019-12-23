@@ -144,4 +144,14 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionBuilder: RouteAnimation.build(),
     );
   }
+
+  @override
+  navigateToAuthorPage(BuildContext context, String authorId) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.author_homepage + "?id=$authorId",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
 }
