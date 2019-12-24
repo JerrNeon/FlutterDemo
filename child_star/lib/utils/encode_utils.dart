@@ -14,13 +14,18 @@ String generateMd5(String data) {
 
 ///中文编码
 String chineseEncode(String originCn) {
-  return jsonEncode(Utf8Encoder().convert(originCn));
+  StringBuffer sb = StringBuffer();
+  var encoded = Utf8Encoder().convert(originCn);
+  encoded.forEach((val) => sb.write('$val,'));
+  return sb.toString().substring(0, sb.length - 1).toString();
 }
 
 ///中文解码
 String chineseDecode(String encodeCn) {
-  var list = List<int>();
-  return Utf8Decoder().convert(jsonDecode(encodeCn).forEach(list.add));
+  var decoded = encodeCn.split('[').last.split(']').first.split(',');
+  var list = <int>[];
+  decoded.forEach((s) => list.add(int.parse(s.trim())));
+  return Utf8Decoder().convert(list);
 }
 
 ///处理[Router]中参数带有/报错的问题 (Route builders must never return null)

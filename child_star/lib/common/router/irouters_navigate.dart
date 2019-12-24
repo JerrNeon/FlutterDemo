@@ -44,4 +44,13 @@ abstract class IRoutersNavigate {
 
   ///跳转到作者主页界面[AuthorPage]
   navigateToAuthorPage(BuildContext context, String authorId);
+
+  ///跳转到资讯搜索结果界面[HomeSearchResultPage]
+  navigateToHomeSearchResultPage(BuildContext context, String id, String name);
+
+  ///跳转到讲堂搜索界面[LectureSearchPage]
+  navigateToLectureSearchPage(BuildContext context);
+
+  ///跳转到讲堂搜索结果界面[LectureSearchResultPage]
+  navigateToLectureSearchResultPage(BuildContext context, String name);
 }

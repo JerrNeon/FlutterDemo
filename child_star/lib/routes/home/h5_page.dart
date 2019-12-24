@@ -1,7 +1,6 @@
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/common/my_systems.dart';
-import 'package:child_star/utils/encode_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +12,17 @@ class H5Page extends StatefulWidget {
   H5Page(this.url);
 
   @override
-  _H5PageState createState() => _H5PageState();
+  _H5PageState createState() =>
+      _H5PageState(decodeFromBase64UrlSafeEncodedString(url));
 }
 
 class _H5PageState extends State<H5Page> {
+  final String url;
   var title;
   double progress;
   InAppWebViewController _controller;
+
+  _H5PageState(this.url);
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +47,7 @@ class _H5PageState extends State<H5Page> {
                 ),
                 Expanded(
                   child: InAppWebView(
-                    initialUrl:
-                        decodeFromBase64UrlSafeEncodedString(widget.url),
+                    initialUrl: url,
                     initialOptions: InAppWebViewWidgetOptions(
                       inAppWebViewOptions: InAppWebViewOptions(),
                     ),

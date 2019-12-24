@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
@@ -6,6 +8,119 @@ import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+class HomeNewsItemWidget extends StatelessWidget {
+  final News data;
+  final GestureTapCallback onTap;
+
+  const HomeNewsItemWidget({Key key, this.data, this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap ??
+          () => RoutersNavigate()
+              .navigateToNewDetail(context, data.id.toString()),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+            MySizes.s_4, MySizes.s_4, MySizes.s_4, MySizes.s_6),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(MySizes.s_3),
+        ),
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                loadImage(
+                  data.headUrl,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(MySizes.s_3),
+                ),
+                Container(
+                    padding: EdgeInsets.all(MySizes.s_5),
+                    child: (data.type == 1 || data.type == 2)
+                        ? Image(image: MyImagesMultiple.home_media[data.type])
+                        : EmptyWidget()),
+                Positioned(
+                  right: MySizes.s_5,
+                  bottom: MySizes.s_5,
+                  child: Container(
+                    padding: EdgeInsets.all(MySizes.s_5),
+                    decoration: BoxDecoration(
+                      color: MyColorsFul.home_tag[Random().nextInt(6)],
+                      borderRadius: BorderRadius.circular(MySizes.s_11),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: MySizes.s_1,
+                      ),
+                    ),
+                    child: Text(
+                      data.innerWord,
+                      style: TextStyle(
+                          color: Colors.white, fontSize: MyFontSizes.s_12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: MySizes.s_7),
+              child: Text(
+                data.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: MyColors.c_686868, fontSize: MyFontSizes.s_12),
+              ),
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: MySizes.s_30),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
+                        child: Image(image: MyImages.ic_homenew_look),
+                      ),
+                      Text(
+                        data.lookRecord != null
+                            ? data.lookRecord.toString()
+                            : "0",
+                        style: TextStyle(
+                            color: MyColors.c_7f7f7f,
+                            fontSize: MyFontSizes.s_14),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: MySizes.s_6),
+                        color: MyColors.c_7f7f7f,
+                        width: MySizes.s_1,
+                        height: MySizes.s_12,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
+                        child: Image(
+                            image: MyImagesMultiple
+                                .home_collection[data.isLike ?? false]),
+                      ),
+                      Text(
+                        data.like != null ? data.like.toString() : "0",
+                        style: TextStyle(
+                            color: MyColors.c_7f7f7f,
+                            fontSize: MyFontSizes.s_14),
+                      ),
+                    ],
+                  ),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 ///资讯点赞、收藏、评论、下载Widget 互动
 class NewsInteractionWidget extends StatelessWidget {
@@ -193,6 +308,116 @@ class _WebViewWidgetState extends State<WebViewWidget> {
             }
           });
         },
+      ),
+    );
+  }
+}
+
+class HomeSearchWidget extends StatelessWidget {
+  final TextEditingController controller;
+  final String hintText;
+  final ValueChanged<String> onSubmitted;
+
+  const HomeSearchWidget({
+    Key key,
+    this.controller,
+    this.hintText,
+    this.onSubmitted,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: MySizes.s_4,
+        vertical: MySizes.s_8,
+      ),
+      decoration: BoxDecoration(
+        color: MyColors.c_f7f7f7,
+        borderRadius: BorderRadius.circular(MySizes.s_14),
+        border: Border.all(
+          color: MyColors.c_ececec,
+          width: MySizes.s_1,
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        maxLines: 1,
+        style: TextStyle(
+          color: MyColors.c_797979,
+          fontSize: MyFontSizes.s_13,
+        ),
+        textInputAction: TextInputAction.search,
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          icon: Padding(
+            padding: EdgeInsets.only(left: MySizes.s_8),
+            child: Image(
+              image: MyImages.ic_home_search,
+              width: MySizes.s_18,
+              height: MySizes.s_18,
+            ),
+          ),
+          hintText: hintText ?? gm.searchHintTitle,
+          hintStyle:
+              TextStyle(color: MyColors.c_b6b6b6, fontSize: MyFontSizes.s_13),
+          contentPadding: EdgeInsets.only(
+            right: MySizes.s_12,
+            top: MySizes.s_8,
+            bottom: MySizes.s_8,
+          ),
+          border: InputBorder.none,
+          isDense: true,
+        ),
+        onSubmitted: (s) {
+          if (s.isEmpty) {
+            showToast(gm.searchEmptyToast);
+            return;
+          }
+          if (onSubmitted != null) {
+            onSubmitted(s);
+          }
+        },
+      ),
+    );
+  }
+}
+
+class HomeSearchTagWidget extends StatelessWidget {
+  final String text;
+  final GestureTapCallback onTap;
+
+  const HomeSearchTagWidget({
+    Key key,
+    @required this.text,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MySizes.s_10,
+          vertical: MySizes.s_4,
+        ),
+        decoration: BoxDecoration(
+          color: MyColors.c_fcf9f4,
+          borderRadius: BorderRadius.circular(MySizes.s_10),
+          border: Border.all(
+            color: MyColors.c_dadada,
+            width: MySizes.s_1,
+          ),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: MyColors.c_878778,
+            fontSize: MyFontSizes.s_12,
+          ),
+        ),
       ),
     );
   }

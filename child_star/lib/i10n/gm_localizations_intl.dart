@@ -48,6 +48,10 @@ class GmLocalizations {
     return Intl.message("你想找的这里都有...", name: "searchHintTitle");
   }
 
+  String get searchEmptyToast {
+    return Intl.message("搜索内容不能为空", name: "searchEmptyToast");
+  }
+
   String get homeNewTitle {
     return Intl.message("最新", name: "homeNewTitle");
   }
@@ -346,6 +350,18 @@ class GmLocalizations {
 
   String get authorRecommendTitle {
     return Intl.message("内容推荐", name: "authorRecommendTitle");
+  }
+
+  String get homeSearchHistoryTitle {
+    return Intl.message("历史记录", name: "homeSearchHistoryTitle");
+  }
+
+  String get homeSearchHotTitle {
+    return Intl.message("热门搜索", name: "homeSearchHotTitle");
+  }
+
+   String get homeSearchResultTitle {
+    return Intl.message("搜索结果", name: "homeSearchResultTitle");
   }
 }
 

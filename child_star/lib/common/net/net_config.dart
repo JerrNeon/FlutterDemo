@@ -56,6 +56,9 @@ class NetConfig {
   ///获取课程评论列表
   static const GET_COURSE_COMMENT_LIST = "course/getSubjectCommentList";
 
+  ///查询讲堂列表
+  static const GET_LECTURE_SEARCH_LIST = "course/searchList";
+
   ///活动主题标签列表
   static const GET_EXERCISE_TAG_LIST = "activity/getTags";
 

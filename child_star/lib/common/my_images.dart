@@ -119,6 +119,8 @@ class MyImages {
       AssetImage("images/ic_attention_followed.png");
   static const AssetImage ic_attention_unfollowed =
       AssetImage("images/ic_attention_unfollowed.png");
+  static const AssetImage ic_homesearch_clear =
+      AssetImage("images/ic_homesearch_clear.png");
 }
 
 class MyImagesMultiple {

@@ -1,8 +1,7 @@
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
-import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/models/index.dart';
-import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +36,10 @@ class _KnowledgePageState extends State<KnowledgePage>
         color: MyColors.c_f0f0f0,
         child: Column(
           children: <Widget>[
-            SearchWidget(),
+            SearchWidget(
+              onTap: () =>
+                  RoutersNavigate().navigateToLectureSearchPage(context),
+            ),
             _buildBody(),
           ],
         ),
@@ -84,159 +86,8 @@ class _KnowledgePageState extends State<KnowledgePage>
     return SliverList(
       delegate: SliverChildBuilderDelegate((context, index) {
         Lecture data = list[index];
-        return GestureDetector(
-          onTap: () => RoutersNavigate()
-              .navigateToLectureDetail(context, data.id.toString()),
-          child: _buildItem(data),
-        );
+        return LectureItemWidget(data: data);
       }, childCount: list?.length ?? 0),
     );
-  }
-
-  Widget _buildItem(Lecture data) {
-    return Container(
-      color: Colors.white,
-      height: MySizes.s_88,
-      margin: EdgeInsets.only(bottom: MySizes.s_4),
-      child: Row(
-        children: <Widget>[
-          loadImage(
-            data.headUrl,
-            width: MySizes.s_144,
-            height: double.infinity,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(MySizes.s_4),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: MySizes.s_5,
-                    right: MySizes.s_5,
-                  ),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Offstage(
-                      offstage: !data.isNew,
-                      child: Image(
-                        image: MyImages.ic_lecture_new,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: MySizes.s_12,
-                    right: MySizes.s_5,
-                  ),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MySizes.s_6,
-                          ),
-                          child: Text(
-                            data.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: MyColors.c_686868,
-                              fontSize: MyFontSizes.s_12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          data.descr,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: MyColors.c_686868,
-                            fontSize: MyFontSizes.s_12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: MySizes.s_8),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: MyColors.c_efefef,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(MySizes.s_14),
-                          bottomLeft: Radius.circular(MySizes.s_14),
-                        ),
-                      ),
-                      child: _buildPrice(data),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPrice(Lecture data) {
-    if (data.price != 0) {
-      return Padding(
-        padding: EdgeInsets.only(
-          left: MySizes.s_8,
-          top: MySizes.s_2,
-          right: MySizes.s_3,
-          bottom: MySizes.s_2,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: MySizes.s_6),
-              child: Text(
-                "${data.price}",
-                style: TextStyle(
-                  color: MyColors.c_7c7c7c,
-                  fontSize: MyFontSizes.s_12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Image(
-              image: MyImages.ic_mine_point,
-              width: MySizes.s_11,
-              height: MySizes.s_11,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MySizes.s_8,
-          vertical: MySizes.s_2,
-        ),
-        child: Text(
-          "VIP",
-          style: TextStyle(
-            color: MyColors.c_7c7c7c,
-            fontSize: MyFontSizes.s_12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    }
   }
 }

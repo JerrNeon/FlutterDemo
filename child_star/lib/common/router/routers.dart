@@ -13,9 +13,11 @@ import 'package:provider/provider.dart';
 
 class Routers {
   static const String root = "/";
-  static const String home_search = "/home/search";
   static const String h5 = "/h5";
+  static const String home_search = "/home/search";
   static const String home_new_detail = "/home/new_detail";
+  static const String author_homepage = "/home/attention/author";
+  static const String home_search_result = "/home/search/result";
   static const String login = "/user/login";
   static const String register = "/user/register";
   static const String forget_password = "/user/forget_password";
@@ -24,7 +26,8 @@ class Routers {
   static const String exercise_detail = "/exercise/detail";
   static const String lecture_detail = "/lecture/detail";
   static const String course_detail = "/lecture/detail/course_detail";
-  static const String author_homepage = "/home/attention/author";
+  static const String lecture_search = "/lecture/search";
+  static const String lecture_search_result = "/lecture/search/result";
 
   static var router = Router();
 
@@ -47,6 +50,10 @@ class Routers {
     router.define(lecture_detail, handler: lectureDetailHandler);
     router.define(course_detail, handler: courseDetailHandler);
     router.define(author_homepage, handler: authorHomePageHandler);
+    router.define(home_search_result, handler: homeSearchResultPageHandler);
+    router.define(lecture_search, handler: lectureSearchPageHandler);
+    router.define(lecture_search_result,
+        handler: lectureSearchResultPageHandler);
   }
 }
 
@@ -124,4 +131,25 @@ var authorHomePageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String id = parameters["id"]?.first ?? "";
   return _isLogin(context) ? AuthorPage(id) : LoginPage();
+});
+
+var homeSearchResultPageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  String id = parameters["id"]?.first ?? "";
+  String name = parameters["name"]?.first ?? "";
+  return HomeSearchResultPage(
+    id: id,
+    name: name,
+  );
+});
+
+var lectureSearchPageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return LectureSearchPage();
+});
+
+var lectureSearchResultPageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  String name = parameters["name"]?.first ?? "";
+  return LectureSearchResultPage(name);
 });

@@ -366,4 +366,21 @@ class NetManager {
     });
     return PageList<News>.page(response, (e) => News.fromJson(e));
   }
+
+  ///title	是	int	关键字
+  ///pageNum	否	int	页数	默认1
+  ///pageSize	否	int	页码大小	默认10
+  Future<PageList<Lecture>> getLectureSearchList({
+    @required String title,
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_LECTURE_SEARCH_LIST, params: {
+      "title": title,
+      "pageIndex": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList<Lecture>.page(response, (e) => Lecture.fromJson(e));
+  }
 }

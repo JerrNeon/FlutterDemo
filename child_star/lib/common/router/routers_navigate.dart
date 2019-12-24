@@ -1,5 +1,6 @@
 import 'package:child_star/common/router/irouters_navigate.dart';
 import 'package:child_star/utils/route_utils.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
 
@@ -47,7 +48,7 @@ class RoutersNavigate extends IRoutersNavigate {
   navigateToH5(BuildContext context, String url) {
     return Routers.router.navigateTo(
       context,
-      Routers.h5 + "?url=$url",
+      Routers.h5 + "?url=${encodeStringToBase64UrlSafeString(url)}",
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );
@@ -150,6 +151,38 @@ class RoutersNavigate extends IRoutersNavigate {
     return Routers.router.navigateTo(
       context,
       Routers.author_homepage + "?id=$authorId",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToHomeSearchResultPage(BuildContext context, String id, String name) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.home_search_result +
+          "?id=$id&name=${chineseEncode(name)}",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToLectureSearchPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.lecture_search,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToLectureSearchResultPage(BuildContext context, String name) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.lecture_search_result +
+          "?name=${chineseEncode(name)}",
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );

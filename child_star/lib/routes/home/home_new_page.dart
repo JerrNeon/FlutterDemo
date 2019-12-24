@@ -1,17 +1,15 @@
 import 'dart:core';
-import 'dart:math';
 
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
-import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
-import 'package:child_star/utils/image_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/banner_widget.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/search_widget.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
@@ -187,7 +185,7 @@ class _HomeNewPageState extends State<HomeNewPage>
                         crossAxisCount: 2,
                         staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                         itemBuilder: (context, index) {
-                          return _buildBodyItem(_news[index]);
+                          return HomeNewsItemWidget(data: _news[index]);
                         },
                         itemCount: _news?.length ?? 0,
                         mainAxisSpacing: MySizes.s_5,
@@ -262,107 +260,5 @@ class _HomeNewPageState extends State<HomeNewPage>
             return EmptyWidget();
           }
         });
-  }
-
-  Widget _buildBodyItem(News news) {
-    return GestureDetector(
-      onTap: () =>
-          RoutersNavigate().navigateToNewDetail(context, news.id.toString()),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-            MySizes.s_4, MySizes.s_4, MySizes.s_4, MySizes.s_6),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(MySizes.s_3),
-        ),
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                loadImage(
-                  news.headUrl,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(MySizes.s_3),
-                ),
-                Container(
-                    padding: EdgeInsets.all(MySizes.s_5),
-                    child: (news.type == 1 || news.type == 2)
-                        ? Image(image: MyImagesMultiple.home_media[news.type])
-                        : EmptyWidget()),
-                Positioned(
-                  right: MySizes.s_5,
-                  bottom: MySizes.s_5,
-                  child: Container(
-                    padding: EdgeInsets.all(MySizes.s_5),
-                    decoration: BoxDecoration(
-                      color: MyColorsFul.home_tag[Random().nextInt(6)],
-                      borderRadius: BorderRadius.circular(MySizes.s_11),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: MySizes.s_1,
-                      ),
-                    ),
-                    child: Text(
-                      news.innerWord,
-                      style: TextStyle(
-                          color: Colors.white, fontSize: MyFontSizes.s_12),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: MySizes.s_7),
-              child: Text(
-                news.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: MyColors.c_686868, fontSize: MyFontSizes.s_12),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: MySizes.s_30),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
-                        child: Image(image: MyImages.ic_homenew_look),
-                      ),
-                      Text(
-                        news.lookRecord.toString(),
-                        style: TextStyle(
-                            color: MyColors.c_7f7f7f,
-                            fontSize: MyFontSizes.s_14),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: MySizes.s_6),
-                        color: MyColors.c_7f7f7f,
-                        width: MySizes.s_1,
-                        height: MySizes.s_12,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: MySizes.s_6),
-                        child: Image(
-                            image:
-                                MyImagesMultiple.home_collection[news.isLike]),
-                      ),
-                      Text(
-                        news.like.toString(),
-                        style: TextStyle(
-                            color: MyColors.c_7f7f7f,
-                            fontSize: MyFontSizes.s_14),
-                      ),
-                    ],
-                  ),
-                ))
-          ],
-        ),
-      ),
-    );
   }
 }
