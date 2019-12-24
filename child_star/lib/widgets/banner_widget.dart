@@ -59,7 +59,7 @@ class BannerWidget extends StatelessWidget {
         break;
       case H5:
         RoutersNavigate().navigateToH5(
-            context, encodeStringToBase64UrlSafeString(banners.params));
+            context, banners.params);
         break;
       case INNER: //我的会员界面
         break;

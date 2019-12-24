@@ -142,7 +142,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => RoutersNavigate().navigateToH5(
-            context, encodeStringToBase64UrlSafeString(data.jumpUrl)),
+            context, data.jumpUrl),
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MySizes.s_100,
