@@ -160,8 +160,7 @@ class RoutersNavigate extends IRoutersNavigate {
   navigateToHomeSearchResultPage(BuildContext context, String id, String name) {
     return Routers.router.navigateTo(
       context,
-      Routers.home_search_result +
-          "?id=$id&name=${chineseEncode(name)}",
+      Routers.home_search_result + "?id=$id&name=${chineseEncode(name)}",
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );
@@ -181,8 +180,17 @@ class RoutersNavigate extends IRoutersNavigate {
   navigateToLectureSearchResultPage(BuildContext context, String name) {
     return Routers.router.navigateTo(
       context,
-      Routers.lecture_search_result +
-          "?name=${chineseEncode(name)}",
+      Routers.lecture_search_result + "?name=${chineseEncode(name)}",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToHomeTagListPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.home_tag_list,
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );

@@ -5,6 +5,9 @@ class NetConfig {
   ///热门标签
   static const GET_HOT_TAGS = "tag/getHotTags";
 
+  ///获取所有标签
+  static const GET_TAG_LIST = "tag/getTags";
+
   ///顶部轮播图
   static const GET_BANNERS = "model/topBanner";
 

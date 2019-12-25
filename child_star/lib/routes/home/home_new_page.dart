@@ -5,6 +5,7 @@ import 'package:child_star/common/my_images.dart';
 import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/net/net_manager.dart';
+import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/utils_index.dart';
@@ -104,6 +105,9 @@ class _HomeNewPageState extends State<HomeNewPage>
                           ),
                           itemBuilder: (context, index) {
                             return _buildTagItem(
+                                tagList != null
+                                    ? tagList[index].id.toString()
+                                    : "",
                                 tagList != null ? tagList[index].name : "");
                           },
                           itemCount: tagList != null
@@ -118,7 +122,8 @@ class _HomeNewPageState extends State<HomeNewPage>
                         width: MySizes.s_30,
                         height: MySizes.s_30,
                       ),
-                      onTap: () {},
+                      onTap: () =>
+                          RoutersNavigate().navigateToHomeTagListPage(context),
                     )
                   ],
                 ),
@@ -130,9 +135,10 @@ class _HomeNewPageState extends State<HomeNewPage>
         });
   }
 
-  Widget _buildTagItem(String text) {
+  Widget _buildTagItem(String id, String text) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () =>
+          RoutersNavigate().navigateToHomeSearchResultPage(context, id, text),
       child: Container(
         margin: EdgeInsets.only(right: MySizes.s_4),
         padding: EdgeInsets.symmetric(

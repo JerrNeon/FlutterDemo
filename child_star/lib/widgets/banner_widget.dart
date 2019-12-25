@@ -2,7 +2,6 @@ import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/models/index.dart';
-import 'package:child_star/utils/encode_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 

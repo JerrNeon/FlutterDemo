@@ -18,6 +18,7 @@ class Routers {
   static const String home_new_detail = "/home/new_detail";
   static const String author_homepage = "/home/attention/author";
   static const String home_search_result = "/home/search/result";
+  static const String home_tag_list = "/home/tag_list";
   static const String login = "/user/login";
   static const String register = "/user/register";
   static const String forget_password = "/user/forget_password";
@@ -54,6 +55,7 @@ class Routers {
     router.define(lecture_search, handler: lectureSearchPageHandler);
     router.define(lecture_search_result,
         handler: lectureSearchResultPageHandler);
+    router.define(home_tag_list, handler: homeTagListPageHandler);
   }
 }
 
@@ -152,4 +154,9 @@ var lectureSearchResultPageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   String name = parameters["name"]?.first ?? "";
   return LectureSearchResultPage(name);
+});
+
+var homeTagListPageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return HomeTagListPage();
 });

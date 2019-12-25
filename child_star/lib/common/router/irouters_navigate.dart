@@ -53,4 +53,7 @@ abstract class IRoutersNavigate {
 
   ///跳转到讲堂搜索结果界面[LectureSearchResultPage]
   navigateToLectureSearchResultPage(BuildContext context, String name);
+
+  ///跳转到讲堂搜索结果界面[HomeTagListPage]
+  navigateToHomeTagListPage(BuildContext context);
 }

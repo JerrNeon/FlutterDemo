@@ -103,3 +103,18 @@ class PaddingWidget extends StatelessWidget {
     );
   }
 }
+
+class NoDataWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "no data",
+        style: TextStyle(
+          color: MyColors.c_686868,
+          fontSize: MyFontSizes.s_14,
+        ),
+      ),
+    );
+  }
+}

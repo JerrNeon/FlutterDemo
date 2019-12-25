@@ -13,5 +13,7 @@ export 'news.dart' ;
 export 'newsDetail.dart' ; 
 export 'profile.dart' ; 
 export 'tag.dart' ; 
+export 'tagList.dart' ; 
+export 'tagListItem.dart' ; 
 export 'token.dart' ; 
 export 'user.dart' ; 

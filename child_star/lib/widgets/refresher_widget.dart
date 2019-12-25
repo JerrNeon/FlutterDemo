@@ -1,6 +1,6 @@
-import 'package:child_star/common/net/net_config.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/models_index.dart';
+import 'package:child_star/widgets/common_widget.dart';
 import 'package:child_star/widgets/future_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -209,15 +209,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   }
 
   Widget _buildNoData() {
-    return Center(
-      child: Text(
-        "no data",
-        style: TextStyle(
-          color: MyColors.c_686868,
-          fontSize: MyFontSizes.s_14,
-        ),
-      ),
-    );
+    return NoDataWidget();
   }
 
   _onRefresh() async {

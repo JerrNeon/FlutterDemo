@@ -363,6 +363,10 @@ class GmLocalizations {
    String get homeSearchResultTitle {
     return Intl.message("搜索结果", name: "homeSearchResultTitle");
   }
+
+  String get homeHotTagTitle {
+    return Intl.message("热门标签", name: "homeHotTagTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

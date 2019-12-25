@@ -383,4 +383,9 @@ class NetManager {
     });
     return PageList<Lecture>.page(response, (e) => Lecture.fromJson(e));
   }
+
+  Future<List<TagList>> getTagList() async {
+    List response = await Net(context).post(NetConfig.GET_TAG_LIST);
+    return response.map((e) => TagList.fromJson(e)).toList();
+  }
 }
