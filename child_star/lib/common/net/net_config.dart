@@ -82,4 +82,7 @@ class NetConfig {
 
   ///作者文章列表
   static const GET_AUTHOR_NEWS_LIST = "info/getAuthorInfoList";
+
+  ///获取广告
+  static const GET_ADVERTISEMENT = "model/getAdvert";
 }

@@ -367,6 +367,10 @@ class GmLocalizations {
   String get homeHotTagTitle {
     return Intl.message("热门标签", name: "homeHotTagTitle");
   }
+
+  String get splashSkipTitle {
+    return Intl.message("跳过", name: "splashSkitTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

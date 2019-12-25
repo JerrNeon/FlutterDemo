@@ -25,12 +25,18 @@ class RoutersNavigate extends IRoutersNavigate {
   }
 
   @override
-  navigateToMain(BuildContext context) {
+  navigateToMain(
+    BuildContext context, {
+    bool replace = false,
+    bool clearStack = false,
+  }) {
     return Routers.router.navigateTo(
       context,
       Routers.root,
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
+      replace: replace,
+      clearStack: clearStack,
     );
   }
 

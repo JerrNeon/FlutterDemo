@@ -83,7 +83,9 @@ class _H5PageState extends State<H5Page> {
   }
 
   _getTitle() async {
-    title = await _controller.getTitle();
-    setState(() {});
+    if (mounted) {
+      title = await _controller.getTitle();
+      setState(() {});
+    }
   }
 }

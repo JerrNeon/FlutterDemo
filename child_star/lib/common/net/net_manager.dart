@@ -388,4 +388,13 @@ class NetManager {
     List response = await Net(context).post(NetConfig.GET_TAG_LIST);
     return response.map((e) => TagList.fromJson(e)).toList();
   }
+
+  ///id	否	int	广告模块id	1：打开APP广告；默认：1
+  Future<List<Banners>> getAdvertisement({int id = 1}) async {
+    List response =
+        await Net(context).post(NetConfig.GET_ADVERTISEMENT, params: {
+      "id": id,
+    });
+    return response.map((e) => Banners.fromJson(e)).toList();
+  }
 }
