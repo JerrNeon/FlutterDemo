@@ -378,7 +378,7 @@ class NetManager {
     var response =
         await Net(context).post(NetConfig.GET_LECTURE_SEARCH_LIST, params: {
       "title": title,
-      "pageIndex": pageIndex,
+      "pageNum": pageIndex,
       "pageSize": pageSize,
     });
     return PageList<Lecture>.page(response, (e) => Lecture.fromJson(e));
@@ -396,5 +396,31 @@ class NetManager {
       "id": id,
     });
     return response.map((e) => Banners.fromJson(e)).toList();
+  }
+
+  Future<Chunyu> getChunYuUrl() async {
+    var response = await Net(context).post(NetConfig.GET_CHUNYUURL);
+    return Chunyu.fromJson(response);
+  }
+
+  Future<List<WikiTagList>> getWikiTagList() async {
+    List response = await Net(context).post(NetConfig.GET_WIKI_TAG_LIST);
+    return response.map((e) => WikiTagList.fromJson(e)).toList();
+  }
+
+  /// wikiTagId	是	int	百科标签id
+  /// pageNum	否	int	页数	默认1
+  /// pageSize	否	int	页码大小	默认10
+  Future<PageList<News>> getWikiList({
+    @required String tagId,
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response = await Net(context).post(NetConfig.GET_WIKI_LIST, params: {
+      "wikiTagId": tagId,
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList.page(response, (e) => News.fromJson(e));
   }
 }

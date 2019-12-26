@@ -46,6 +46,28 @@ class MyColors {
   static const Color c_ffb6c3 = Color(0xFFFFB6C3);
   static const Color c_636363 = Color(0xFF636363);
   static const Color c_717171 = Color(0xFF717171);
+  static const Color c_6eabb4 = Color(0xFF6EABB4);
+  static const Color c_ffa054 = Color(0xFFFFA054);
+  static const Color c_9f9f9f = Color(0xFF9F9F9F);
+  static const Color c_87d1e1 = Color(0xFF87D1E1);
+  static const Color c_9ac391 = Color(0xFF9AC391);
+  static const Color c_d6bea9 = Color(0xFFD6BEA9);
+  static const Color c_f3df80 = Color(0xFFF3DF80);
+  static const Color c_af81fd = Color(0xFFAF81FD);
+  static const Color c_6ff6b2 = Color(0xFF6FF6B2);
+  static const Color c_80b3e3 = Color(0xFF80B3E3);
+  static const Color c_e898ff = Color(0xFFE898FF);
+  static const Color c_6e87f3 = Color(0xFF6E87F3);
+  static const Color c_ffd2d9 = Color(0xFFFFD2D9);
+  static const Color c_d2f7ff = Color(0xFFD2F7FF);
+  static const Color c_daffd2 = Color(0xFFDAFFD2);
+  static const Color c_ffe7d2 = Color(0xFFFFE7D2);
+  static const Color c_fff1b0 = Color(0xFFFFF1B0);
+  static const Color c_d1b6ff = Color(0xFFD1B6FF);
+  static const Color c_b6ffda = Color(0xFFB6FFDA);
+  static const Color c_d2e9ff = Color(0xFFD2E9FF);
+  static const Color c_f5d2ff = Color(0xFFF5D2FF);
+  static const Color c_b0bfff = Color(0xFFB0BFFF);
 }
 
 class MyColorsFul {
@@ -56,5 +78,32 @@ class MyColorsFul {
     3: MyColors.c_58f2ff,
     4: MyColors.c_e3b891,
     5: MyColors.c_6cb3f1,
+  });
+
+  static const MaterialColor wiki_tag = MaterialColor(0xFFFFA2B1, <int, Color>{
+    0: MyColors.c_ffa2b1,
+    1: MyColors.c_87d1e1,
+    2: MyColors.c_9ac391,
+    3: MyColors.c_d6bea9,
+    4: MyColors.c_f3df80,
+    5: MyColors.c_af81fd,
+    6: MyColors.c_6ff6b2,
+    7: MyColors.c_80b3e3,
+    8: MyColors.c_e898ff,
+    9: MyColors.c_6e87f3,
+  });
+
+  static const MaterialColor wiki_tag_item =
+      MaterialColor(0xFFFFD2D9, <int, Color>{
+    0: MyColors.c_ffd2d9,
+    1: MyColors.c_d2f7ff,
+    2: MyColors.c_daffd2,
+    3: MyColors.c_ffe7d2,
+    4: MyColors.c_fff1b0,
+    5: MyColors.c_d1b6ff,
+    6: MyColors.c_b6ffda,
+    7: MyColors.c_d2e9ff,
+    8: MyColors.c_f5d2ff,
+    9: MyColors.c_b0bfff,
   });
 }

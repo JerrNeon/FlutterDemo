@@ -1,9 +1,7 @@
-import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
-import 'package:child_star/common/router/routers_navigate.dart';
-import 'package:child_star/i10n/gm_localizations_intl.dart';
-import 'package:child_star/models/news.dart';
-import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/i10n/i10n_index.dart';
+import 'package:child_star/models/index.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +60,8 @@ class _ConsultationPageState extends State<ConsultationPage>
               children: <Widget>[
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () =>
+                        RoutersNavigate().navigateToInquiryPage(context),
                     child: Image(
                       image: MyImages.ic_consulation_ask,
                     ),
@@ -121,6 +120,7 @@ class _ConsultationPageState extends State<ConsultationPage>
           onTap: (index) {
             if (index == _tabList.length - 1) {
               _tabController.index = 0;
+              RoutersNavigate().navigateToWikiTagPage(context);
             }
           },
         ),
@@ -138,69 +138,10 @@ class _ConsultationPageState extends State<ConsultationPage>
           keepAlive: true,
           onRefreshLoading: (pageIndex) =>
               NetManager(context).getNewsList(pageIndex, type: 3),
-          listItemBuilder: (context, index, data) => GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => RoutersNavigate()
-                .navigateToNewDetail(context, data.id.toString()),
-            child: _buildItem(data),
-          ),
+          listItemBuilder: (context, index, data) => WikiItemWidget(data: data),
         ),
         EmptyWidget(),
       ],
-    );
-  }
-
-  Widget _buildItem(News data) {
-    return Padding(
-      padding: EdgeInsets.only(
-          left: MySizes.s_10,
-          top: MySizes.s_9,
-          right: MySizes.s_14,
-          bottom: MySizes.s_4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          loadImage(
-            data.headUrl,
-            width: MySizes.s_60,
-            height: MySizes.s_60,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(MySizes.s_4),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: MySizes.s_12),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    data.title,
-                    style: TextStyle(
-                      color: MyColors.c_686868,
-                      fontSize: MyFontSizes.s_12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: MySizes.s_6),
-                    child: Text(
-                      "${data.lookRecord}${GmLocalizations.of(context).consultationBrowseNumTitle}",
-                      style: TextStyle(
-                        color: MyColors.c_929292,
-                        fontSize: MyFontSizes.s_10,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Image(
-            image: MyImages.ic_mine_arrow,
-          ),
-        ],
-      ),
     );
   }
 }

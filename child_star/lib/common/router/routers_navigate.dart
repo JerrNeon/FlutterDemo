@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:child_star/common/router/irouters_navigate.dart';
+import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/route_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:fluro/fluro.dart';
@@ -197,6 +200,39 @@ class RoutersNavigate extends IRoutersNavigate {
     return Routers.router.navigateTo(
       context,
       Routers.home_tag_list,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToInquiryPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.consultation_inquiry,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToWikiTagPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.consultation_wiki_tag,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToWikiListPage(
+      BuildContext context, int index, String title, List<Tag> tagList) {
+    String json = jsonEncode(tagList.map((e) => e.toJson()).toList());
+    return Routers.router.navigateTo(
+      context,
+      Routers.consultation_wiki_list +
+          "?index=$index&title=${chineseEncode(title)}&tagList=${chineseEncode(json)}",
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );

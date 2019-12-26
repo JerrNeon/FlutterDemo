@@ -360,7 +360,7 @@ class GmLocalizations {
     return Intl.message("热门搜索", name: "homeSearchHotTitle");
   }
 
-   String get homeSearchResultTitle {
+  String get homeSearchResultTitle {
     return Intl.message("搜索结果", name: "homeSearchResultTitle");
   }
 
@@ -370,6 +370,44 @@ class GmLocalizations {
 
   String get splashSkipTitle {
     return Intl.message("跳过", name: "splashSkitTitle");
+  }
+
+  String get inquiryTitle {
+    return Intl.message("在线问诊", name: "inquiryTitle");
+  }
+
+  String get inquiryTab1Title {
+    return Intl.message("全科在线咨询", name: "inquiryTab1Title");
+  }
+
+  String get inquiryTab2Title {
+    return Intl.message("儿童私人在线专属健康顾问", name: "inquiryTab2Title");
+  }
+
+  String get inquiryTipsTitle {
+    return Intl.message("# 本服务由第三方专业平台提供，有任何疑问请直接咨询第三方平台 #",
+        name: "inquiryTitle");
+  }
+
+  String get inquiryDialogContent {
+    return Intl.message("VIP会员（推广期6元/年）\n可以享受免费在线咨询\n马上加入吧！",
+        name: "inquiryDialogContent");
+  }
+
+  String get inquiryDialogPositive {
+    return Intl.message("购买会员", name: "inquiryDialogPositive");
+  }
+
+  String get inquiryDialogNegative {
+    return Intl.message("继续前往", name: "inquiryDialogNegative");
+  }
+
+  String get wikiTagTitle {
+    return Intl.message("育儿百科", name: "inquwikiTagTitleiryDialogNegative");
+  }
+
+  String get wikiTagSearchHint {
+    return Intl.message("查找育儿资料", name: "wikiTagSearchHint");
   }
 }
 

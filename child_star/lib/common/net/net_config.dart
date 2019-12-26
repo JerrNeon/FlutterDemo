@@ -85,4 +85,13 @@ class NetConfig {
 
   ///获取广告
   static const GET_ADVERTISEMENT = "model/getAdvert";
+
+  ///获取春雨医生H5链接
+  static const GET_CHUNYUURL = "sapi/chunyuUrl";
+
+  ///获取个人百科标签
+  static const GET_WIKI_TAG_LIST = "tag/getWikiTags";
+
+  ///标签下百科列表
+  static const GET_WIKI_LIST = "info/getWikis";
 }

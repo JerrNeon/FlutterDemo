@@ -1,5 +1,5 @@
+import 'package:child_star/routes/consultation/consultation_index.dart';
 import 'package:child_star/routes/exercise/exercise_index.dart';
-import 'package:child_star/routes/home/author_page.dart';
 import 'package:child_star/routes/home/home_index.dart';
 import 'package:child_star/routes/knowledge/knowledge_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
@@ -29,6 +29,9 @@ class Routers {
   static const String course_detail = "/lecture/detail/course_detail";
   static const String lecture_search = "/lecture/search";
   static const String lecture_search_result = "/lecture/search/result";
+  static const String consultation_inquiry = "/consultation/inquiry";
+  static const String consultation_wiki_tag = "/consultation/wiki_tag";
+  static const String consultation_wiki_list = "/consultation/wiki_tag/list";
 
   static var router = Router();
 
@@ -56,6 +59,9 @@ class Routers {
     router.define(lecture_search_result,
         handler: lectureSearchResultPageHandler);
     router.define(home_tag_list, handler: homeTagListPageHandler);
+    router.define(consultation_inquiry, handler: consultationInquiryHandler);
+    router.define(consultation_wiki_tag, handler: consultationWikiTagHandler);
+    router.define(consultation_wiki_list, handler: consultationWikiListHandler);
   }
 }
 
@@ -159,4 +165,26 @@ var lectureSearchResultPageHandler = Handler(
 var homeTagListPageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   return HomeTagListPage();
+});
+
+var consultationInquiryHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return InquiryPage();
+});
+
+var consultationWikiTagHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return WikiTagPage();
+});
+
+var consultationWikiListHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  int index = int.tryParse(parameters["index"]?.first ?? "") ?? 0;
+  String title = parameters["title"]?.first ?? "";
+  String tagList = parameters["tagList"]?.first ?? "";
+  return WikiListPage(
+    index: index,
+    title: title,
+    tagList: tagList,
+  );
 });

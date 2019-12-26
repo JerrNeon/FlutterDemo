@@ -13,42 +13,46 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(
-          left: MySizes.s_4, right: MySizes.s_6, bottom: MySizes.s_8),
-      child: GestureDetector(
-        onTap: onTap ?? () => RoutersNavigate().navigateToHomeSearch(context),
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            ConstrainedBox(
-              constraints: BoxConstraints.expand(
-                  width: double.infinity, height: MySizes.s_30),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                    color: MyColors.c_f7f7f7,
-                    borderRadius: BorderRadius.circular(MySizes.s_14),
-                    border: Border.all(color: MyColors.c_ececec)),
+    return GestureDetector(
+      onTap: onTap ?? () => RoutersNavigate().navigateToHomeSearch(context),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        color: Colors.white,
+        child: Container(
+          width: double.infinity,
+          height: MySizes.s_30,
+          margin: EdgeInsets.only(
+            left: MySizes.s_4,
+            right: MySizes.s_6,
+            bottom: MySizes.s_8,
+          ),
+          decoration: BoxDecoration(
+            color: MyColors.c_f7f7f7,
+            borderRadius: BorderRadius.circular(MySizes.s_14),
+            border: Border.all(color: MyColors.c_ececec),
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Positioned(
+                left: MySizes.s_8,
+                top: 0,
+                bottom: 0,
+                child: Image(
+                  image: MyImages.ic_home_search,
+                  width: MySizes.s_18,
+                  height: MySizes.s_18,
+                ),
               ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                    left: MySizes.s_8, top: MySizes.s_6, bottom: MySizes.s_6),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Image(
-                    image: MyImages.ic_home_search,
-                    width: MySizes.s_18,
-                    height: MySizes.s_18,
-                  ),
-                )),
-            Text(
-              text ?? GmLocalizations.of(context).searchHintTitle,
-              style: TextStyle(
-                  color: MyColors.c_b6b6b6, fontSize: MyFontSizes.s_13),
-            )
-          ],
+              Text(
+                text ?? GmLocalizations.of(context).searchHintTitle,
+                style: TextStyle(
+                  color: MyColors.c_b6b6b6,
+                  fontSize: MyFontSizes.s_13,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

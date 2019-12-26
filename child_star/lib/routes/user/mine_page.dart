@@ -4,6 +4,7 @@ import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -276,13 +277,9 @@ class _UserInfoWidget extends StatelessWidget {
   }
 
   Widget _buildAd() {
-    return Container(
-      margin: EdgeInsets.only(bottom: MySizes.s_5),
-      width: double.infinity,
-      child: Image(
-        image: MyImages.ic_mine_banner,
-        fit: BoxFit.cover,
-      ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: MySizes.s_5),
+      child: AdWidget(),
     );
   }
 

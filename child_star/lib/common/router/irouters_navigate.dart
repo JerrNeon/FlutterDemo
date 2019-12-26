@@ -1,8 +1,10 @@
+import 'package:child_star/models/index.dart';
 import 'package:child_star/routes/home/home_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
 import 'package:child_star/routes/user/mine_index.dart';
 import 'package:child_star/routes/exercise/exercise_index.dart';
 import 'package:child_star/routes/knowledge/knowledge_index.dart';
+import 'package:child_star/routes/consultation/consultation_index.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IRoutersNavigate {
@@ -60,4 +62,14 @@ abstract class IRoutersNavigate {
 
   ///跳转到讲堂搜索结果界面[HomeTagListPage]
   navigateToHomeTagListPage(BuildContext context);
+
+  ///跳转到咨询问诊界面[InquiryPage]
+  navigateToInquiryPage(BuildContext context);
+
+  ///跳转到育儿百科标签列表界面[WikiTagPage]
+  navigateToWikiTagPage(BuildContext context);
+
+  ///跳转到育儿百科列表界面[WikiListPage]
+  navigateToWikiListPage(
+      BuildContext context, int index, String title, List<Tag> tagList);
 }

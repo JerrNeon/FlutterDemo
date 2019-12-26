@@ -1,5 +1,6 @@
 export 'author.dart' ; 
 export 'banners.dart' ; 
+export 'chunyu.dart' ; 
 export 'course.dart' ; 
 export 'courseComment.dart' ; 
 export 'courseDetail.dart' ; 
@@ -17,3 +18,4 @@ export 'tagList.dart' ;
 export 'tagListItem.dart' ; 
 export 'token.dart' ; 
 export 'user.dart' ; 
+export 'wikiTagList.dart' ; 

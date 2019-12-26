@@ -122,6 +122,24 @@ class MyImages {
   static const AssetImage ic_homesearch_clear =
       AssetImage("images/ic_homesearch_clear.png");
   static const AssetImage bg_splash = AssetImage("images/bg_splash.png");
+  static const AssetImage ic_consultation_Inquiry1_btn1 =
+      AssetImage("images/ic_consultation_Inquiry1_btn1.png");
+  static const AssetImage ic_consultation_Inquiry1_btn2 =
+      AssetImage("images/ic_consultation_Inquiry1_btn2.png");
+  static const AssetImage ic_consultation_Inquiry1_cover =
+      AssetImage("images/ic_consultation_Inquiry1_cover.png");
+  static const AssetImage ic_consultation_Inquiry1_describe =
+      AssetImage("images/ic_consultation_Inquiry1_describe.png");
+  static const AssetImage ic_consultation_Inquiry2_btn1 =
+      AssetImage("images/ic_consultation_Inquiry2_btn1.png");
+  static const AssetImage ic_consultation_Inquiry2_btn2 =
+      AssetImage("images/ic_consultation_Inquiry2_btn2.png");
+  static const AssetImage ic_consultation_Inquiry2_cover =
+      AssetImage("images/ic_consultation_Inquiry2_cover.png");
+  static const AssetImage ic_consultation_Inquiry2_describe =
+      AssetImage("images/ic_consultation_Inquiry2_describe.png");
+  static const AssetImage ic_consultation_close =
+      AssetImage("images/ic_consultation_close.png");
 }
 
 class MyImagesMultiple {
@@ -151,5 +169,15 @@ class MyImagesMultiple {
   static const attention_status = <bool, AssetImage>{
     true: MyImages.ic_attention_followed,
     false: MyImages.ic_attention_unfollowed,
+  };
+
+  static const inquiry_status1 = <bool, AssetImage>{
+    true: MyImages.ic_consultation_Inquiry1_btn1,
+    false: MyImages.ic_consultation_Inquiry1_btn2,
+  };
+
+  static const inquiry_status2 = <bool, AssetImage>{
+    true: MyImages.ic_consultation_Inquiry2_btn1,
+    false: MyImages.ic_consultation_Inquiry2_btn2,
   };
 }

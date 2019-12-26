@@ -194,16 +194,10 @@ class _LectureDetailPageState extends State<LectureDetailPage>
             //广告图
             Padding(
               padding: EdgeInsets.only(
-                left: MySizes.s_4,
                 top: MySizes.s_12,
-                right: MySizes.s_4,
                 bottom: MySizes.s_4,
               ),
-              child: Image(
-                width: double.infinity,
-                image: MyImages.ic_mine_banner,
-                fit: BoxFit.cover,
-              ),
+              child: AdWidget(),
             ),
             Divider(
               height: MySizes.s_1,

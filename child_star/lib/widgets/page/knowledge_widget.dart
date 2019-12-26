@@ -367,3 +367,17 @@ class CourseCommentWidget extends StatelessWidget {
     );
   }
 }
+
+class AdWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MySizes.s_4),
+      child: Image(
+        width: double.infinity,
+        image: MyImages.ic_mine_banner,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+}
