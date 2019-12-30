@@ -68,6 +68,15 @@ class MyColors {
   static const Color c_d2e9ff = Color(0xFFD2E9FF);
   static const Color c_f5d2ff = Color(0xFFF5D2FF);
   static const Color c_b0bfff = Color(0xFFB0BFFF);
+  static const Color c_8c8c8c = Color(0xFF8C8C8C);
+  static const Color c_a6a6a6 = Color(0xFFA6A6A6);
+  static const Color c_fdabb9 = Color(0xFFFDABB9);
+  static const Color c_acdec9 = Color(0xFFACDEC9);
+  static const Color c_acd3de = Color(0xFFACD3DE);
+  static const Color c_3b5d92 = Color(0xFF3B5D92);
+  static const Color c_999999 = Color(0xFF999999);
+  static const Color c_afafaf = Color(0xFFAFAFAF);
+  static const Color c_f4f4f4 = Color(0xFFF4F4F4);
 }
 
 class MyColorsFul {
@@ -105,5 +114,13 @@ class MyColorsFul {
     7: MyColors.c_d2e9ff,
     8: MyColors.c_f5d2ff,
     9: MyColors.c_b0bfff,
+  });
+
+  static const MaterialColor my_order_type =
+      MaterialColor(0xFFACDEC9, <int, Color>{
+    1: MyColors.c_3b5d92,
+    2: MyColors.c_fdabb9,
+    3: MyColors.c_acdec9,
+    4: MyColors.c_acd3de,
   });
 }

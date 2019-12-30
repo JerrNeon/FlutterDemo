@@ -1,0 +1,20 @@
+{
+    "amount": "1000",
+    "createdAt": "2019-10-11 15:21:42",
+    "goodsHeadUrl": "http://10.200.38.100:811/images/1566269827228n7379_304x228.png",
+    "goodsId": 3,
+    "goodsNum": 1,
+    "goodsTitle": "宝妈课堂",
+    "id": 10,
+    "orderNo": "20191011152142266608",
+    "payChannel": 0,
+    "payType": 2,
+    "payedAt": "1970-07-01 00:00:00",
+    "paymentNo": "",
+    "price": "1000",
+    "status": 2,
+    "total": "1000",
+    "type": 3,
+    "uid": 553,
+    "updatedAt": "1970-07-01 00:00:00"
+}

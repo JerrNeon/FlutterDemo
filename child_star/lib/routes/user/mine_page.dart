@@ -55,7 +55,7 @@ class _UserInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(user, context),
-              _buildBody(user, gm),
+              _buildBody(context, user, gm),
               _buildAd(),
               _buildList(gm),
             ],
@@ -132,7 +132,7 @@ class _UserInfoWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(User user, GmLocalizations gm) {
+  Widget _buildBody(BuildContext context, User user, GmLocalizations gm) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: MySizes.s_24),
       child: Row(
@@ -141,7 +141,7 @@ class _UserInfoWidget extends StatelessWidget {
           //我的关注
           Expanded(
             child: GestureDetector(
-              onTap: () {},
+              onTap: () => RoutersNavigate().navigateToMyAttentionPage(context),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -308,38 +308,42 @@ class _UserInfoWidget extends StatelessWidget {
         shrinkWrap: true,
         itemCount: imageList.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              left: MySizes.s_14,
-              top: MySizes.s_14,
-              right: MySizes.s_10,
-              bottom: MySizes.s_14,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Image(
-                      image: imageList[index],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: MySizes.s_14),
-                      child: Text(
-                        textList[index],
-                        style: TextStyle(
-                          color: MyColors.c_777777,
-                          fontSize: MyFontSizes.s_15,
+          return GestureDetector(
+            onTap: () => _handlerListClick(context, index),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: MySizes.s_14,
+                top: MySizes.s_14,
+                right: MySizes.s_10,
+                bottom: MySizes.s_14,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image(
+                        image: imageList[index],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: MySizes.s_14),
+                        child: Text(
+                          textList[index],
+                          style: TextStyle(
+                            color: MyColors.c_777777,
+                            fontSize: MyFontSizes.s_15,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Image(image: MyImages.ic_mine_arrow),
-              ],
+                    ],
+                  ),
+                  Image(image: MyImages.ic_mine_arrow),
+                ],
+              ),
             ),
           );
         },
@@ -351,5 +355,30 @@ class _UserInfoWidget extends StatelessWidget {
         },
       ),
     );
+  }
+
+  _handlerListClick(BuildContext context, int index) {
+    var routersNavigate = RoutersNavigate();
+    switch (index) {
+      case 0: //我的权益
+        break;
+      case 1: //我的课程
+        routersNavigate.navigateToMyCoursePage(context);
+        break;
+      case 2: //福利商城
+        break;
+      case 3: //我的订单
+        routersNavigate.navigateToMyOrderPage(context);
+        break;
+      case 4: //绘本书籍
+        break;
+      case 5: //离线缓存
+        break;
+      case 6: //我的收藏
+        routersNavigate.navigateToMyCollectionPage(context);
+        break;
+      default:
+        break;
+    }
   }
 }

@@ -423,4 +423,159 @@ class NetManager {
     });
     return PageList.page(response, (e) => News.fromJson(e));
   }
+
+  ///pageNum	否	int	页数	默认：1
+  ///pageSize	否	int	分页大小	默认：10
+  Future<PageList<MyOrder>> getMyOrderList({
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_MY_ORDER_LIST, params: {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList.page(response, (e) {
+      //amount、price、total字段类型不一致
+      dynamic amount = e["amount"];
+      dynamic price = e["price"];
+      dynamic total = e["total"];
+      if (amount is num) {
+        e["amount"] = amount.toString();
+      }
+      if (price is num) {
+        e["price"] = price.toString();
+      }
+      if (total is num) {
+        e["total"] = total.toString();
+      }
+      return MyOrder.fromJson(e);
+    });
+  }
+
+  ///type	否	int	1：收费课程；2：免费课程； 默认：1
+  ///pageNum	否	int	页数	默认：1
+  ///pageSize	否	int	分页大小	默认：10
+  Future<PageList<MyCourse>> getMyCourseList({
+    int type = 1,
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_MY_COURSE_LIST, params: {
+      "type": type,
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList.page(response, (e) => MyCourse.fromJson(e));
+  }
+
+  ///type	否	int	收藏类型：1：资讯；2：讲堂 默认1
+  ///pageNum	否	int	页数	默认：1
+  ///pageSize	否	int	分页大小	默认：10
+  Future<PageList<MyCollection>> getMyCollectionList({
+    int type = 1,
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_MY_COLLECTION_LIST, params: {
+      "type": type,
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList.page(response, (e) => MyCollection.fromJson(e));
+  }
+
+  ///pageNum	否	int	页数	默认：1
+  ///pageSize	否	int	分页大小	默认：10
+  Future<PageList<MyAttention>> getMyAttentionList({
+    @required int pageIndex,
+    int pageSize = PAGE_SIZE,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_MY_ATTENTION_LIST, params: {
+      "pageNum": pageIndex,
+      "pageSize": pageSize,
+    });
+    return PageList.page(response, (e) => MyAttention.fromJson(e));
+  }
+
+  ///id	是	int	收藏的id
+  ///type	是	string	收藏类型：1：资讯；2：讲堂(非课程)；
+  Future<Result> doCollection({
+    @required String id,
+    @required int type,
+  }) async {
+    var response = await Net(context).post(NetConfig.DO_COLLECT, params: {
+      "id": id,
+      "type": type,
+    });
+    return Result.fromJson(response);
+  }
+
+  ///id	是	int	点赞对象 id
+  ///type	是	int	点赞类型：1：资讯；2：讲堂(非课程)；3：资讯评论（id传评论id）
+  Future<Result> doLike({
+    @required String id,
+    @required int type,
+  }) async {
+    var response = await Net(context).post(NetConfig.DO_FAVORITE, params: {
+      "id": id,
+      "type": type,
+    });
+    return Result.fromJson(response);
+  }
+
+  ///authorId	是	int	作者id
+  Future<Result> doFollow({
+    @required String authorId,
+  }) async {
+    var response = await Net(context).post(NetConfig.DO_FOLLOW, params: {
+      "authorId": authorId,
+    });
+    return Result.fromJson(response);
+  }
+
+  /// headUrl	否	string	头像
+  /// nickName	否	string	昵称
+  /// tagId	否	string	标签id
+  /// country	否	string	国家
+  /// province	否	string	省份
+  /// city	否	string	城市
+  /// sex	否	string	性别1：男；2：女
+  /// mySign	否	string	个性签名
+  /// birthday	否	string	生日
+  Future modifyUserInfo({
+    String headUrl,
+    String nickName,
+    String tagId,
+    String country,
+    String province,
+    String city,
+    String sex,
+    String mySign,
+    String birthday,
+  }) async {
+    return await Net(context).post(NetConfig.MODIFY_USERINFO, params: {
+      "headUrl": headUrl,
+      "nickName": nickName,
+      "tagId": tagId,
+      "country": country,
+      "province": province,
+      "city": city,
+      "sex": sex,
+      "mySign": mySign,
+      "birthday": birthday,
+    });
+  }
+
+  ///file	是	multipart/form-data	文件流	支持格式jpg,png,jpeg,gif,mp3,mp4
+  Future<String> uploadFile({
+    String file,
+  }) async {
+    return await Net(context).post(NetConfig.UPLOAD_FILE, params: {
+      "file": file,
+    });
+  }
 }

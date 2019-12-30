@@ -5,6 +5,9 @@ import 'package:child_star/routes/knowledge/knowledge_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
 import 'package:child_star/routes/main_page.dart';
 import 'package:child_star/routes/user/mine_index.dart';
+import 'package:child_star/routes/user/my_attention_page.dart';
+import 'package:child_star/routes/user/my_collection_page.dart';
+import 'package:child_star/routes/user/my_course_page.dart';
 import 'package:child_star/states/profile_notifier.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:fluro/fluro.dart';
@@ -32,6 +35,10 @@ class Routers {
   static const String consultation_inquiry = "/consultation/inquiry";
   static const String consultation_wiki_tag = "/consultation/wiki_tag";
   static const String consultation_wiki_list = "/consultation/wiki_tag/list";
+  static const String mine_my_order = "/user/mine/my_order";
+  static const String mine_my_course = "/user/mine/my_course";
+  static const String mine_my_collection = "/user/mine/my_collection";
+  static const String mine_my_attention = "/user/mine/my_attention";
 
   static var router = Router();
 
@@ -62,6 +69,10 @@ class Routers {
     router.define(consultation_inquiry, handler: consultationInquiryHandler);
     router.define(consultation_wiki_tag, handler: consultationWikiTagHandler);
     router.define(consultation_wiki_list, handler: consultationWikiListHandler);
+    router.define(mine_my_order, handler: myOrderHandler);
+    router.define(mine_my_course, handler: myCourseHandler);
+    router.define(mine_my_collection, handler: myCollectionHandler);
+    router.define(mine_my_attention, handler: myAttentionHandler);
   }
 }
 
@@ -187,4 +198,24 @@ var consultationWikiListHandler = Handler(
     title: title,
     tagList: tagList,
   );
+});
+
+var myOrderHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return _isLogin(context) ? MyOrderPage() : LoginPage();
+});
+
+var myCourseHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return _isLogin(context) ? MyCoursePage() : LoginPage();
+});
+
+var myCollectionHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return _isLogin(context) ? MyCollectionPage() : LoginPage();
+});
+
+var myAttentionHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return _isLogin(context) ? MyAttentionPage() : LoginPage();
 });

@@ -94,4 +94,31 @@ class NetConfig {
 
   ///标签下百科列表
   static const GET_WIKI_LIST = "info/getWikis";
+
+  ///我的订单列表
+  static const GET_MY_ORDER_LIST = "order/getList";
+
+  ///获取我的课程
+  static const GET_MY_COURSE_LIST = "user/getCourseList";
+
+  ///获取用户收藏列表
+  static const GET_MY_COLLECTION_LIST = "user/getCollectList";
+
+  ///获取用户关注列表
+  static const GET_MY_ATTENTION_LIST = "user/getFollowList";
+
+  ///添加和取消收藏
+  static const DO_COLLECT = "user/collect";
+
+  ///添加和取消点赞
+  static const DO_FAVORITE = "user/favorite";
+
+  ///添加和取消关注
+  static const DO_FOLLOW = "user/follow";
+
+  ///修改用户信息
+  static const MODIFY_USERINFO = "user/setInfo";
+
+  ///上传文件
+  static const UPLOAD_FILE = "sapi/uploadFile";
 }

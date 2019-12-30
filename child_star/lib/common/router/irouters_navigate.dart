@@ -72,4 +72,16 @@ abstract class IRoutersNavigate {
   ///跳转到育儿百科列表界面[WikiListPage]
   navigateToWikiListPage(
       BuildContext context, int index, String title, List<Tag> tagList);
+
+  ///跳转到我的订单列表界面[MyOrderPage]
+  navigateToMyOrderPage(BuildContext context);
+
+  ///跳转到我的课程列表界面[MyCoursePage]
+  navigateToMyCoursePage(BuildContext context);
+
+  ///跳转到我的收藏列表界面[MyCollectionPage]
+  navigateToMyCollectionPage(BuildContext context);
+
+  ///跳转到我的关注列表界面[MyAttentionPage]
+  navigateToMyAttentionPage(BuildContext context);
 }

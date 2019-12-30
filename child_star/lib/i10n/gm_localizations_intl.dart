@@ -409,6 +409,62 @@ class GmLocalizations {
   String get wikiTagSearchHint {
     return Intl.message("查找育儿资料", name: "wikiTagSearchHint");
   }
+
+  String get myOrderNoTitle {
+    return Intl.message("订单编号", name: "myOrderNoTitle");
+  }
+
+  String get myOrderNumber1Title {
+    return Intl.message("共", name: "myOrderNumber1Title");
+  }
+
+  String get myOrderNumber2Title {
+    return Intl.message("件商品", name: "myOrderNumber2Title");
+  }
+
+  String get myOrderPriceTitle {
+    return Intl.message("实付：", name: "myOrderPriceTitle");
+  }
+
+  String get chinesePriceTitle {
+    return Intl.message("¥", name: "chinesePriceTitle");
+  }
+
+  String get myOrderTypeCourseTitle {
+    return Intl.message("课程", name: "myOrderTypeCourseTitle");
+  }
+
+  String get myOrderTypeBookTitle {
+    return Intl.message("书籍", name: "myOrderTypeBookTitle");
+  }
+
+  String get myOrderTypeVipTitle {
+    return Intl.message("VIP", name: "myOrderTypeVipTitle");
+  }
+
+  String get myOrderTypeRechargeTitle {
+    return Intl.message("充值", name: "myOrderTypeRechargeTitle");
+  }
+
+  String get myCoursePayTitle {
+    return Intl.message("付费课程", name: "myCoursePayTitle");
+  }
+
+  String get myCourseFreeTitle {
+    return Intl.message("免费课程", name: "myCourseFreeTitle");
+  }
+
+  String get myCollectionNewsTitle {
+    return Intl.message("资讯", name: "myCollectionNewsTitle");
+  }
+
+  String get myCollectionLectureTitle {
+    return Intl.message("讲堂", name: "myCollectionLectureTitle");
+  }
+
+  String get myAttentionStatusTitle {
+    return Intl.message("已关注", name: "myAttentionStatusTitle");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {
