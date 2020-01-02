@@ -84,4 +84,10 @@ abstract class IRoutersNavigate {
 
   ///跳转到我的关注列表界面[MyAttentionPage]
   navigateToMyAttentionPage(BuildContext context);
+
+  ///跳转到修改用户信息界面[ModifyUserInfoPage]
+  navigateToModifyUserInfoPage(BuildContext context);
+
+  ///跳转到修改昵称和修改签名界面[ModifyNamePage]
+  navigateToModifyNamePage(BuildContext context, int type);
 }

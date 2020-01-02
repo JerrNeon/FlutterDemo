@@ -61,8 +61,6 @@ class _SplashPageState extends State<SplashPage> {
             if (snapshot.hasError ||
                 snapshot.data == null ||
                 snapshot.data.isEmpty) {
-              _cancelTimer();
-              _navigatetoMainPage();
               return EmptyWidget();
             } else {
               return Container(

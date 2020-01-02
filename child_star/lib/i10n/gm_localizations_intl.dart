@@ -465,6 +465,74 @@ class GmLocalizations {
   String get myAttentionStatusTitle {
     return Intl.message("已关注", name: "myAttentionStatusTitle");
   }
+
+  String get modifyUserInfoTitle {
+    return Intl.message("编辑个人资料", name: "modifyUserInfoTitle");
+  }
+
+  String get modifyUserInfoAvatar {
+    return Intl.message("点击更换头像", name: "modifyUserInfoAvatar");
+  }
+
+  String get modifyUserInfoDialogCamera {
+    return Intl.message("拍一张", name: "modifyUserInfoDialogCamera");
+  }
+
+  String get modifyUserInfoDialogAlbum {
+    return Intl.message("相册选择", name: "modifyUserInfoDialogAlbum");
+  }
+
+  String get modifyUserInfoDialogCancel {
+    return Intl.message("取消", name: "modifyUserInfoDialogCancel");
+  }
+
+  String get modifyUserInfoNickName {
+    return Intl.message("昵称", name: "modifyUserInfoNickName");
+  }
+
+  String get modifyUserInfoSex {
+    return Intl.message("性别", name: "modifyUserInfoSex");
+  }
+
+  String get modifyUserInfoAddress {
+    return Intl.message("常住地", name: "modifyUserInfoAddress");
+  }
+
+  String get modifyUserInfoSignature {
+    return Intl.message("个性签名", name: "modifyUserInfoSignature");
+  }
+
+  String get modifyNickNameTitle {
+    return Intl.message("修改昵称", name: "modifyNickNameTitle");
+  }
+
+  String get modifyNickNameError {
+    return Intl.message("昵称格式不正确", name: "modifyNickNameError");
+  }
+
+  String get modifyNickNameLimit {
+    return Intl.message("最多16个字，只允许包含字母、数字、下划线和点", name: "modifyNickNameLimit");
+  }
+
+  String get modifyNickNameSubmit {
+    return Intl.message("确认", name: "modifyNickNameSubmit");
+  }
+
+  String get modifySignatureTitle {
+    return Intl.message("修改个性签名", name: "modifySignatureTitle");
+  }
+
+  String get modifySignatureError {
+    return Intl.message("个性签名不能为空", name: "modifySignatureError");
+  }
+
+  String get modifySignatureLimit {
+    return Intl.message("最多20个字", name: "modifySignatureLimit");
+  }
+
+  String get modifySuccessToast {
+    return Intl.message("修改成功", name: "modifySuccessToast");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

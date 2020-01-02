@@ -140,6 +140,11 @@ class MyImages {
       AssetImage("images/ic_consultation_Inquiry2_describe.png");
   static const AssetImage ic_consultation_close =
       AssetImage("images/ic_consultation_close.png");
+  static const AssetImage ic_user_avatar_edit =
+      AssetImage("images/ic_user_avatar_edit.png");
+  static const AssetImage ic_user_female =
+      AssetImage("images/ic_user_female.png");
+  static const AssetImage ic_user_male = AssetImage("images/ic_user_male.png");
 }
 
 class MyImagesMultiple {

@@ -4,3 +4,5 @@ export 'my_order_page.dart';
 export 'my_course_page.dart';
 export 'my_collection_page.dart';
 export 'my_attention_page.dart';
+export 'modify_userinfo_page.dart';
+export 'modify_name_page.dart';

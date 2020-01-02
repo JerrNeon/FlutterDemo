@@ -277,4 +277,24 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionBuilder: RouteAnimation.build(),
     );
   }
+
+  @override
+  navigateToModifyUserInfoPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.mine_modify_userinfo,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToModifyNamePage(BuildContext context, int type) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.mine_modify_name + "?type=$type",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
 }

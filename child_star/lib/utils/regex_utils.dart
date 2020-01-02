@@ -95,6 +95,10 @@ class RegexUtils {
   //只能为数字字母下划线组合 长度为6到16
   static const regexPassWord = r"^[a-zA-Z0-9_]{8,16}$";
 
+  //验证昵称
+  //只能为数字字母下划线和点组合 长度为不超过16
+  static const regexNickName = r"^[a-zA-Z0-9_.]{1,16}$";
+
   ///校验手机
   static bool checkMobile(String str) {
     return RegExp(regexMobile).hasMatch(str);
@@ -103,5 +107,10 @@ class RegexUtils {
   ///校验手机
   static bool checkPassword(String str) {
     return RegExp(regexPassWord).hasMatch(str);
+  }
+
+  ///校验昵称
+  static bool checkNickName(String str) {
+    return RegExp(regexNickName).hasMatch(str);
   }
 }

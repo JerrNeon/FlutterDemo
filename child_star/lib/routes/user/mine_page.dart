@@ -73,17 +73,21 @@ class _UserInfoWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: <Widget>[
-                loadImage(
-                  user.headUrl,
-                  shape: BoxShape.circle,
-                  width: MySizes.s_60,
-                  height: MySizes.s_60,
-                ),
-                Image(image: MyImages.ic_mine_edit),
-              ],
+            GestureDetector(
+              onTap: () =>
+                  RoutersNavigate().navigateToModifyUserInfoPage(context),
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: <Widget>[
+                  loadImage(
+                    user.headUrl,
+                    shape: BoxShape.circle,
+                    width: MySizes.s_60,
+                    height: MySizes.s_60,
+                  ),
+                  Image(image: MyImages.ic_mine_edit),
+                ],
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: MySizes.s_14),
