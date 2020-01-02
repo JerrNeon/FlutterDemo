@@ -41,7 +41,6 @@ class _UserInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<UserProvider>(context).user;
     return UserWidget(
       child: Container(
         color: MyColors.c_f3f2f1,
@@ -54,8 +53,17 @@ class _UserInfoWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(user, context),
-              _buildBody(context, user, gm),
+              Consumer<UserProvider>(builder: (context, value, child) {
+                User user = value.user;
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildHeader(user, context),
+                    _buildBody(context, user, gm),
+                  ],
+                );
+              }),
               _buildAd(),
               _buildList(gm),
             ],
