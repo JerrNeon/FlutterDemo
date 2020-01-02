@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
@@ -6,8 +8,10 @@ import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/page/user_widget.dart';
 import 'package:child_star/widgets/widget_index.dart';
+import 'package:city_pickers/city_pickers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +21,9 @@ class ModifyUserInfoPage extends StatefulWidget {
 }
 
 class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
+  Map<String, String> _provincesData;
+  Map<String, dynamic> _citiesData;
+
   @override
   Widget build(BuildContext context) {
     GmLocalizations gm = GmLocalizations.of(context);
@@ -237,7 +244,48 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
     }
   }
 
-  _modifyAddress() {}
+  _modifyAddress() async {
+    if (_provincesData == null || _citiesData == null) {
+      String provinceCityJson =
+          await rootBundle.loadString(MyFiles.province_city);
+      Map<String, dynamic> provinceCityMap = json.decode(provinceCityJson);
+      if (provinceCityMap != null && provinceCityMap.isNotEmpty) {
+        List provinceList = provinceCityMap["province"];
+        if (provinceList != null && provinceList.isNotEmpty) {
+          provinceList.asMap().forEach((provinceIndex, province) {
+            String provinceName = province["name"];
+            List cityList = province["city"];
+            _provincesData ??= {};
+            _provincesData.addAll({provinceIndex.toString(): provinceName});
+            if (cityList != null && cityList.isNotEmpty) {
+              Map<String, dynamic> cityValue = {};
+              cityList.asMap().forEach((cityIndex, city) {
+                String cityName = city["name"];
+                cityValue.addAll({
+                  ((cityIndex + 1) * 10000).toString(): {
+                    "name": cityName,
+                    "alpha": "",
+                  }
+                });
+              });
+              _citiesData ??= {};
+              _citiesData.addAll({provinceIndex.toString(): cityValue});
+            }
+          });
+        }
+      }
+    }
+    var result = await CityPickers.showCityPicker(
+      context: context,
+      showType: ShowType.pc,
+      locationCode: "0",
+      provincesData: _provincesData,
+      citiesData: _citiesData,
+    );
+    if (result != null) {
+      _modifyUserInfo(province: result.provinceName, city: result.cityName);
+    }
+  }
 
   _modifySignature() {
     RoutersNavigate()
@@ -247,7 +295,7 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
   _modifyUserInfo({
     String headUrl,
     String nickName,
-    String country,
+    String country = "中国",
     String province,
     String city,
     String sex,

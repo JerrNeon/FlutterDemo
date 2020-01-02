@@ -41,6 +41,7 @@ dependencies:
   logger: ^0.7.0+2
   audioplayers: ^0.13.5
   device_info: ^0.4.1+4
+  city_pickers: ^0.1.30
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
     - images/
     - images/2.0x/
     - images/3.0x/
+    - datas/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

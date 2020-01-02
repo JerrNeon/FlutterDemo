@@ -3,6 +3,7 @@ export 'my_images.dart';
 export 'my_sizes.dart';
 export 'my_systems.dart';
 export 'my_functions.dart';
+export 'my_files.dart';
 export 'global.dart';
 export 'config.dart';
 export 'net/net.dart';
