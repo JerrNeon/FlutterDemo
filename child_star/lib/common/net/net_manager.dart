@@ -2,6 +2,7 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/utils_index.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class NetManager {
@@ -572,10 +573,11 @@ class NetManager {
 
   ///file	是	multipart/form-data	文件流	支持格式jpg,png,jpeg,gif,mp3,mp4
   Future<String> uploadFile({
-    String file,
+    String filePath,
   }) async {
-    return await Net(context).post(NetConfig.UPLOAD_FILE, params: {
-      "file": file,
+    var data = FormData.fromMap({
+      "file": await MultipartFile.fromFile(filePath),
     });
+    return await Net(context).post(NetConfig.UPLOAD_FILE, data: data);
   }
 }

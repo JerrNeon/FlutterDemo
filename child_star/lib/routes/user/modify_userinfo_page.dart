@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ModifyUserInfoPage extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
                               Container(
                                 padding: EdgeInsets.all(MySizes.s_6),
                                 decoration: BoxDecoration(
-                                  color: MyColors.c_f5f5f5,
+                                  color: MyColors.c_f3f2f1,
                                   shape: BoxShape.circle,
                                 ),
                                 child: loadImage(
@@ -66,10 +67,14 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
                                   shape: BoxShape.circle,
                                 ),
                               ),
-                              DecoratedBox(
+                              Container(
+                                width: MySizes.s_86,
+                                height: MySizes.s_86,
+                                margin: EdgeInsets.all(MySizes.s_6),
                                 decoration: BoxDecoration(
-                                    color: Colors.black45,
-                                    shape: BoxShape.circle),
+                                  color: Colors.black38,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
                               Image(image: MyImages.ic_user_avatar_edit),
                             ],
@@ -225,8 +230,27 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
       context: context,
       builder: (context) {
         return ModifyAvatarWidget(
-          onCameraTap: () {},
-          onAlbumTap: () {},
+          onCameraTap: () async {
+            var image = await ImagePicker.pickImage(source: ImageSource.camera);
+            //设置状态栏颜色(白底黑字黑色图标)-选择完照片后状态栏字体变成白色了
+            SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
+            if (image != null) {
+              var result =
+                  await NetManager(context).uploadFile(filePath: image.path);
+              _modifyUserInfo(headUrl: result);
+            }
+          },
+          onAlbumTap: () async {
+            var image =
+                await ImagePicker.pickImage(source: ImageSource.gallery);
+            //设置状态栏颜色(白底黑字黑色图标)-选择完照片后状态栏字体变成白色了
+            SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
+            if (image != null) {
+              var result =
+                  await NetManager(context).uploadFile(filePath: image.path);
+              _modifyUserInfo(headUrl: result);
+            }
+          },
         );
       },
     );
@@ -262,10 +286,7 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
               cityList.asMap().forEach((cityIndex, city) {
                 String cityName = city["name"];
                 cityValue.addAll({
-                  ((cityIndex + 1) * 10000).toString(): {
-                    "name": cityName,
-                    "alpha": "",
-                  }
+                  ((cityIndex + 1) * 10000).toString(): {"name": cityName}
                 });
               });
               _citiesData ??= {};
@@ -283,7 +304,8 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
       citiesData: _citiesData,
     );
     if (result != null) {
-      _modifyUserInfo(province: result.provinceName, city: result.cityName);
+      _modifyUserInfo(
+          country: "中国", province: result.provinceName, city: result.cityName);
     }
   }
 
@@ -295,7 +317,7 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
   _modifyUserInfo({
     String headUrl,
     String nickName,
-    String country = "中国",
+    String country,
     String province,
     String city,
     String sex,

@@ -42,6 +42,8 @@ dependencies:
   audioplayers: ^0.13.5
   device_info: ^0.4.1+4
   city_pickers: ^0.1.30
+  permission_handler: '^4.0.0'
+  image_picker: ^0.6.2+3
 
 dev_dependencies:
   flutter_test:

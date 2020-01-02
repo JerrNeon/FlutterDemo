@@ -27,7 +27,7 @@ class ModifyAvatarWidget extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: MySizes.s_14),
+            padding: EdgeInsets.symmetric(vertical: MySizes.s_20),
             child: Text(
               gm.modifyUserInfoDialogCamera,
               style: TextStyle(
@@ -49,7 +49,7 @@ class ModifyAvatarWidget extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: MySizes.s_14),
+            padding: EdgeInsets.symmetric(vertical: MySizes.s_20),
             child: Text(
               gm.modifyUserInfoDialogAlbum,
               style: TextStyle(

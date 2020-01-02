@@ -74,10 +74,12 @@ class Net {
     }
   }
 
-  Future get(String url,
-      {Map<String, dynamic> params,
-      bool isShowErrorMsg = true,
-      bool isShowDioErrorMsg = false}) async {
+  Future get(
+    String url, {
+    Map<String, dynamic> params,
+    bool isShowErrorMsg = true,
+    bool isShowDioErrorMsg = false,
+  }) async {
     return await _request(url,
         params: params,
         method: GET,
@@ -85,22 +87,29 @@ class Net {
         isShowDioErrorMsg: isShowDioErrorMsg);
   }
 
-  Future post(String url,
-      {Map<String, dynamic> params,
-      bool isShowErrorMsg = true,
-      bool isShowDioErrorMsg = false}) async {
+  Future post(
+    String url, {
+    Map<String, dynamic> params,
+    FormData data,
+    bool isShowErrorMsg = true,
+    bool isShowDioErrorMsg = false,
+  }) async {
     return await _request(url,
         params: params,
+        data: data,
         method: POST,
         isShowErrorMsg: isShowErrorMsg,
         isShowDioErrorMsg: isShowDioErrorMsg);
   }
 
-  Future _request(String url,
-      {String method,
-      Map<String, dynamic> params,
-      bool isShowErrorMsg = false,
-      bool isShowDioErrorMsg = false}) async {
+  Future _request(
+    String url, {
+    String method,
+    Map<String, dynamic> params,
+    FormData data,
+    bool isShowErrorMsg = false,
+    bool isShowDioErrorMsg = false,
+  }) async {
     LogUtils.i("<dio> url :<" + method + ">" + url);
     try {
       dio.options.headers[HttpHeaders.authorizationHeader] =
@@ -116,12 +125,19 @@ class Net {
         response = await dio.get(url, queryParameters: params);
       } else {
         if (params != null && params.isNotEmpty) {
+          //普通请求(带参数)
           String sign = "$APP_ID${jsonEncode(params)}$APP_SECRET";
           params.addAll({
             "sign": generateMd5(sign),
           });
+          response = await dio.post(url, data: params);
+        } else if (data != null) {
+          //上传文件
+          response = await dio.post(url, data: data);
+        } else {
+          //普通请求(无参数)
+          response = await dio.post(url, data: params);
         }
-        response = await dio.post(url, data: params);
       }
       LogUtils.i("<dio> response :${response.data.toString()}");
       if (response.statusCode == HttpStatus.ok) {
