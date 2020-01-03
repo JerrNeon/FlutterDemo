@@ -102,6 +102,20 @@ class Net {
         isShowDioErrorMsg: isShowDioErrorMsg);
   }
 
+  Future<Response> download(
+    String url,
+    savePath, {
+    ProgressCallback onReceiveProgress,
+    Map<String, dynamic> params,
+  }) async {
+    return await dio.download(
+      url,
+      savePath,
+      onReceiveProgress: onReceiveProgress,
+      queryParameters: params,
+    );
+  }
+
   Future _request(
     String url, {
     String method,

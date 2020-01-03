@@ -2,8 +2,14 @@ import 'package:child_star/common/global.dart';
 import 'package:child_star/models/index.dart';
 import 'package:flutter/widgets.dart';
 
-class ProfileNotifierProvider extends ChangeNotifier {
+class ProfileProvider extends ChangeNotifier {
   Profile get _profile => Global.profile;
+  bool get isFirst => Global.profile.isFirst ?? true;
+
+  set first(bool isFirst) {
+    _profile.isFirst = isFirst;
+    notifyListeners();
+  }
 
   @override
   void notifyListeners() {
@@ -12,7 +18,7 @@ class ProfileNotifierProvider extends ChangeNotifier {
   }
 }
 
-class UserProvider extends ProfileNotifierProvider {
+class UserProvider extends ProfileProvider {
   User get user => _profile.user;
 
   bool get isLogin => user != null;

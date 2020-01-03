@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: ProfileProvider()),
         ChangeNotifierProvider.value(value: UserProvider()),
       ],
       child: RefreshConfiguration(
