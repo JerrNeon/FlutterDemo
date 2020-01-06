@@ -4,11 +4,13 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 ///资讯详情
 class NewDetailPage extends StatefulWidget {
@@ -29,6 +31,8 @@ class _NewDetailPageState extends State<NewDetailPage> {
   @override
   void initState() {
     _newsDetailFuture = NetManager(context).getNewsDetail(id);
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Provider.of<FollowProvider>(context).reset());
     super.initState();
   }
 
@@ -59,9 +63,13 @@ class _NewDetailPageState extends State<NewDetailPage> {
                   _buildVideoPlayer(data),
                   _NewDetailBody(data, onItemClick),
                   NewsInteractionWidget(
-                    like: data.like.toString(),
-                    collect: data.collect.toString(),
-                    comment: data.comment.toString(),
+                    id: data.id.toString(),
+                    type: 1,
+                    isLike: data.isLike,
+                    like: data.like,
+                    isCollect: data.isCollect,
+                    collect: data.collect,
+                    comment: data.comment,
                   ),
                 ],
               );
@@ -155,6 +163,7 @@ class _NewDetailBody extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          //标题
           Padding(
             padding: EdgeInsets.only(
                 left: MySizes.s_20, top: MySizes.s_14, right: MySizes.s_20),
@@ -167,6 +176,7 @@ class _NewDetailBody extends StatelessWidget {
               ),
             ),
           ),
+          //标签
           Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: MySizes.s_20, vertical: MySizes.s_16),
@@ -176,6 +186,7 @@ class _NewDetailBody extends StatelessWidget {
                   color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
             ),
           ),
+          //简介
           Padding(
             padding: EdgeInsets.only(
                 left: MySizes.s_20, bottom: MySizes.s_16, right: MySizes.s_20),
@@ -186,9 +197,11 @@ class _NewDetailBody extends StatelessWidget {
             ),
           ),
           Divider(height: MySizes.s_1, color: MyColors.c_d5d5d5),
+          //作者信息
           GestureDetector(
             onTap: () => RoutersNavigate()
                 .navigateToAuthorPage(context, data.authorId.toString()),
+            behavior: HitTestBehavior.opaque,
             child: Padding(
               padding: EdgeInsets.only(
                 left: MySizes.s_20,
@@ -243,26 +256,12 @@ class _NewDetailBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    margin:
-                        EdgeInsets.only(left: MySizes.s_8, top: MySizes.s_8),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MySizes.s_8, vertical: MySizes.s_4),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: MyColors.c_777777,
-                        width: MySizes.s_1,
-                      ),
-                      borderRadius: BorderRadius.circular(MySizes.s_3),
-                    ),
-                    child: Text(
-                      data.isConcern
-                          ? gm.newDetailFollowTitle
-                          : "+${gm.newDetailUnFollowTitle}",
-                      style: TextStyle(
-                          color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
-                    ),
-                  ),
+                  Consumer<FollowProvider>(builder: (context, value, child) {
+                    return NewsFollowWidget(
+                      authorId: data.authorId.toString(),
+                      isConcern: value.isConcern ?? data.isConcern,
+                    );
+                  }),
                 ],
               ),
             ),

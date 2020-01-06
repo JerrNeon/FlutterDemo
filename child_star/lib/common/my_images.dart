@@ -38,8 +38,12 @@ class MyImages {
       AssetImage("images/ic_newdetail_authenticate.png");
   static const AssetImage ic_newdetail_like =
       AssetImage("images/ic_newdetail_like.png");
+  static const AssetImage ic_newdetail_unlike =
+      AssetImage("images/ic_newdetail_unlike.png");
   static const AssetImage ic_newdetail_collection =
       AssetImage("images/ic_newdetail_collection.png");
+  static const AssetImage ic_newdetail_uncollection =
+      AssetImage("images/ic_newdetail_uncollection.png");
   static const AssetImage ic_newdetail_comment =
       AssetImage("images/ic_newdetail_comment.png");
   static const AssetImage ic_newdetail_download =
@@ -184,5 +188,15 @@ class MyImagesMultiple {
   static const inquiry_status2 = <bool, AssetImage>{
     true: MyImages.ic_consultation_Inquiry2_btn1,
     false: MyImages.ic_consultation_Inquiry2_btn2,
+  };
+
+  static const like_status = <bool, AssetImage>{
+    true: MyImages.ic_newdetail_like,
+    false: MyImages.ic_newdetail_unlike,
+  };
+
+  static const collection_status = <bool, AssetImage>{
+    true: MyImages.ic_newdetail_collection,
+    false: MyImages.ic_newdetail_uncollection,
   };
 }

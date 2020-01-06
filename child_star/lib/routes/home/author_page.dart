@@ -2,11 +2,13 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class AuthorPage extends StatefulWidget {
   final String authorId;
@@ -119,25 +121,9 @@ class _AuthorPageState extends State<AuthorPage> {
             ),
           ),
           SizedBox(height: MySizes.s_14),
-          Container(
-            width: MySizes.s_80,
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: MySizes.s_8),
-            decoration: BoxDecoration(
-              color: data.isConcern ? MyColors.c_aaaaaa : MyColors.c_febfc9,
-              borderRadius: BorderRadius.circular(
-                MySizes.s_16,
-              ),
-            ),
-            child: Text(
-              data.isConcern
-                  ? gm.authorFollowedTitle
-                  : gm.authorUnfollowedTitle,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: MyFontSizes.s_10,
-              ),
-            ),
+          AuthorFollowWidget(
+            authorId: data.id.toString(),
+            isConcern: data.isConcern,
           ),
           SizedBox(height: MySizes.s_20),
           Divider(
@@ -177,5 +163,70 @@ class _AuthorPageState extends State<AuthorPage> {
         );
       },
     );
+  }
+}
+
+class AuthorFollowWidget extends StatefulWidget {
+  final String authorId;
+  final bool isConcern;
+
+  const AuthorFollowWidget({
+    Key key,
+    @required this.authorId,
+    @required this.isConcern,
+  }) : super(key: key);
+
+  @override
+  _AuthorFollowWidgetState createState() =>
+      _AuthorFollowWidgetState(authorId, isConcern);
+}
+
+class _AuthorFollowWidgetState extends State<AuthorFollowWidget> {
+  final String authorId;
+  bool isConcern;
+
+  _AuthorFollowWidgetState(this.authorId, this.isConcern);
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return GestureDetector(
+      onTap: () => _doFollow(context),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: MySizes.s_80,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: MySizes.s_8),
+        decoration: BoxDecoration(
+          color: isConcern ? MyColors.c_aaaaaa : MyColors.c_febfc9,
+          borderRadius: BorderRadius.circular(
+            MySizes.s_16,
+          ),
+        ),
+        child: Text(
+          isConcern ? gm.authorFollowedTitle : gm.authorUnfollowedTitle,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: MyFontSizes.s_10,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _doFollow(BuildContext context) async {
+    try {
+      Result result =
+          await NetManager(context).doFollow(authorId: widget.authorId);
+      //1：已关注 0：未关注
+      isConcern = result.status == 1;
+      if (mounted) {
+        setState(() {});
+      }
+      Provider.of<FollowProvider>(context, listen: false).isConcern =
+          result.status == 1;
+    } catch (e) {
+      LogUtils.e(e);
+    }
   }
 }

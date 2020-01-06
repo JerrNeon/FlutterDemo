@@ -33,3 +33,18 @@ class UserProvider extends ProfileProvider {
     notifyListeners();
   }
 }
+
+class FollowProvider extends ChangeNotifier {
+  bool _isConcern;
+
+  bool get isConcern => _isConcern;
+
+  set isConcern(bool isConcern) {
+    _isConcern = isConcern;
+    notifyListeners();
+  }
+
+  reset() {
+    _isConcern = null;
+  }
+}

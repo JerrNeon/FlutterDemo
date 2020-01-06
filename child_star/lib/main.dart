@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: ProfileProvider()),
         ChangeNotifierProvider.value(value: UserProvider()),
+        ChangeNotifierProvider.value(value: FollowProvider()),
       ],
       child: RefreshConfiguration(
         headerBuilder: () => ClassicHeader(),

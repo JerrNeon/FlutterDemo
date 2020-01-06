@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:provider/provider.dart';
 
 class HomeNewsItemWidget extends StatelessWidget {
   final News data;
@@ -123,16 +125,41 @@ class HomeNewsItemWidget extends StatelessWidget {
 }
 
 ///资讯点赞、收藏、评论、下载Widget 互动
-class NewsInteractionWidget extends StatelessWidget {
-  final String like;
-  final String collect;
-  final String comment;
+class NewsInteractionWidget extends StatefulWidget {
+  final String id; //点赞对象 id
+  final int type; //点赞类型：1：资讯；2：讲堂(非课程)；3：资讯评论（id传评论id）
+  final bool isLike;
+  final int like;
+  final bool isCollect;
+  final int collect;
+  final int comment;
 
   NewsInteractionWidget({
-    this.like,
-    this.collect,
-    this.comment,
+    @required this.id,
+    @required this.type,
+    @required this.isLike,
+    @required this.like,
+    @required this.isCollect,
+    @required this.collect,
+    @required this.comment,
   });
+
+  @override
+  _NewsInteractionWidgetState createState() => _NewsInteractionWidgetState(
+      id, type, isLike, like, isCollect, collect, comment);
+}
+
+class _NewsInteractionWidgetState extends State<NewsInteractionWidget> {
+  final String id; //点赞对象 id
+  final int type; //点赞类型：1：资讯；2：讲堂(非课程)；3：资讯评论（id传评论id）
+  bool isLike;
+  int like;
+  bool isCollect;
+  int collect;
+  final int comment;
+
+  _NewsInteractionWidgetState(this.id, this.type, this.isLike, this.like,
+      this.isCollect, this.collect, this.comment);
 
   @override
   Widget build(BuildContext context) {
@@ -147,9 +174,17 @@ class NewsInteractionWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _buildItem(MyImages.ic_newdetail_like, like),
-                _buildItem(MyImages.ic_newdetail_collection, collect),
-                _buildItem(MyImages.ic_newdetail_comment, comment),
+                _buildItem(
+                  MyImagesMultiple.like_status[isLike],
+                  like.toString(),
+                  onTap: () => doLike(),
+                ),
+                _buildItem(
+                  MyImagesMultiple.collection_status[isCollect],
+                  collect.toString(),
+                  onTap: () => doCollect(),
+                ),
+                _buildItem(MyImages.ic_newdetail_comment, comment.toString()),
                 _buildItem(MyImages.ic_newdetail_download,
                     GmLocalizations.of(context).newDetailDownloadTitle),
               ],
@@ -160,19 +195,116 @@ class NewsInteractionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(AssetImage image, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Image(image: image),
-        Padding(padding: EdgeInsets.only(left: MySizes.s_8)),
-        Text(
-          text,
+  Widget _buildItem(AssetImage image, String text, {GestureTapCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Image(image: image),
+          Padding(padding: EdgeInsets.only(left: MySizes.s_8)),
+          Text(
+            text,
+            style:
+                TextStyle(color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  doLike() async {
+    try {
+      Result result = await NetManager(context).doLike(id: id, type: type);
+      if (result.status == 1) {
+        //已点赞
+        isLike = true;
+        like++;
+      } else {
+        //未点赞
+        isLike = false;
+        like--;
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      LogUtils.e(e);
+    }
+  }
+
+  doCollect() async {
+    try {
+      Result result =
+          await NetManager(context).doCollection(id: id, type: type);
+      if (result.status == 1) {
+        //已收藏
+        isCollect = true;
+        collect++;
+      } else {
+        //未收藏
+        isCollect = false;
+        collect--;
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      LogUtils.e(e);
+    }
+  }
+}
+
+//资讯关注
+class NewsFollowWidget extends StatelessWidget {
+  final String authorId;
+  final bool isConcern;
+  final GestureTapCallback onTap;
+
+  const NewsFollowWidget({
+    Key key,
+    @required this.authorId,
+    @required this.isConcern,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return GestureDetector(
+      onTap: () => _doFollow(context),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        margin: EdgeInsets.only(left: MySizes.s_8, top: MySizes.s_8),
+        padding: EdgeInsets.symmetric(
+          horizontal: MySizes.s_8,
+          vertical: MySizes.s_4,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: MyColors.c_777777,
+            width: MySizes.s_1,
+          ),
+          borderRadius: BorderRadius.circular(MySizes.s_3),
+        ),
+        child: Text(
+          isConcern ? gm.newDetailFollowTitle : "+${gm.newDetailUnFollowTitle}",
           style:
               TextStyle(color: MyColors.c_777777, fontSize: MyFontSizes.s_12),
         ),
-      ],
+      ),
     );
+  }
+
+  _doFollow(BuildContext context) async {
+    try {
+      Result result = await NetManager(context).doFollow(authorId: authorId);
+      //1：已关注 0：未关注
+      Provider.of<FollowProvider>(context).isConcern = result.status == 1;
+    } catch (e) {
+      LogUtils.e(e);
+    }
   }
 }
 

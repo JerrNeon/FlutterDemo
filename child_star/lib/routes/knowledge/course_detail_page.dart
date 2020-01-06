@@ -63,9 +63,13 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   _buildVideoPlayer(data),
                   _CourseDetailBody(data, onItemClick),
                   NewsInteractionWidget(
-                    like: data.like.toString(),
-                    collect: data.collect.toString(),
-                    comment: data.comment.toString(),
+                    id: data.id.toString(),
+                    type: 2,
+                    isLike: data.isLike,
+                    like: data.like,
+                    isCollect: data.isCollect,
+                    collect: data.collect,
+                    comment: data.comment,
                   ),
                 ],
               );
