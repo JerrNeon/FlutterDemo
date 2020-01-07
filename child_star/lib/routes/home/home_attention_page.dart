@@ -4,9 +4,11 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/pagelist.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeAttentionPage extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
     with AutomaticKeepAliveClientMixin {
   Future<PageList<Author>> _recommendFuture;
   int _length = 0;
+  final GlobalKey<SmartRefresherWidgetState> _globalKey = GlobalKey();
 
   @override
   bool get wantKeepAlive => true;
@@ -38,6 +41,7 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
             SearchWidget(),
             Expanded(
               child: SmartRefresherWidget<Author>(
+                key: _globalKey,
                 enablePullUp: _length > 3,
                 onRefreshLoading: (pageIndex) => NetManager(context)
                     .getAttentionAuthorNewsList(pageIndex: pageIndex),
@@ -54,9 +58,8 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
     _length = list?.length ?? 0;
     if (_length > 3) {
       return ListView.builder(
-        itemBuilder: (context, index) => _buildItem(
-          list[index]..isConcern = true,
-        ),
+        itemBuilder: (context, index) =>
+            _buildItem(list[index]..isConcern = true),
         itemCount: list.length,
         shrinkWrap: true,
       );
@@ -236,9 +239,18 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
                       ),
                     ),
                     SizedBox(height: MySizes.s_16),
-                    Image(
-                        image:
-                            MyImagesMultiple.attention_status[data.isConcern]),
+                    Consumer<FollowProvider>(
+                      builder: (context, value, child) {
+                        return GestureDetector(
+                          onTap: () => _doFollow(data),
+                          child: Image(
+                              image: MyImagesMultiple.attention_status[
+                                  data.id.toString() == value.authorId
+                                      ? value.isConcern
+                                      : data.isConcern]),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -315,5 +327,15 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
         ],
       ),
     );
+  }
+
+  _doFollow(Author data) async {
+    try {
+      await NetManager(context).doFollow(authorId: data.id.toString());
+      Provider.of<FollowProvider>(context).reset();
+      _globalKey.currentState.pullDownOnRefresh();
+    } catch (e) {
+      LogUtils.e(e);
+    }
   }
 }

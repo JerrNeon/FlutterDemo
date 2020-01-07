@@ -301,7 +301,8 @@ class NewsFollowWidget extends StatelessWidget {
     try {
       Result result = await NetManager(context).doFollow(authorId: authorId);
       //1：已关注 0：未关注
-      Provider.of<FollowProvider>(context).isConcern = result.status == 1;
+      Provider.of<FollowProvider>(context)
+          .setConcernData(authorId, result.status == 1);
     } catch (e) {
       LogUtils.e(e);
     }

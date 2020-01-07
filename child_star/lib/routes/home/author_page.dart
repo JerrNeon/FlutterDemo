@@ -223,8 +223,8 @@ class _AuthorFollowWidgetState extends State<AuthorFollowWidget> {
       if (mounted) {
         setState(() {});
       }
-      Provider.of<FollowProvider>(context, listen: false).isConcern =
-          result.status == 1;
+      Provider.of<FollowProvider>(context, listen: false)
+          .setConcernData(authorId, result.status == 1);
     } catch (e) {
       LogUtils.e(e);
     }

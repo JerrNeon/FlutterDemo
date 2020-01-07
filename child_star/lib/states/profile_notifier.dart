@@ -11,9 +11,13 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  saveProfile() {
+    Global.saveProfile();
+  }
+
   @override
   void notifyListeners() {
-    Global.saveProfile();
+    saveProfile();
     super.notifyListeners();
   }
 }
@@ -32,19 +36,29 @@ class UserProvider extends ProfileProvider {
     _profile.user = user;
     notifyListeners();
   }
+
+  saveUser(User user) {
+    _profile.user = user;
+    saveProfile();
+  }
 }
 
 class FollowProvider extends ChangeNotifier {
+  String _authorId;
   bool _isConcern;
+
+  String get authorId => _authorId;
 
   bool get isConcern => _isConcern;
 
-  set isConcern(bool isConcern) {
+  setConcernData(String authorId, bool isConcern) {
+    _authorId = authorId;
     _isConcern = isConcern;
     notifyListeners();
   }
 
   reset() {
+    _authorId = null;
     _isConcern = null;
   }
 }

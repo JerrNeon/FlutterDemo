@@ -76,7 +76,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  _SmartRefresherWidgetState createState() => _SmartRefresherWidgetState<T>(
+  SmartRefresherWidgetState createState() => SmartRefresherWidgetState<T>(
         onRefreshLoading,
         builder,
         listItemBuilder,
@@ -92,7 +92,7 @@ class SmartRefresherWidget<T> extends StatefulWidget {
       );
 }
 
-class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
+class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
     with AutomaticKeepAliveClientMixin {
   final OnRefreshLoading<T> onRefreshLoading;
   final RefreshedChildWidgetBuilder<T> builder;
@@ -112,7 +112,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   var _pageIndex;
   List<T> _list;
 
-  _SmartRefresherWidgetState(
+  SmartRefresherWidgetState(
     this.onRefreshLoading,
     this.builder,
     this.listItemBuilder,
@@ -164,13 +164,13 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
                 enablePullUp: enablePullUp,
                 enablePullDown: enablePullDown,
                 onRefresh: () {
-                  _onRefresh();
+                  pullDownOnRefresh();
                   if (onRefresh != null) {
                     onRefresh();
                   }
                 },
                 onLoading: () {
-                  _onLoading();
+                  pullUpOnLoading();
                   if (onLoading != null) {
                     onLoading();
                   }
@@ -212,7 +212,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
     return NoDataWidget();
   }
 
-  _onRefresh() async {
+  pullDownOnRefresh() async {
     try {
       _pageIndex = PAGE_INDEX;
       PageList<T> pageList = await onRefreshLoading(_pageIndex);
@@ -230,7 +230,7 @@ class _SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
     }
   }
 
-  _onLoading() async {
+  pullUpOnLoading() async {
     try {
       PageList<T> pageList = await onRefreshLoading(++_pageIndex);
       List<T> resultList = pageList.resultList;

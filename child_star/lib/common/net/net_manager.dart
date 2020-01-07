@@ -1,9 +1,11 @@
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NetManager {
   NetManager([this.context]);
@@ -535,6 +537,8 @@ class NetManager {
     var response = await Net(context).post(NetConfig.DO_FOLLOW, params: {
       "authorId": authorId,
     });
+    User user = await getUserInfo();
+    Provider.of<UserProvider>(context).saveUser(user);
     return Result.fromJson(response);
   }
 

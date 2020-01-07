@@ -12,6 +12,8 @@ class MyAttentionPage extends StatefulWidget {
 }
 
 class _MyAttentionPageState extends State<MyAttentionPage> {
+  final GlobalKey<SmartRefresherWidgetState> _globalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     GmLocalizations gm = GmLocalizations.of(context);
@@ -27,6 +29,7 @@ class _MyAttentionPageState extends State<MyAttentionPage> {
             ),
             Expanded(
               child: SmartRefresherWidget<MyAttention>.list(
+                key: _globalKey,
                 onRefreshLoading: (pageIndex) => NetManager(context)
                     .getMyAttentionList(pageIndex: pageIndex),
                 listItemBuilder: (context, index, data) {
@@ -115,5 +118,12 @@ class _MyAttentionPageState extends State<MyAttentionPage> {
     );
   }
 
-  _cancelAttention(MyAttention data) {}
+  _cancelAttention(MyAttention data) async {
+    try {
+      await NetManager(context).doFollow(authorId: data.authorId.toString());
+      _globalKey.currentState.pullDownOnRefresh();
+    } catch (e) {
+      LogUtils.e(e);
+    }
+  }
 }
