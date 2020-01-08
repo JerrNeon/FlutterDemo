@@ -6,3 +6,6 @@ export 'my_collection_page.dart';
 export 'my_attention_page.dart';
 export 'modify_userinfo_page.dart';
 export 'modify_name_page.dart';
+export 'my_book_page.dart';
+export 'my_download_page.dart';
+export 'download_detail_page.dart';

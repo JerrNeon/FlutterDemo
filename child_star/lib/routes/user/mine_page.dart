@@ -383,8 +383,10 @@ class _UserInfoWidget extends StatelessWidget {
         routersNavigate.navigateToMyOrderPage(context);
         break;
       case 4: //绘本书籍
+        routersNavigate.navigateToMyBookPage(context);
         break;
       case 5: //离线缓存
+        routersNavigate.navigateToMyDownloadPage(context);
         break;
       case 6: //我的收藏
         routersNavigate.navigateToMyCollectionPage(context);

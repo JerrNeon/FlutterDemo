@@ -4,6 +4,7 @@ import 'package:child_star/routes/home/home_index.dart';
 import 'package:child_star/routes/knowledge/knowledge_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
 import 'package:child_star/routes/main_page.dart';
+import 'package:child_star/routes/user/download_detail_page.dart';
 import 'package:child_star/routes/user/mine_index.dart';
 import 'package:child_star/states/profile_notifier.dart';
 import 'package:child_star/utils/utils_index.dart';
@@ -39,6 +40,9 @@ class Routers {
   static const String mine_modify_userinfo = "/user/mine/modify_userinfo";
   static const String mine_modify_name =
       "/user/mine/modify_userinfo/modify_name";
+  static const String mine_book = "/user/mine/book";
+  static const String mine_download = "/user/mine/download";
+  static const String mine_download_detail = "/user/mine/download/detail";
 
   static var router = Router();
 
@@ -76,6 +80,9 @@ class Routers {
     router.define(mine_my_attention, handler: _myAttentionHandler);
     router.define(mine_modify_userinfo, handler: _modifyUserInfoHandler);
     router.define(mine_modify_name, handler: _modifyNameHandler);
+    router.define(mine_book, handler: _myBookHandler);
+    router.define(mine_download, handler: _myDownloadHandler);
+    router.define(mine_download_detail, handler: _myDownloadDetailHandler);
   }
 }
 
@@ -232,4 +239,21 @@ var _modifyNameHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   int type = int.tryParse(parameters["type"]?.first ?? "") ?? 0;
   return _isLogin(context) ? ModifyNamePage(type) : LoginPage();
+});
+
+var _myBookHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return _isLogin(context) ? MyBookPage() : LoginPage();
+});
+
+var _myDownloadHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return _isLogin(context) ? MyDownloadPage() : LoginPage();
+});
+
+var _myDownloadDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  int type = int.tryParse(parameters["type"]?.first ?? "") ?? 0;
+  String path = parameters["path"]?.first ?? "";
+  return _isLogin(context) ? DownloadDetailPage(type, path) : LoginPage();
 });

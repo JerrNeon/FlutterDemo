@@ -3,12 +3,14 @@ import 'dart:math';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/models/models_index.dart';
 import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomeNewsItemWidget extends StatelessWidget {
@@ -126,40 +128,29 @@ class HomeNewsItemWidget extends StatelessWidget {
 
 ///资讯点赞、收藏、评论、下载Widget 互动
 class NewsInteractionWidget extends StatefulWidget {
-  final String id; //点赞对象 id
   final int type; //点赞类型：1：资讯；2：讲堂(非课程)；3：资讯评论（id传评论id）
-  final bool isLike;
-  final int like;
-  final bool isCollect;
-  final int collect;
-  final int comment;
+  final NewsDetail data;
+  final DbUtils dbUtils;
 
   NewsInteractionWidget({
-    @required this.id,
     @required this.type,
-    @required this.isLike,
-    @required this.like,
-    @required this.isCollect,
-    @required this.collect,
-    @required this.comment,
-  });
+    @required this.data,
+    @required this.dbUtils,
+  })  : assert(type != null),
+        assert(data != null),
+        assert(dbUtils != null);
 
   @override
-  _NewsInteractionWidgetState createState() => _NewsInteractionWidgetState(
-      id, type, isLike, like, isCollect, collect, comment);
+  _NewsInteractionWidgetState createState() =>
+      _NewsInteractionWidgetState(type, data, dbUtils);
 }
 
 class _NewsInteractionWidgetState extends State<NewsInteractionWidget> {
-  final String id; //点赞对象 id
   final int type; //点赞类型：1：资讯；2：讲堂(非课程)；3：资讯评论（id传评论id）
-  bool isLike;
-  int like;
-  bool isCollect;
-  int collect;
-  final int comment;
+  NewsDetail data;
+  final DbUtils dbUtils;
 
-  _NewsInteractionWidgetState(this.id, this.type, this.isLike, this.like,
-      this.isCollect, this.collect, this.comment);
+  _NewsInteractionWidgetState(this.type, this.data, this.dbUtils);
 
   @override
   Widget build(BuildContext context) {
@@ -175,18 +166,24 @@ class _NewsInteractionWidgetState extends State<NewsInteractionWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 _buildItem(
-                  MyImagesMultiple.like_status[isLike],
-                  like.toString(),
-                  onTap: () => doLike(),
+                  MyImagesMultiple.like_status[data.isLike],
+                  data.like.toString(),
+                  onTap: () => _doLike(),
                 ),
                 _buildItem(
-                  MyImagesMultiple.collection_status[isCollect],
-                  collect.toString(),
-                  onTap: () => doCollect(),
+                  MyImagesMultiple.collection_status[data.isCollect],
+                  data.collect.toString(),
+                  onTap: () => _doCollect(),
                 ),
-                _buildItem(MyImages.ic_newdetail_comment, comment.toString()),
-                _buildItem(MyImages.ic_newdetail_download,
-                    GmLocalizations.of(context).newDetailDownloadTitle),
+                _buildItem(
+                    MyImages.ic_newdetail_comment, data.comment.toString()),
+                data.mediaUrl != null && data.mediaUrl.isNotEmpty
+                    ? _buildItem(
+                        MyImages.ic_newdetail_download,
+                        GmLocalizations.of(context).newDetailDownloadTitle,
+                        onTap: () => _doDownload(),
+                      )
+                    : EmptyWidget(),
               ],
             ),
           ),
@@ -214,17 +211,18 @@ class _NewsInteractionWidgetState extends State<NewsInteractionWidget> {
     );
   }
 
-  doLike() async {
+  _doLike() async {
     try {
-      Result result = await NetManager(context).doLike(id: id, type: type);
+      Result result =
+          await NetManager(context).doLike(id: data.id.toString(), type: type);
       if (result.status == 1) {
         //已点赞
-        isLike = true;
-        like++;
+        data.isLike = true;
+        data.like++;
       } else {
         //未点赞
-        isLike = false;
-        like--;
+        data.isLike = false;
+        data.like--;
       }
       if (mounted) {
         setState(() {});
@@ -234,24 +232,57 @@ class _NewsInteractionWidgetState extends State<NewsInteractionWidget> {
     }
   }
 
-  doCollect() async {
+  _doCollect() async {
     try {
-      Result result =
-          await NetManager(context).doCollection(id: id, type: type);
+      Result result = await NetManager(context)
+          .doCollection(id: data.id.toString(), type: type);
       if (result.status == 1) {
         //已收藏
-        isCollect = true;
-        collect++;
+        data.isCollect = true;
+        data.collect++;
       } else {
         //未收藏
-        isCollect = false;
-        collect--;
+        data.isCollect = false;
+        data.collect--;
       }
       if (mounted) {
         setState(() {});
       }
     } catch (e) {
       LogUtils.e(e);
+    }
+  }
+
+  _doDownload() async {
+    GmLocalizations gm = GmLocalizations.of(context);
+    bool isInsert = await dbUtils.getMediaCache(data.id);
+    if (isInsert) {
+      //1：视频；2：音频
+      showToast(data.type == 1
+          ? gm.newDetailDownloadVideoToast
+          : gm.newDetailDownloadAudioToast);
+      return;
+    }
+    String downloadUrl = data.mediaUrl;
+    var result =
+        await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    if (result[PermissionGroup.storage] == PermissionStatus.granted) {
+      var fileName = downloadUrl
+          .substring(downloadUrl.lastIndexOf(FileUtils.separator) + 1);
+      var savePath = await FileUtils.getDownloadPath(fileName);
+      await Net(context).download(downloadUrl, savePath);
+      await dbUtils.open();
+      var result = await dbUtils.insert(MediaCache()
+        ..type = type
+        ..mediaId = data.id
+        ..mediaType = data.type
+        ..imageUrl = data.headUrl
+        ..title = data.title
+        ..desc = data.partContent
+        ..url = data.mediaUrl
+        ..path = savePath);
+      LogUtils.i("insert result: $result");
+      showToast(gm.newDetailDownloadCompleteToast);
     }
   }
 }

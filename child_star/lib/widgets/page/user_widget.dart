@@ -1,6 +1,9 @@
 import 'package:child_star/common/my_colors.dart';
 import 'package:child_star/common/my_sizes.dart';
+import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
+import 'package:child_star/models/models_index.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -77,6 +80,76 @@ class ModifyAvatarWidget extends StatelessWidget {
               decoration: TextDecoration.none,
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class DownloadItemWidget extends StatelessWidget {
+  final MediaCache data;
+  final GestureTapCallback onItemTap;
+  final GestureTapCallback onDeleteTap;
+
+  const DownloadItemWidget(
+      {Key key, @required this.data, this.onItemTap, this.onDeleteTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onItemTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: EdgeInsets.only(
+          left: MySizes.s_16,
+          right: MySizes.s_20,
+          bottom: MySizes.s_14,
+        ),
+        child: Row(
+          children: <Widget>[
+            loadImage(
+              data.imageUrl,
+              width: MySizes.s_118,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(MySizes.s_4),
+            ),
+            SizedBox(width: MySizes.s_16),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    data.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: MyColors.c_8c8c8c,
+                      fontSize: MyFontSizes.s_14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: MySizes.s_4),
+                  Text(
+                    data.desc,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: MyColors.c_8c8c8c,
+                      fontSize: MyFontSizes.s_14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: MySizes.s_10),
+            GestureDetector(
+              onTap: onDeleteTap,
+              child: Image(
+                image: MyImages.ic_download_delete,
+              ),
+            ),
+          ],
         ),
       ),
     );

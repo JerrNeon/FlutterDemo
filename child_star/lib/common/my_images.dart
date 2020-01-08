@@ -149,6 +149,8 @@ class MyImages {
   static const AssetImage ic_user_female =
       AssetImage("images/ic_user_female.png");
   static const AssetImage ic_user_male = AssetImage("images/ic_user_male.png");
+  static const AssetImage ic_download_delete =
+      AssetImage("images/ic_download_delete.png");
 }
 
 class MyImagesMultiple {

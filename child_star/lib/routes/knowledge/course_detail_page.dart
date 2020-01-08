@@ -24,6 +24,7 @@ class CourseDetailPage extends StatefulWidget {
 class _CourseDetailPageState extends State<CourseDetailPage> {
   final String id;
   Future<CourseDetail> _courseDetailFuture;
+  DbUtils _dbUtils;
 
   _CourseDetailPageState(this.id);
 
@@ -31,10 +32,17 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   void initState() {
     super.initState();
     _initFuture();
+    _dbUtils = DbUtils();
   }
 
   _initFuture() {
     _courseDetailFuture = NetManager(context).getCourseDetail(id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dbUtils?.close();
   }
 
   @override
@@ -63,13 +71,20 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   _buildVideoPlayer(data),
                   _CourseDetailBody(data, onItemClick),
                   NewsInteractionWidget(
-                    id: data.id.toString(),
-                    type: 2,
-                    isLike: data.isLike,
-                    like: data.like,
-                    isCollect: data.isCollect,
-                    collect: data.collect,
-                    comment: data.comment,
+                    type: TYPE_LECTURE,
+                    data: NewsDetail()
+                      ..id = data.id
+                      ..headUrl = data.headUrl
+                      ..title = data.courseTitle
+                      ..partContent = data.courseDescr
+                      ..mediaUrl = data.mediaUrl
+                      ..type = data.type
+                      ..isLike = data.isLike
+                      ..like = data.like
+                      ..isCollect = data.isCollect
+                      ..collect = data.collect
+                      ..comment = data.comment,
+                    dbUtils: _dbUtils,
                   ),
                 ],
               );

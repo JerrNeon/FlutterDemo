@@ -90,4 +90,13 @@ abstract class IRoutersNavigate {
 
   ///跳转到修改昵称和修改签名界面[ModifyNamePage]
   navigateToModifyNamePage(BuildContext context, int type);
+
+  ///跳转到绘本书籍界面[MyBookPage]
+  navigateToMyBookPage(BuildContext context);
+
+  ///跳转到离线缓存界面[MyDownloadPage]
+  navigateToMyDownloadPage(BuildContext context);
+
+  ///跳转到缓存详情界面[DownloadDetailPage]
+  navigateToDownloadDetailPage(BuildContext context, int type, String path);
 }

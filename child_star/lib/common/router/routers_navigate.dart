@@ -297,4 +297,35 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionBuilder: RouteAnimation.build(),
     );
   }
+
+  @override
+  navigateToMyBookPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.mine_book,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToMyDownloadPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.mine_download,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToDownloadDetailPage(BuildContext context, int type, String path) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.mine_download_detail +
+          "?type=$type&path=${encodeStringToBase64UrlSafeString(path)}",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
 }

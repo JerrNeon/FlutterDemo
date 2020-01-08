@@ -84,6 +84,22 @@ class GmLocalizations {
     return Intl.message("缓存", name: "newDetailDownloadTitle");
   }
 
+  String get newDetailDownloadCompleteToast {
+    return Intl.message("下载完成", name: "newDetailDownloadCompleteToast");
+  }
+
+  String get newDetailDownloadVideoToast {
+    return Intl.message("您已经缓存过此视频", name: "newDetailDownloadVideoToast");
+  }
+
+  String get newDetailDownloadAudioToast {
+    return Intl.message("您已经缓存过此音频", name: "newDetailDownloadAudioToast");
+  }
+
+  String get downloadDeleteConfirmTitle {
+    return Intl.message("确认删除？", name: "downloadDeleteConfirmTitle");
+  }
+
   String get newDetailReadingNumTitle {
     return Intl.message("阅读量", name: "newDetailReadingNumTitle");
   }

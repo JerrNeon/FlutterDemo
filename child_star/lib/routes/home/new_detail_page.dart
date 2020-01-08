@@ -25,6 +25,7 @@ class NewDetailPage extends StatefulWidget {
 class _NewDetailPageState extends State<NewDetailPage> {
   final String id;
   Future<NewsDetail> _newsDetailFuture;
+  DbUtils _dbUtils;
 
   _NewDetailPageState(this.id);
 
@@ -33,7 +34,14 @@ class _NewDetailPageState extends State<NewDetailPage> {
     _newsDetailFuture = NetManager(context).getNewsDetail(id);
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Provider.of<FollowProvider>(context).reset());
+    _dbUtils = DbUtils();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dbUtils?.close();
   }
 
   @override
@@ -63,13 +71,9 @@ class _NewDetailPageState extends State<NewDetailPage> {
                   _buildVideoPlayer(data),
                   _NewDetailBody(data, onItemClick),
                   NewsInteractionWidget(
-                    id: data.id.toString(),
-                    type: 1,
-                    isLike: data.isLike,
-                    like: data.like,
-                    isCollect: data.isCollect,
-                    collect: data.collect,
-                    comment: data.comment,
+                    type: TYPE_NEWS,
+                    data: data,
+                    dbUtils: _dbUtils,
                   ),
                 ],
               );
