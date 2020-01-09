@@ -111,6 +111,7 @@ class DownloadItemWidget extends StatelessWidget {
             loadImage(
               data.imageUrl,
               width: MySizes.s_118,
+              height: MySizes.s_80,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(MySizes.s_4),
             ),

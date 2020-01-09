@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-12-20T18:26:59.826524",
+  "@@last_modified": "2020-01-09T17:43:43.950061",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -35,6 +35,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "searchEmptyToast": "搜索内容不能为空",
+  "@searchEmptyToast": {
+    "type": "text",
+    "placeholders": {}
+  },
   "homeNewTitle": "最新",
   "@homeNewTitle": {
     "type": "text",
@@ -42,6 +47,11 @@
   },
   "homeAttentionTitle": "关注",
   "@homeAttentionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeAttentionRecommendTitle": "为您推荐母婴达人",
+  "@homeAttentionRecommendTitle": {
     "type": "text",
     "placeholders": {}
   },
@@ -67,6 +77,26 @@
   },
   "newDetailDownloadTitle": "缓存",
   "@newDetailDownloadTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newDetailDownloadCompleteToast": "下载完成",
+  "@newDetailDownloadCompleteToast": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newDetailDownloadVideoToast": "您已经缓存过此视频",
+  "@newDetailDownloadVideoToast": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newDetailDownloadAudioToast": "您已经缓存过此音频",
+  "@newDetailDownloadAudioToast": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "downloadDeleteConfirmTitle": "确认删除？",
+  "@downloadDeleteConfirmTitle": {
     "type": "text",
     "placeholders": {}
   },
@@ -205,6 +235,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "mineBookDetail": "书籍详情",
+  "@mineBookDetail": {
+    "type": "text",
+    "placeholders": {}
+  },
   "mineDownload": "离线缓存",
   "@mineDownload": {
     "type": "text",
@@ -277,6 +312,26 @@
   },
   "exerciseBookDescribeTitle": "绘本介绍",
   "@exerciseBookDescribeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseBookDownloadHint": "下载完成请至我的书籍里观看绘本",
+  "@exerciseBookDownloadHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseBookDownload": "下载书籍",
+  "@exerciseBookDownload": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseBookDownloading": "下载中",
+  "@exerciseBookDownloading": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseBookRead": "阅读书籍",
+  "@exerciseBookRead": {
     "type": "text",
     "placeholders": {}
   },
@@ -377,6 +432,256 @@
   },
   "courseCommentNoDataText": "暂无评论~",
   "@courseCommentNoDataText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorTitle": "个人主页",
+  "@authorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorDescTitle": "作者简介",
+  "@authorDescTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorUnfollowedTitle": "关注",
+  "@authorUnfollowedTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorFollowedTitle": "取消关注",
+  "@authorFollowedTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorRecommendTitle": "内容推荐",
+  "@authorRecommendTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeSearchHistoryTitle": "历史记录",
+  "@homeSearchHistoryTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeSearchHotTitle": "热门搜索",
+  "@homeSearchHotTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeSearchResultTitle": "搜索结果",
+  "@homeSearchResultTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeHotTagTitle": "热门标签",
+  "@homeHotTagTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "splashSkipTitle": "跳过",
+  "@splashSkipTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryTitle": "在线问诊",
+  "@inquiryTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryTab1Title": "全科在线咨询",
+  "@inquiryTab1Title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryTab2Title": "儿童私人在线专属健康顾问",
+  "@inquiryTab2Title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryTipsTitle": "# 本服务由第三方专业平台提供，有任何疑问请直接咨询第三方平台 #",
+  "@inquiryTipsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryDialogContent": "VIP会员（推广期6元/年）\n可以享受免费在线咨询\n马上加入吧！",
+  "@inquiryDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryDialogPositive": "购买会员",
+  "@inquiryDialogPositive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inquiryDialogNegative": "继续前往",
+  "@inquiryDialogNegative": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wikiTagTitle": "育儿百科",
+  "@wikiTagTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wikiTagSearchHint": "查找育儿资料",
+  "@wikiTagSearchHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderNoTitle": "订单编号",
+  "@myOrderNoTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderNumber1Title": "共",
+  "@myOrderNumber1Title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderNumber2Title": "件商品",
+  "@myOrderNumber2Title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderPriceTitle": "实付：",
+  "@myOrderPriceTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "chinesePriceTitle": "¥",
+  "@chinesePriceTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderTypeCourseTitle": "课程",
+  "@myOrderTypeCourseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderTypeBookTitle": "书籍",
+  "@myOrderTypeBookTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderTypeVipTitle": "VIP",
+  "@myOrderTypeVipTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myOrderTypeRechargeTitle": "充值",
+  "@myOrderTypeRechargeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCoursePayTitle": "付费课程",
+  "@myCoursePayTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCourseFreeTitle": "免费课程",
+  "@myCourseFreeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCollectionNewsTitle": "资讯",
+  "@myCollectionNewsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCollectionLectureTitle": "讲堂",
+  "@myCollectionLectureTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myAttentionStatusTitle": "已关注",
+  "@myAttentionStatusTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoTitle": "编辑个人资料",
+  "@modifyUserInfoTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoAvatar": "点击更换头像",
+  "@modifyUserInfoAvatar": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoDialogCamera": "拍一张",
+  "@modifyUserInfoDialogCamera": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoDialogAlbum": "相册选择",
+  "@modifyUserInfoDialogAlbum": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoDialogCancel": "取消",
+  "@modifyUserInfoDialogCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoNickName": "昵称",
+  "@modifyUserInfoNickName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoSex": "性别",
+  "@modifyUserInfoSex": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoAddress": "常住地",
+  "@modifyUserInfoAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyUserInfoSignature": "个性签名",
+  "@modifyUserInfoSignature": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyNickNameTitle": "修改昵称",
+  "@modifyNickNameTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyNickNameError": "昵称格式不正确",
+  "@modifyNickNameError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyNickNameLimit": "最多16个字，只允许包含字母、数字、下划线和点",
+  "@modifyNickNameLimit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifyNickNameSubmit": "确认",
+  "@modifyNickNameSubmit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifySignatureTitle": "修改个性签名",
+  "@modifySignatureTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifySignatureError": "个性签名不能为空",
+  "@modifySignatureError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifySignatureLimit": "最多20个字",
+  "@modifySignatureLimit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "modifySuccessToast": "修改成功",
+  "@modifySuccessToast": {
     "type": "text",
     "placeholders": {}
   }

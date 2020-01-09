@@ -405,7 +405,7 @@ class GmLocalizations {
   }
 
   String get splashSkipTitle {
-    return Intl.message("跳过", name: "splashSkitTitle");
+    return Intl.message("跳过", name: "splashSkipTitle");
   }
 
   String get inquiryTitle {
@@ -422,7 +422,7 @@ class GmLocalizations {
 
   String get inquiryTipsTitle {
     return Intl.message("# 本服务由第三方专业平台提供，有任何疑问请直接咨询第三方平台 #",
-        name: "inquiryTitle");
+        name: "inquiryTipsTitle");
   }
 
   String get inquiryDialogContent {
@@ -439,7 +439,7 @@ class GmLocalizations {
   }
 
   String get wikiTagTitle {
-    return Intl.message("育儿百科", name: "inquwikiTagTitleiryDialogNegative");
+    return Intl.message("育儿百科", name: "wikiTagTitle");
   }
 
   String get wikiTagSearchHint {
