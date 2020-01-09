@@ -167,7 +167,12 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       initialData: InAppWebViewInitialData(
         data: transformHtml(data.content),
       ),
-      initialOptions: InAppWebViewWidgetOptions(),
+      initialOptions: InAppWebViewWidgetOptions(
+        inAppWebViewOptions: InAppWebViewOptions(
+          disableVerticalScroll: true,
+          verticalScrollBarEnabled: false,
+        ),
+      ),
     );
   }
 

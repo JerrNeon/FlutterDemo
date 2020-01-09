@@ -162,6 +162,7 @@ class _ExercisePageState extends State<ExercisePage>
           loadImage(
             data.headUrl,
             width: MySizes.s_144,
+            height: double.infinity,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(MySizes.s_4),
           ),
@@ -176,6 +177,7 @@ class _ExercisePageState extends State<ExercisePage>
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         data.title,
