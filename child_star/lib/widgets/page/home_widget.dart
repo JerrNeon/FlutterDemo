@@ -255,7 +255,7 @@ class _NewsInteractionWidgetState extends State<NewsInteractionWidget> {
 
   _doDownload() async {
     GmLocalizations gm = GmLocalizations.of(context);
-    bool isInsert = await dbUtils.getMediaCache(data.id);
+    bool isInsert = await dbUtils.isMediaCacheInsert(data.id);
     if (isInsert) {
       //1：视频；2：音频
       showToast(data.type == 1

@@ -1,8 +1,10 @@
 import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/common/router/routers_navigate.dart';
+import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/exercise.dart';
 import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/widgets/page/exercise_widget.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -74,10 +76,11 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   }
 
   Widget _buildTop(Exercise data) {
+    //type 1：图文；2：电子书
     return SliverPersistentHeader(
       delegate: CustomSliverPersistentHeaderDelegate(
-        minHeight: MySizes.s_246,
-        maxHeight: MySizes.s_246,
+        minHeight: data.type == 1 ? MySizes.s_246 : MySizes.s_286,
+        maxHeight: data.type == 1 ? MySizes.s_246 : MySizes.s_286,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -107,7 +110,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
               padding: EdgeInsets.only(
                 left: MySizes.s_5,
                 right: MySizes.s_5,
-                bottom: MySizes.s_12,
+                bottom: data.type == 1 ? MySizes.s_12 : MySizes.s_6,
               ),
               child: Text(
                 data.descr,
@@ -116,11 +119,47 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                   fontSize: MyFontSizes.s_12,
                 ),
               ),
-            )
+            ),
+            _buildDownload(data),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDownload(Exercise data) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    //1：图文；2：电子书
+    if (data.type == 1) {
+      return SizedBox();
+    } else {
+      return PaddingWidget(
+        bottom: MySizes.s_12,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: MySizes.s_6,
+                vertical: MySizes.s_2,
+              ),
+              decoration: BoxDecoration(
+                color: MyColors.c_f2f2f2,
+                borderRadius: BorderRadius.circular(MySizes.s_6),
+              ),
+              child: Text(
+                gm.exerciseBookDownloadHint,
+                style: TextStyle(
+                  color: MyColors.c_a1a1a1,
+                  fontSize: MyFontSizes.s_8,
+                ),
+              ),
+            ),
+            ExerciseDetailDownloadWidget(data: data),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildWebView(Exercise data) {
@@ -141,8 +180,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       offstage: !isShow,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => RoutersNavigate().navigateToH5(
-            context, data.jumpUrl),
+        onTap: () => RoutersNavigate().navigateToH5(context, data.jumpUrl),
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MySizes.s_100,

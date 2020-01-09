@@ -22,6 +22,10 @@ class _MyBookPageState extends State<MyBookPage> {
     _future = _initDbUtils();
   }
 
+  _initFuture() {
+    _future = _dbUtils.getMediaCacheList([TYPE_EXERCISE]);
+  }
+
   Future<List<MediaCache>> _initDbUtils() async {
     _dbUtils = DbUtils();
     await _dbUtils.open();
@@ -84,7 +88,8 @@ class _MyBookPageState extends State<MyBookPage> {
       context,
       content: GmLocalizations.of(context).downloadDeleteConfirmTitle,
       onPositiveTap: () {
-        _dbUtils.delete(data.mediaId);
+        _dbUtils.delete(data.id);
+        _initFuture();
         setState(() {});
       },
     );

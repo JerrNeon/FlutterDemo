@@ -208,6 +208,10 @@ class GmLocalizations {
     return Intl.message("绘本书籍", name: "mineBook");
   }
 
+  String get mineBookDetail {
+    return Intl.message("书籍详情", name: "mineBookDetail");
+  }
+
   String get mineDownload {
     return Intl.message("离线缓存", name: "mineDownload");
   }
@@ -266,6 +270,22 @@ class GmLocalizations {
 
   String get exerciseBookDescribeTitle {
     return Intl.message("绘本介绍", name: "exerciseBookDescribeTitle");
+  }
+
+  String get exerciseBookDownloadHint {
+    return Intl.message("下载完成请至我的书籍里观看绘本", name: "exerciseBookDownloadHint");
+  }
+
+  String get exerciseBookDownload {
+    return Intl.message("下载书籍", name: "exerciseBookDownload");
+  }
+
+  String get exerciseBookDownloading {
+    return Intl.message("下载中", name: "exerciseBookDownloading");
+  }
+
+  String get exerciseBookRead {
+    return Intl.message("阅读书籍", name: "exerciseBookRead");
   }
 
   String get consultationSearchHint {

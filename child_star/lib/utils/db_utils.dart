@@ -63,13 +63,25 @@ class DbUtils {
     return null;
   }
 
-  Future<bool> getMediaCache(int mediaId) async {
+  Future<bool> isMediaCacheInsert(int mediaId) async {
     List<Map<String, dynamic>> list = await _db?.query(
       tableMediaCache,
       where: '$columnMediaId = ?',
       whereArgs: [mediaId],
     );
     return list != null && list.isNotEmpty;
+  }
+
+  Future<MediaCache> getMediaCache(int mediaId) async {
+    List<Map<String, dynamic>> list = await _db?.query(
+      tableMediaCache,
+      where: '$columnMediaId = ?',
+      whereArgs: [mediaId],
+    );
+    if (list != null && list.isNotEmpty) {
+      return MediaCache.fromMap(list.first);
+    }
+    return null;
   }
 
   Future<int> update(MediaCache mediaCache) async {

@@ -151,6 +151,12 @@ class MyImages {
   static const AssetImage ic_user_male = AssetImage("images/ic_user_male.png");
   static const AssetImage ic_download_delete =
       AssetImage("images/ic_download_delete.png");
+  static const AssetImage ic_videoplay_fullscreen =
+      AssetImage("images/ic_videoplay_fullscreen.png");
+  static const AssetImage ic_exercise_download =
+      AssetImage("images/ic_exercise_download.png");
+  static const AssetImage ic_exercise_read =
+      AssetImage("images/ic_exercise_read.png");
 }
 
 class MyImagesMultiple {
@@ -201,4 +207,5 @@ class MyImagesMultiple {
     true: MyImages.ic_newdetail_collection,
     false: MyImages.ic_newdetail_uncollection,
   };
+
 }
