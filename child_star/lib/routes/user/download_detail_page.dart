@@ -70,7 +70,7 @@ class _DownloadDetailPageState extends State<DownloadDetailPage> {
   Widget _buildPdfWidget(BuildContext context) {
     String url = decodeFromBase64UrlSafeEncodedString(path);
     return PDFViewerScaffold(
-      appBar: AppBarWidget2(GmLocalizations.of(context).mineBookDetail),
+      appBar: AppBarWidget(GmLocalizations.of(context).mineBookDetail),
       path: url,
     );
   }
