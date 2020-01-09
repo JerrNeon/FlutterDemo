@@ -11,3 +11,4 @@ export 'date_utils.dart';
 export 'sp_utils.dart';
 export 'file_utils.dart';
 export 'db_utils.dart';
+export 'statusbar_utils.dart';

@@ -3,6 +3,8 @@ import 'package:child_star/common/my_sizes.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 
+const double kAppBarHeight = MySizes.s_48;
+
 class AppBarWidget extends StatelessWidget {
   final String title;
   final bool isShowDivider;
@@ -20,7 +22,7 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      height: isShowDivider ? MySizes.s_49 : MySizes.s_48,
+      height: isShowDivider ? kAppBarHeight + 1 : kAppBarHeight,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

@@ -16,6 +16,13 @@ class MinePage extends StatefulWidget {
 
 class _MinePageState extends State<MinePage> {
   @override
+  void initState() {
+    super.initState();
+    StatusBarUtils.portrait();
+    StatusBarUtils.setDark();
+  }
+
+  @override
   Widget build(BuildContext context) {
     GmLocalizations gm = GmLocalizations.of(context);
     return Scaffold(

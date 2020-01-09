@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/utils/log_utils.dart';
+import 'package:child_star/utils/statusbar_utils.dart';
+import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -11,8 +13,15 @@ enum PlayerState { stopped, playing, paused }
 class VideoPlayerWidget extends StatefulWidget {
   final String url; //视频Url
   final bool isAutoPlay; //是否自动播放
+  final fullScreenEnable; //是否可以全屏
+  final ValueChanged onFullValueChanged; //全屏监听
 
-  VideoPlayerWidget(this.url, {this.isAutoPlay = true});
+  VideoPlayerWidget(
+    this.url, {
+    this.isAutoPlay = true,
+    this.fullScreenEnable = false,
+    this.onFullValueChanged,
+  });
 
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
@@ -23,6 +32,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   PlayerState _playerState = PlayerState.stopped;
   double progress = 0;
   var isShowUI = false;
+  bool _isFullScreen = false;
   Timer _uiTimer;
   Timer _progressTimer;
 
@@ -50,62 +60,122 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //屏幕尺寸
+    Size size = MediaQuery.of(context).size;
+    //全屏时的比例
+    double screenAspectRatio = size.width / size.height;
     return _controller.value.initialized
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_playerState == PlayerState.playing) {
-                          setState(() {
-                            isShowUI = !isShowUI;
-                          });
-                          _hideUI();
-                        }
-                      },
-                      child: VideoPlayer(_controller),
-                    ),
+        ? WillPopScope(
+            onWillPop: () async {
+              if (_isFullScreen) {
+                _fullScreen();
+                return false;
+              }
+              return true;
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: _isFullScreen
+                      ? screenAspectRatio
+                      : _controller.value.aspectRatio,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (_playerState == PlayerState.playing) {
+                        setState(() {
+                          isShowUI = !isShowUI;
+                        });
+                        _hideUI();
+                      }
+                    },
+                    child: VideoPlayer(_controller),
                   ),
-                  Offstage(
-                    offstage: !isShowUI,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_playerState == PlayerState.playing) {
-                          _pause();
-                          setState(() {});
-                          _progressTimer?.cancel();
-                          _uiTimer?.cancel();
-                        } else {
-                          _play();
-                          setState(() {});
-                          if (!_progressTimer.isActive) {
-                            _setProgress();
-                          }
-                          _hideUI();
-                        }
-                      },
-                      child: Image(
-                          image: MyImagesMultiple
-                              .video_play[_playerState == PlayerState.playing]),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: MySizes.s_2,
-                child: LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation(MyColors.c_ffa2b1),
                 ),
-              ),
-            ],
+                //播放图标
+                Offstage(
+                  offstage: !isShowUI,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (_playerState == PlayerState.playing) {
+                        _pause();
+                        setState(() {});
+                        _progressTimer?.cancel();
+                        _uiTimer?.cancel();
+                      } else {
+                        _play();
+                        setState(() {});
+                        if (!_progressTimer.isActive) {
+                          _setProgress();
+                        }
+                        _hideUI();
+                      }
+                    },
+                    child: Image(
+                        image: MyImagesMultiple
+                            .video_play[_playerState == PlayerState.playing]),
+                  ),
+                ),
+                //全屏图标
+                widget.fullScreenEnable
+                    ? Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Offstage(
+                          offstage: !isShowUI,
+                          child: GestureDetector(
+                            onTap: () {
+                              _fullScreen();
+                              _hideUI();
+                            },
+                            behavior: HitTestBehavior.opaque,
+                            child: PaddingWidget(
+                              right: MySizes.s_8,
+                              bottom: MySizes.s_12,
+                              child: Image(
+                                  image: MyImages.ic_videoplay_fullscreen),
+                            ),
+                          ),
+                        ),
+                      )
+                    : EmptyWidget(),
+                //返回图标
+                widget.fullScreenEnable && _isFullScreen
+                    ? Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Offstage(
+                          offstage: !isShowUI,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              _fullScreen();
+                              _hideUI();
+                            },
+                          ),
+                        ),
+                      )
+                    : EmptyWidget(),
+                //进度条
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: MySizes.s_2,
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: Colors.grey[200],
+                      valueColor: AlwaysStoppedAnimation(MyColors.c_ffa2b1),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )
         : Container();
   }
@@ -142,6 +212,20 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         isShowUI = false;
       });
     });
+  }
+
+  _fullScreen() {
+    if (_isFullScreen) {
+      StatusBarUtils.portrait();
+      StatusBarUtils.setDark();
+      _isFullScreen = false;
+    } else {
+      StatusBarUtils.landscape();
+      _isFullScreen = true;
+    }
+    if (widget.onFullValueChanged != null) {
+      widget.onFullValueChanged(_isFullScreen);
+    }
   }
 }
 
