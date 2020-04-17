@@ -190,12 +190,12 @@ var _homeTagListPageHandler = Handler(
 
 var _consultationInquiryHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
-  return InquiryPage();
+  return _isLogin(context) ? InquiryPage() : LoginPage();
 });
 
 var _consultationWikiTagHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
-  return WikiTagPage();
+  return _isLogin(context) ? WikiTagPage() : LoginPage();
 });
 
 var _consultationWikiListHandler = Handler(

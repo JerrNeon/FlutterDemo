@@ -1,6 +1,7 @@
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -174,7 +175,7 @@ class _HomeTagListPageState extends State<HomeTagListPage> {
                   crossAxisCount: 3,
                   mainAxisSpacing: MySizes.s_6,
                   crossAxisSpacing: MySizes.s_6,
-                  childAspectRatio: 3,
+                  childAspectRatio: 375 / ScreenUtils.width * 2.8,
                   children: (e.tags != null && e.tags.isNotEmpty)
                       ? e.tags.map((tag) {
                           return GestureDetector(

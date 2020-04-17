@@ -72,7 +72,7 @@ class _HomeNewPageState extends State<HomeNewPage>
             } else {
               List<Tag> tagList = snapshot.data;
               return Container(
-                height: MySizes.s_44,
+                height: MySizes.s_48,
                 margin: EdgeInsets.only(
                     top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
                 padding: EdgeInsets.symmetric(

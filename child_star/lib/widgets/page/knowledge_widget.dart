@@ -21,19 +21,19 @@ class LectureItemWidget extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         color: Colors.white,
-        height: MySizes.s_88,
         margin: EdgeInsets.only(bottom: MySizes.s_4),
         child: Row(
           children: <Widget>[
             loadImage(
               data.headUrl,
               width: MySizes.s_144,
-              height: double.infinity,
+              height: MySizes.s_88,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(MySizes.s_4),
             ),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
