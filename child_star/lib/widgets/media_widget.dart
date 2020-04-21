@@ -73,111 +73,130 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               }
               return true;
             },
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: _isFullScreen
-                      ? screenAspectRatio
-                      : _controller.value.aspectRatio,
-                  child: GestureDetector(
-                    onTap: () {
-                      if (_playerState == PlayerState.playing) {
-                        setState(() {
-                          isShowUI = !isShowUI;
-                        });
-                        _hideUI();
-                      }
-                    },
-                    child: VideoPlayer(_controller),
-                  ),
-                ),
-                //播放图标
-                Offstage(
-                  offstage: !isShowUI,
-                  child: GestureDetector(
-                    onTap: () {
-                      if (_playerState == PlayerState.playing) {
-                        _pause();
-                        setState(() {});
-                        _progressTimer?.cancel();
-                        _uiTimer?.cancel();
-                      } else {
-                        _play();
-                        setState(() {});
-                        if (!_progressTimer.isActive) {
-                          _setProgress();
-                        }
-                        _hideUI();
-                      }
-                    },
-                    child: Image(
-                        image: MyImagesMultiple
-                            .video_play[_playerState == PlayerState.playing]),
-                  ),
-                ),
-                //全屏图标
-                widget.fullScreenEnable
-                    ? Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Offstage(
-                          offstage: !isShowUI,
-                          child: GestureDetector(
-                            onTap: () {
-                              _fullScreen();
-                              _hideUI();
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: PaddingWidget(
-                              right: MySizes.s_8,
-                              bottom: MySizes.s_12,
-                              child: Image(
-                                  image: MyImages.ic_videoplay_fullscreen),
-                            ),
-                          ),
-                        ),
-                      )
-                    : EmptyWidget(),
-                //返回图标
-                widget.fullScreenEnable && _isFullScreen
-                    ? Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Offstage(
-                          offstage: !isShowUI,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              _fullScreen();
-                              _hideUI();
-                            },
-                          ),
-                        ),
-                      )
-                    : EmptyWidget(),
-                //进度条
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: MySizes.s_2,
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      backgroundColor: Colors.grey[200],
-                      valueColor: AlwaysStoppedAnimation(MyColors.c_ffa2b1),
+            child: Container(
+              width: size.width,
+              color: Colors.black,
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    //1：全屏宽度是屏幕宽度；
+                    //2：如果视频高度大于屏幕高度的三分之一，则设置视频高度为屏幕的三分之一，宽度则通过比例换算得出
+                    //3：除12外默认为屏幕宽度
+                    width: _isFullScreen
+                        ? size.width
+                        : size.width / _controller.value.aspectRatio >
+                                size.height / 3
+                            ? _controller.value.aspectRatio * size.height / 3
+                            : size.width,
+                    child: AspectRatio(
+                      aspectRatio: _isFullScreen
+                          ? screenAspectRatio
+                          : _controller.value.aspectRatio,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_playerState == PlayerState.playing) {
+                            setState(() {
+                              isShowUI = !isShowUI;
+                            });
+                            _hideUI();
+                          }
+                        },
+                        child: VideoPlayer(_controller),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  //播放图标
+                  Offstage(
+                    offstage: !isShowUI,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_playerState == PlayerState.playing) {
+                          _pause();
+                          setState(() {});
+                          _progressTimer?.cancel();
+                          _uiTimer?.cancel();
+                        } else {
+                          _play();
+                          setState(() {});
+                          if (!_progressTimer.isActive) {
+                            _setProgress();
+                          }
+                          _hideUI();
+                        }
+                      },
+                      child: Image(
+                          image: MyImagesMultiple
+                              .video_play[_playerState == PlayerState.playing]),
+                    ),
+                  ),
+                  //全屏图标
+                  widget.fullScreenEnable
+                      ? Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Offstage(
+                            offstage: !isShowUI,
+                            child: GestureDetector(
+                              onTap: () {
+                                _fullScreen();
+                                _hideUI();
+                              },
+                              behavior: HitTestBehavior.opaque,
+                              child: PaddingWidget(
+                                right: MySizes.s_8,
+                                bottom: MySizes.s_12,
+                                child: Image(
+                                    image: MyImages.ic_videoplay_fullscreen),
+                              ),
+                            ),
+                          ),
+                        )
+                      : EmptyWidget(),
+                  //返回图标
+                  widget.fullScreenEnable && _isFullScreen
+                      ? Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Offstage(
+                            offstage: !isShowUI,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                _fullScreen();
+                                _hideUI();
+                              },
+                            ),
+                          ),
+                        )
+                      : EmptyWidget(),
+                  //进度条
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: MySizes.s_2,
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: Colors.grey[200],
+                        valueColor: AlwaysStoppedAnimation(MyColors.c_ffa2b1),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
-        : Container();
+        : Container(
+            width: size.width,
+            height: size.height / 3,
+            child: UnconstrainedBox(child: CircularProgressIndicator()),
+          );
   }
 
   _play() {
