@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: Colors.white, //作为Scaffold基础的Material默认颜色
               //解决TextField提示语hintText不居中的问题
               textTheme: TextTheme(
-                subhead: TextStyle(
+                subtitle1: TextStyle(
                   textBaseline: TextBaseline.alphabetic,
                 ),
               )),

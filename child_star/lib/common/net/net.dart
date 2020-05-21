@@ -65,7 +65,7 @@ class Net {
       (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (HttpClient client) {
         client.findProxy = (uri) {
-          return 'PROXY 10.200.38.110:8888';
+          return 'PROXY 10.200.38.76:8888';
         };
         //代理工具会提供一个抓包的自签名证书，会通不过证书校验，所以我们禁用证书校验
         client.badCertificateCallback =
