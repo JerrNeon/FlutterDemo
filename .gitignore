@@ -29,6 +29,7 @@
 .pub/
 /build/
 /idea/
+pubspec.lock
 
 # Android related
 **/android/**/gradle-wrapper.jar
