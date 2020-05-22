@@ -451,29 +451,33 @@ class _WebViewWidgetState extends State<WebViewWidget> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    return Container(
-      height: height ?? screenHeight,
-      child: InAppWebView(
-        initialData: InAppWebViewInitialData(
-          data: transformHtml(data),
-        ),
-        initialOptions: InAppWebViewWidgetOptions(
-          inAppWebViewOptions: InAppWebViewOptions(
-            disableVerticalScroll: true,
-            verticalScrollBarEnabled: false,
+    if (AppUtils.isMobile) {
+      return Container(
+        height: height ?? screenHeight,
+        child: InAppWebView(
+          initialData: InAppWebViewInitialData(
+            data: transformHtml(data),
           ),
+          initialOptions: InAppWebViewWidgetOptions(
+            inAppWebViewOptions: InAppWebViewOptions(
+              disableVerticalScroll: true,
+              verticalScrollBarEnabled: false,
+            ),
+          ),
+          onLoadStop: (controller, url) {
+            controller.evaluateJavascript(source: JS_HTML_HEIGHT).then((value) {
+              var valueDp = value / devicePixelRatio;
+              if (valueDp < screenHeight) {
+                height = valueDp;
+                setState(() {});
+              }
+            });
+          },
         ),
-        onLoadStop: (controller, url) {
-          controller.evaluateJavascript(source: JS_HTML_HEIGHT).then((value) {
-            var valueDp = value / devicePixelRatio;
-            if (valueDp < screenHeight) {
-              height = valueDp;
-              setState(() {});
-            }
-          });
-        },
-      ),
-    );
+      );
+    } else {
+      return Container();
+    }
   }
 }
 

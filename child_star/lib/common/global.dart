@@ -14,7 +14,7 @@ class Global {
   );
 
   // 是否为release版
-  static bool get isRelease => bool.fromEnvironment("dart.vm.product");
+  static bool get isRelease => const bool.fromEnvironment("dart.vm.product");
 
   static Future init() async {
     //Release不打印日志

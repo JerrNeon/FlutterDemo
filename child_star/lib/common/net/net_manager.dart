@@ -90,7 +90,7 @@ class NetManager {
     String deviceId,
     String ipAddress,
   }) async {
-    var uniqueId = await NetUtils.getUniqueId(context);
+    var uniqueId = await NetUtils.getUniqueId();
     var ip = await NetUtils.getIpAddress();
     LogUtils.d("uniqueId: $uniqueId ip: $ip");
     var response = await Net(context).post(NetConfig.LOGIN, params: {
@@ -114,7 +114,7 @@ class NetManager {
     String deviceId,
     String ipAddress,
   }) async {
-    deviceId = await NetUtils.getUniqueId(context);
+    deviceId = await NetUtils.getUniqueId();
     ipAddress = await NetUtils.getIpAddress();
     var response = await Net(context).post(NetConfig.REGISTER, params: {
       "mobile": mobile,

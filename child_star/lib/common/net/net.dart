@@ -61,7 +61,8 @@ class Net {
 
   static void init() {
     //在调试模式下需要抓包，所以我们需要使用代理，并禁用https证书校验
-    if (!Global.isRelease) {
+    if (!Global.isRelease &&
+        dio.httpClientAdapter is DefaultHttpClientAdapter) {
       (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (HttpClient client) {
         client.findProxy = (uri) {

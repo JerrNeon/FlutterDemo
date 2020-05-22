@@ -4,6 +4,7 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/states/states_index.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -153,11 +154,14 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<Map<PermissionGroup, PermissionStatus>> _requestPermission() async {
-    return await PermissionHandler().requestPermissions([
-      PermissionGroup.camera,
-      PermissionGroup.photos,
-      PermissionGroup.storage,
-    ]);
+    if (AppUtils.isMobile) {
+      return await PermissionHandler().requestPermissions([
+        PermissionGroup.camera,
+        PermissionGroup.photos,
+        PermissionGroup.storage,
+      ]);
+    }
+    return null;
   }
 
   _cancelTimer() {
