@@ -25,6 +25,7 @@
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.metadata
 .packages
 .pub-cache/
 .pub/
@@ -36,6 +37,7 @@ pubspec.lock
 **/android/.gradle
 **/android/.idea
 **/android/.settings
+**/android/.classpath
 **/android/.project
 **/android/app/.settings
 **/android/app/.project
