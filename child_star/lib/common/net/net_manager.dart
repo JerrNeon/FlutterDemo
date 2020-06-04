@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
@@ -6,6 +8,7 @@ import 'package:child_star/utils/utils_index.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xmly/xmly_index.dart';
 
 class NetManager {
   NetManager([this.context]);
@@ -583,5 +586,183 @@ class NetManager {
       "file": await MultipartFile.fromFile(filePath),
     });
     return await Net(context).post(NetConfig.UPLOAD_FILE, data: data);
+  }
+}
+
+class XmlyNetManager {
+  factory XmlyNetManager() => _getInstacne();
+
+  static XmlyNetManager _instance;
+
+  XmlyNetManager._();
+
+  static XmlyNetManager _getInstacne() {
+    if (_instance == null) {
+      _instance = XmlyNetManager._();
+    }
+    return _instance;
+  }
+
+  ///get请求
+  Future<String> baseGetRequest({
+    @required String url,
+    Map<String, String> params,
+  }) {
+    if (params != null && params.isNotEmpty) {
+      params.removeWhere((key, value) {
+        return value == null;
+      });
+    }
+    return Xmly().baseGetRequest(url: url, params: params);
+  }
+
+  ///获取焦点图
+  Future<XmlyBannersPageList> getBannerList({
+    int bannerContentType =
+        2, //	Int	否	焦点图类型 0-不限 1-单个用户 2-单个专辑，3-单个声音，4-链接，9-听单，默认值为0
+    int scope = 2, //	Long	否	查询范围 0-全部，1-喜马焦点图，2-开发者自运营焦点图，默认为0
+    int isPaid = 0, //	Int	否	是否付费： 1：付费 ，0：免费 ，-1：不限
+    String sortBy, //	String	否	排序字段 可选值：created_at、update_at 默认值：updated_at
+    String sort, //	String	否	desc-降序排列 asc-升序排列 默认值：desc
+    int page = 1, //	Int	否	返回第几页，从1开始，默认为1
+    int count = 20, //	Int	否	每页大小，范围为[1,200]，默认为20
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_BANNERS, params: {
+      "banner_content_type": bannerContentType.toString(),
+      "scope": scope.toString(),
+      "is_paid": isPaid.toString(),
+      "sort_by": sortBy,
+      "sort": sort,
+      "page": page.toString(),
+      "count": count.toString(),
+    });
+    return XmlyBannersPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///多筛选条件搜索听单
+  Future<ColumnsPageList> getColumnList({
+    String id, //	Long	否	听单ID
+    String title, //	String	否	听单标题
+    int contentType = 1, //	Int	否	内容类型： 1：专辑 2：声音
+    String
+        scopes, //String	否	数据范围 可选值：xm、developer。 xm：喜马系统听单 developer：开发者自建听单 多个范围用逗号隔开，例如：xm,developer 默认值：developer
+    String sort, //	String	否	desc-降序排列 asc-升序排列 默认值：desc
+    int page = 1, //	Int	否	返回第几页，从1开始，默认为1
+    int count = 20, //	Int	否	每页大小，范围为[1,200]，默认为20
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_COLUMNS, params: {
+      "id": id,
+      "title": title,
+      "content_type": contentType.toString(),
+      "scopes": scopes,
+      "sort": sort,
+      "page": page.toString(),
+      "count": count.toString(),
+    });
+    return ColumnsPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///批量获取听单信息
+  Future<ColumnsPageList> getColumnBatchList({
+    String ids, //	String	是	以英文逗号隔开的听单ID，一次最多传200个，超出部分的ID会被忽略
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_COLUMNS_BATCH, params: {
+      "ids": ids,
+    });
+    return ColumnsPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///分页获取听单内容
+  Future<ColumnsAlbumPageList> getAlbumList({
+    @required int id, //听单ID
+    int page = 1,
+    int count = 20,
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_COLUMN_CONTENT, params: {
+      "id": id.toString(),
+      "page": page.toString(),
+      "count": count.toString(),
+    });
+    return ColumnsAlbumPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///批量获取听单信息并且根据听单信息获取部分听单内容
+  Future<ColumnBatchAlbumPageList> getColumnBatchAlbumList({
+    String ids, //	String	是	以英文逗号隔开的听单ID，一次最多传200个，超出部分的ID会被忽略
+    int page = 1,
+    int count = 20,
+  }) async {
+    ColumnsPageList columnsPageList = await getColumnBatchList(ids: ids);
+    ColumnBatchAlbumPageList columnBatchAlbumPageList =
+        ColumnBatchAlbumPageList(columns: columnsPageList.columns);
+    List<Columns> columns = columnsPageList.columns;
+    if (columns != null && columns.isNotEmpty) {
+      List<Future<ColumnsAlbumPageList>> list = columns.map((e) async {
+        return await getAlbumList(id: e.id, page: page, count: count);
+      }).toList();
+      columnBatchAlbumPageList.albumFutures = list;
+      return columnBatchAlbumPageList;
+    }
+    return null;
+  }
+
+  ///获取开发者收藏专辑(搜索专辑)
+  Future<AlbumPageList> getCollectedAlbumList({
+    String id, //Long	否	专辑ID
+    String albumTitle, //String	否	专辑名称
+    int isPaid = 0, //Int	否	默认值：不限 是否付费： 1：付费 0：免费 -1：不限
+    String sortBy, //String	否	排序字段 可选值：play_count、updated_at 默认值：updated_at
+    String sort, //String	否	desc-降序排列 asc-升序排列 默认值：desc
+    int page = 1,
+    int count = 20,
+  }) async {
+    String jsonStr = await baseGetRequest(
+        url: XmlyNetConfig.GET_DEVELOPER_COLLECTED_ALBUMS,
+        params: {
+          "id": id,
+          "album_title": albumTitle,
+          "is_paid": isPaid.toString(),
+          "sort_by": sortBy,
+          "sort": sort,
+          "page": page.toString(),
+          "count": count.toString(),
+        });
+    return AlbumPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///多筛选条件搜索专辑
+  Future<AlbumPageList> getSearchAlbumList({
+    @required int id, //专辑ID
+    int page = 1,
+    int count = 1,
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_SEARCHED_ALBUMS, params: {
+      "id": id.toString(),
+      "page": page.toString(),
+      "count": count.toString(),
+    });
+    return AlbumPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///专辑浏览
+  Future<TrackPageList> getTracks({
+    @required int albumId, //专辑ID
+    String sort = "asc",
+    int page = 1,
+    int count = 20,
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_TRACKS, params: {
+      "album_id": albumId.toString(),
+      "sort": sort,
+      "page": page.toString(),
+      "count": count.toString(),
+    });
+    return TrackPageList.fromJson(json.decode(jsonStr));
   }
 }

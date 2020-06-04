@@ -157,6 +157,13 @@ class MyImages {
       AssetImage("images/ic_exercise_download.png");
   static const AssetImage ic_exercise_read =
       AssetImage("images/ic_exercise_read.png");
+  static const AssetImage ic_xmly_recent =
+      AssetImage("images/ic_xmly_recent.png");
+  static const AssetImage ic_xmly_collect =
+      AssetImage("images/ic_xmly_collect.png");
+  static const AssetImage ic_xmly_logo = AssetImage("images/ic_xmly_logo.png");
+  static const AssetImage ic_xmly_playcount =
+      AssetImage("images/ic_xmly_playcount.png");
 }
 
 class MyImagesMultiple {
@@ -207,5 +214,4 @@ class MyImagesMultiple {
     true: MyImages.ic_newdetail_collection,
     false: MyImages.ic_newdetail_uncollection,
   };
-
 }

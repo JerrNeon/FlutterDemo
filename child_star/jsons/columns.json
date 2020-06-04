@@ -1,0 +1,12 @@
+{
+    "id": 1653,
+    "@JsonKey(name : 'created_at') num": "createdAt",
+    "@JsonKey(name : 'updated_at') num": "updatedAt",
+    "title": "单田芳经典评书top10，一代人听着长大的国民评书",
+    "@JsonKey(name : 'cover_url_small') String": "coverUrlSmall",
+    "@JsonKey(name : 'cover_url_middle') String": "coverUrlMiddle",
+    "@JsonKey(name : 'cover_url_large') String": "coverUrlLarge",
+    "@JsonKey(name : 'content_type') int": "contentType",
+    "@JsonKey(name : 'content_num') int": "contentNum",
+    "kind": "column"
+}

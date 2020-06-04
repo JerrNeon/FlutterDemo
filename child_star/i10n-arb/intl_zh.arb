@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-01-09T17:43:43.950061",
+  "@@last_modified": "2020-06-04T11:43:59.936991",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -682,6 +682,136 @@
   },
   "modifySuccessToast": "修改成功",
   "@modifySuccessToast": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "knowledgeRoomTitle": "自习室",
+  "@knowledgeRoomTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "knowledgeLectureTitle": "讲堂",
+  "@knowledgeLectureTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "knowledgeXmlyTitle": "喜马拉雅",
+  "@knowledgeXmlyTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyRecentTitle": "最近",
+  "@xmlyRecentTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyCollectTitle": "收藏",
+  "@xmlyCollectTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyMoreTitle": "更多",
+  "@xmlyMoreTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlySearchHint": "请输入专辑名称",
+  "@xmlySearchHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyIsFinishedText": "完结",
+  "@xmlyIsFinishedText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayCountUnit1": "亿",
+  "@xmlyPlayCountUnit1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayCountUnit2": "万",
+  "@xmlyPlayCountUnit2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPartNumUnit": "集",
+  "@xmlyPartNumUnit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlySourceTitle": "内容来源：喜马拉雅APP",
+  "@xmlySourceTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyAlbumPlayTitle": "全部播放",
+  "@xmlyAlbumPlayTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyAlbumPauseTitle": "暂停播放",
+  "@xmlyAlbumPauseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyAlbumContinueTitle": "继续播放",
+  "@xmlyAlbumContinueTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyAlbumPartNumUnit1": "共",
+  "@xmlyAlbumPartNumUnit1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayList": "播放列表",
+  "@xmlyPlayList": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayTimerClose": "定时关闭",
+  "@xmlyPlayTimerClose": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayTimerCloseDialogTimeUnit": "分钟",
+  "@xmlyPlayTimerCloseDialogTimeUnit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayTimerCloseDialogCloseTitle": "关闭",
+  "@xmlyPlayTimerCloseDialogCloseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayModeList": "列表播放",
+  "@xmlyPlayModeList": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayModeSigleLoop": "单曲循环",
+  "@xmlyPlayModeSigleLoop": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayModeRandom": "随机播放",
+  "@xmlyPlayModeRandom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayModeListLoop": "列表循环",
+  "@xmlyPlayModeListLoop": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlaySortDesc": "倒序",
+  "@xmlyPlaySortDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlaySortAsc": "正序",
+  "@xmlyPlaySortAsc": {
     "type": "text",
     "placeholders": {}
   }

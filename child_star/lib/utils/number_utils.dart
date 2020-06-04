@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:child_star/i10n/i10n_index.dart';
+import 'package:flutter/widgets.dart';
+
 extension StringExtension on String {
   ///16进制数字符串转 int
   int hexNumToInt() {
@@ -45,5 +48,16 @@ extension IntExtension on int {
     }
     return Color.fromRGBO((this & 0xFF0000) >> 16, (this & 0x00FF00) >> 8,
         (this & 0x0000FF) >> 0, alpha);
+  }
+}
+
+class NumberUtils {
+  static getPlayCount(BuildContext context, int playCount) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return playCount >= 100000000
+        ? "${(playCount * 1.0 / 100000000).toStringAsFixed(2)}${gm.xmlyPlayCountUnit1}"
+        : playCount >= 10000
+            ? "${(playCount * 1.0 / 10000).toStringAsFixed(2)}${gm.xmlyPlayCountUnit2}"
+            : playCount.toString();
   }
 }

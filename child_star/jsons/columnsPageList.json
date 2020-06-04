@@ -1,0 +1,6 @@
+{
+    "@JsonKey(name : 'total_page') int": "totalPage",
+    "@JsonKey(name : 'total_count') int": "totalCount",
+    "@JsonKey(name : 'current_page') int": "currentPage",
+    "columns": "$[]columns"
+}

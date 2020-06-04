@@ -569,6 +569,110 @@ class GmLocalizations {
   String get modifySuccessToast {
     return Intl.message("修改成功", name: "modifySuccessToast");
   }
+
+  String get knowledgeRoomTitle {
+    return Intl.message("自习室", name: "knowledgeRoomTitle");
+  }
+
+  String get knowledgeLectureTitle {
+    return Intl.message("讲堂", name: "knowledgeLectureTitle");
+  }
+
+  String get knowledgeXmlyTitle {
+    return Intl.message("喜马拉雅", name: "knowledgeXmlyTitle");
+  }
+
+  String get xmlyRecentTitle {
+    return Intl.message("最近", name: "xmlyRecentTitle");
+  }
+
+  String get xmlyCollectTitle {
+    return Intl.message("收藏", name: "xmlyCollectTitle");
+  }
+
+  String get xmlyMoreTitle {
+    return Intl.message("更多", name: "xmlyMoreTitle");
+  }
+
+  String get xmlySearchHint {
+    return Intl.message("请输入专辑名称", name: "xmlySearchHint");
+  }
+
+  String get xmlyIsFinishedText {
+    return Intl.message("完结", name: "xmlyIsFinishedText");
+  }
+
+  String get xmlyPlayCountUnit1 {
+    return Intl.message("亿", name: "xmlyPlayCountUnit1");
+  }
+
+  String get xmlyPlayCountUnit2 {
+    return Intl.message("万", name: "xmlyPlayCountUnit2");
+  }
+
+  String get xmlyPartNumUnit {
+    return Intl.message("集", name: "xmlyPartNumUnit");
+  }
+
+  String get xmlySourceTitle {
+    return Intl.message("内容来源：喜马拉雅APP", name: "xmlySourceTitle");
+  }
+
+  String get xmlyAlbumPlayTitle {
+    return Intl.message("全部播放", name: "xmlyAlbumPlayTitle");
+  }
+
+  String get xmlyAlbumPauseTitle {
+    return Intl.message("暂停播放", name: "xmlyAlbumPauseTitle");
+  }
+
+  String get xmlyAlbumContinueTitle {
+    return Intl.message("继续播放", name: "xmlyAlbumContinueTitle");
+  }
+
+  String get xmlyAlbumPartNumUnit1 {
+    return Intl.message("共", name: "xmlyAlbumPartNumUnit1");
+  }
+
+  String get xmlyPlayList {
+    return Intl.message("播放列表", name: "xmlyPlayList");
+  }
+
+  String get xmlyPlayTimerClose {
+    return Intl.message("定时关闭", name: "xmlyPlayTimerClose");
+  }
+
+  String get xmlyPlayTimerCloseDialogTimeUnit {
+    return Intl.message("分钟", name: "xmlyPlayTimerCloseDialogTimeUnit");
+  }
+
+  String get xmlyPlayTimerCloseDialogCloseTitle {
+    return Intl.message("关闭", name: "xmlyPlayTimerCloseDialogCloseTitle");
+  }
+
+  String get xmlyPlayModeList {
+    return Intl.message("列表播放", name: "xmlyPlayModeList");
+  }
+
+  String get xmlyPlayModeSigleLoop {
+    return Intl.message("单曲循环", name: "xmlyPlayModeSigleLoop");
+  }
+
+  String get xmlyPlayModeRandom {
+    return Intl.message("随机播放", name: "xmlyPlayModeRandom");
+  }
+
+  String get xmlyPlayModeListLoop {
+    return Intl.message("列表循环", name: "xmlyPlayModeListLoop");
+  }
+
+  String get xmlyPlaySortDesc {
+    return Intl.message("倒序", name: "xmlyPlaySortDesc");
+  }
+
+  String get xmlyPlaySortAsc {
+    return Intl.message("正序", name: "xmlyPlaySortAsc");
+  }
 }
 
 class _GmLocalizationsDelegate extends LocalizationsDelegate<GmLocalizations> {

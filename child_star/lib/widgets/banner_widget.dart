@@ -126,3 +126,46 @@ class AdvertisementWidget extends StatelessWidget {
     }
   }
 }
+
+class XmlyBannerWidget extends StatelessWidget {
+  final List<XmlyBanners> imageList;
+  final double aspectRatio;
+  final SwiperOnTap onTap;
+
+  XmlyBannerWidget(this.imageList,
+      {this.aspectRatio = 366.0 / 153.0, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: aspectRatio,
+      child: Swiper(
+        itemCount: imageList.length,
+        autoplay: true,
+        autoplayDelay: 5000,
+        pagination: SwiperPagination(
+            margin: EdgeInsets.only(bottom: MySizes.s_6),
+            builder: DotSwiperPaginationBuilder(
+              activeColor: MyColors.c_ffa2b1,
+              color: Colors.white,
+              activeSize: MySizes.s_6,
+              size: MySizes.s_6,
+            )),
+        controller: SwiperController(),
+        onTap:
+            onTap ?? (index) => _handlerBannerClick(context, imageList[index]),
+        itemBuilder: (context, index) {
+          return Image.network(
+            imageList[index].bannerCoverUrl,
+            fit: BoxFit.fill,
+          );
+        },
+      ),
+    );
+  }
+
+  _handlerBannerClick(BuildContext context, XmlyBanners banners) {
+    //焦点图类型 0-不限 1-单个用户 2-单个专辑，3-单个声音，4-链接，9-听单，默认值为0
+    //banners.bannerContentType
+  }
+}

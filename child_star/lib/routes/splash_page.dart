@@ -27,6 +27,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+     //初始化喜马拉雅
+    Global.initXmly();
     //设置状态栏透明
     SystemChrome.setSystemUIOverlayStyle(MySystems.transparent);
     _future = NetManager(context).getAdvertisement();

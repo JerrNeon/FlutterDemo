@@ -34,6 +34,7 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main.jniLibs.srcDirs += 'libs'
     }
 
     lintOptions {
@@ -48,6 +49,10 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi', 'arm64-v8a'
+        }
     }
 
     signingConfigs {

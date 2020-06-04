@@ -10,6 +10,7 @@
         android:label="child_star"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="p">
         <activity
             android:name=".MainActivity"
