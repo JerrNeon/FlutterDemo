@@ -18,7 +18,11 @@ TrackPageList _$TrackPageListFromJson(Map<String, dynamic> json) {
     ..coverUrlSmall = json['cover_url_small'] as String
     ..coverUrlMiddle = json['cover_url_middle'] as String
     ..coverUrlLarge = json['cover_url_large'] as String
-    ..canDownload = json['can_download'] as bool;
+    ..canDownload = json['can_download'] as bool
+    ..tracks = (json['tracks'] as List)
+        ?.map(
+            (e) => e == null ? null : Track.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$TrackPageListToJson(TrackPageList instance) =>
@@ -33,5 +37,6 @@ Map<String, dynamic> _$TrackPageListToJson(TrackPageList instance) =>
       'cover_url_small': instance.coverUrlSmall,
       'cover_url_middle': instance.coverUrlMiddle,
       'cover_url_large': instance.coverUrlLarge,
-      'can_download': instance.canDownload
+      'can_download': instance.canDownload,
+      'tracks': instance.tracks
     };

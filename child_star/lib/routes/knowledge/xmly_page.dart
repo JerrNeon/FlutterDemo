@@ -1,6 +1,7 @@
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
@@ -46,7 +47,7 @@ class _XmlyPageState extends State<XmlyPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SearchWidget(
-            onTap: null,
+            onTap: () => RoutersNavigate().navigateToXmlySearchPage(context),
           ),
           Expanded(
             child: FutureBuilderWidget(
@@ -117,38 +118,39 @@ class _XmlyPageState extends State<XmlyPage>
         crossAxisCount: 4,
         mainAxisSpacing: MySizes.s_20,
         childAspectRatio: 1.4,
-        children: columnList
-            .map((e) => GestureDetector(
-                  onTap: () => _onTapColumn(e.id),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      (e.id == XmlyType.RECENT || e.id == XmlyType.COLLECT)
-                          ? Image(
-                              image: e.id == XmlyType.RECENT
-                                  ? MyImages.ic_xmly_recent
-                                  : MyImages.ic_xmly_collect)
-                          : loadImage(
-                              e.coverUrlSmall,
-                              width: 42,
-                              height: 42,
-                            ),
-                      SizedBox(height: 6),
-                      Text(
-                        e.id == XmlyType.RECENT
-                            ? gm.xmlyRecentTitle
-                            : e.id == XmlyType.COLLECT
-                                ? gm.xmlyCollectTitle
-                                : e.title,
-                        style: TextStyle(
-                          color: MyColors.c_686868,
-                          fontSize: MyFontSizes.s_14,
-                        ),
+        children: columnList.asMap().keys.map((e) {
+          Columns data = columnList[e];
+          return GestureDetector(
+            onTap: () => _onTapColumnType(e, data.id),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                (data.id == XmlyType.RECENT || data.id == XmlyType.COLLECT)
+                    ? Image(
+                        image: data.id == XmlyType.RECENT
+                            ? MyImages.ic_xmly_recent
+                            : MyImages.ic_xmly_collect)
+                    : loadImage(
+                        data.coverUrlSmall,
+                        width: 42,
+                        height: 42,
                       ),
-                    ],
+                SizedBox(height: 6),
+                Text(
+                  data.id == XmlyType.RECENT
+                      ? gm.xmlyRecentTitle
+                      : data.id == XmlyType.COLLECT
+                          ? gm.xmlyCollectTitle
+                          : data.title,
+                  style: TextStyle(
+                    color: MyColors.c_686868,
+                    fontSize: MyFontSizes.s_14,
                   ),
-                ))
-            .toList(),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -193,7 +195,7 @@ class _XmlyPageState extends State<XmlyPage>
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => _onTapColumn(data.id),
+                        onTap: () => _onTapColumn(data),
                         behavior: HitTestBehavior.opaque,
                         child: Padding(
                           padding:
@@ -287,7 +289,7 @@ class _XmlyPageState extends State<XmlyPage>
                                 WidgetSpan(
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: MySizes.s_6,
+                                      horizontal: MySizes.s_4,
                                       vertical: MySizes.s_1,
                                     ),
                                     margin: EdgeInsets.only(right: MySizes.s_4),
@@ -340,8 +342,21 @@ class _XmlyPageState extends State<XmlyPage>
   }
 
   ///点击听单分类
-  _onTapColumn(int columnId) {}
+  _onTapColumnType(int index, int columnId) {
+    if (columnId == XmlyType.RECENT || columnId == XmlyType.COLLECT) {
+      RoutersNavigate().navigateToXmlyAlbumPage(context, columnId, "");
+    } else {
+      RoutersNavigate().navigateToXmlyTypePage(context, index);
+    }
+  }
+
+  ///点击听单
+  _onTapColumn(Columns data) {
+    RoutersNavigate().navigateToXmlyAlbumPage(context, data.id, data.title);
+  }
 
   ///点击专辑
-  _onTapAlbum(int albumId) {}
+  _onTapAlbum(int albumId) {
+    RoutersNavigate().navigateToXmlyAlbumDetailPage(context, albumId);
+  }
 }

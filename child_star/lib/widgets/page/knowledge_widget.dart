@@ -418,3 +418,203 @@ class XmlyPlayCountWidget extends StatelessWidget {
     );
   }
 }
+
+class XmlyAlbumWidget extends StatelessWidget {
+  final Album data;
+  final int type;
+  final int orderNum;
+  final GestureTapCallback onTap;
+
+  static const TYPE_NORMAL = 1; //普通列表
+  static const TYPE_RECENT = 2; //最近播放
+
+  const XmlyAlbumWidget({
+    Key key,
+    @required this.data,
+    this.type = TYPE_NORMAL,
+    this.orderNum,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return GestureDetector(
+      onTap: onTap ??
+          () =>
+              RoutersNavigate().navigateToXmlyAlbumDetailPage(context, data.id),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: EdgeInsets.only(
+          left: MySizes.s_3,
+          top: MySizes.s_3,
+          right: MySizes.s_8,
+          bottom: MySizes.s_3,
+        ),
+        margin: EdgeInsets.symmetric(horizontal: MySizes.s_4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(MySizes.s_3),
+        ),
+        child: Row(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                loadImage(
+                  data.coverUrlSmall,
+                  width: 75,
+                  height: 75,
+                ),
+                Positioned(
+                  left: 0,
+                  top: 6,
+                  child: Image(image: MyImages.ic_xmly_logo),
+                ),
+              ],
+            ),
+            SizedBox(width: MySizes.s_14),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: MySizes.s_4),
+                  _buildTitle(gm),
+                  SizedBox(height: MySizes.s_10),
+                  _buildIntro(),
+                  SizedBox(height: MySizes.s_8),
+                  _buildData(context, gm),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitle(GmLocalizations gm) {
+    return data.isFinished == 2
+        ? Text.rich(
+            TextSpan(children: [
+              WidgetSpan(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MySizes.s_4,
+                    vertical: MySizes.s_1,
+                  ),
+                  margin: EdgeInsets.only(right: MySizes.s_6),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: MyColors.c_ff93a4,
+                      width: MySizes.s_1,
+                    ),
+                    borderRadius: BorderRadius.circular(MySizes.s_3),
+                  ),
+                  child: Text(
+                    gm.xmlyIsFinishedText,
+                    style: TextStyle(
+                      color: MyColors.c_ff93a4,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+              ),
+              TextSpan(
+                text: data.albumTitle,
+                style: TextStyle(
+                  color: MyColors.c_686868,
+                  fontSize: MyFontSizes.s_15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ]),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          )
+        : Text(
+            data.albumTitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: MyColors.c_686868,
+              fontSize: MyFontSizes.s_15,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+  }
+
+  Widget _buildIntro() {
+    return Text(
+      data.shortIntro ?? "",
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: MyColors.c_797979,
+        fontSize: MyFontSizes.s_12,
+      ),
+    );
+  }
+
+  Widget _buildData(BuildContext context, GmLocalizations gm) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            type == TYPE_NORMAL
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Image(image: MyImages.ic_xmly_playcount_list),
+                      SizedBox(width: MySizes.s_6),
+                      Text(
+                        NumberUtils.getPlayCount(context, data.playCount),
+                        style: TextStyle(
+                          color: MyColors.c_797979,
+                          fontSize: MySizes.s_11,
+                        ),
+                      ),
+                      SizedBox(width: MySizes.s_12),
+                    ],
+                  )
+                : SizedBox(),
+            Image(
+                image: type == TYPE_NORMAL
+                    ? MyImages.ic_xmly_partnum
+                    : MyImages.ic_xmly_recent_play),
+            SizedBox(width: MySizes.s_6),
+            Text(
+              "${type == TYPE_NORMAL ? data.includeTrackCount : orderNum + 1}${gm.xmlyPartNumUnit}",
+              style: TextStyle(
+                color: MyColors.c_797979,
+                fontSize: MySizes.s_11,
+              ),
+            ),
+          ],
+        ),
+        Text(
+          gm.xmlySourceTitle,
+          style: TextStyle(
+            color: MyColors.c_797979,
+            fontSize: MySizes.s_11,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class XmlyAlbumEmptyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: MyColors.c_f0f0f0,
+      child: Image(image: MyImages.ic_xmly_album_empty),
+    );
+  }
+}

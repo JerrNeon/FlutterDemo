@@ -6,3 +6,8 @@ export 'lecture_search_result_page.dart';
 export 'room_page.dart';
 export 'lecture_page.dart';
 export 'xmly_page.dart';
+export 'xmly_search_page.dart';
+export 'xmly_type_page.dart';
+export 'xmly_album_page.dart';
+export 'xmly_album_detail_page.dart';
+export 'xmly_play_page.dart';

@@ -586,8 +586,16 @@ class GmLocalizations {
     return Intl.message("最近", name: "xmlyRecentTitle");
   }
 
+  String get xmlyAlbumRecentTitle {
+    return Intl.message("最近播放", name: "xmlyAlbumRecentTitle");
+  }
+
   String get xmlyCollectTitle {
     return Intl.message("收藏", name: "xmlyCollectTitle");
+  }
+
+  String get xmlyAlbumCollectTitle {
+    return Intl.message("我的收藏", name: "xmlyAlbumCollectTitle");
   }
 
   String get xmlyMoreTitle {

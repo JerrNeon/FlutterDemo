@@ -1,0 +1,7 @@
+{
+    "pageNum": 1,
+    "pageSize": 10,
+    "totalNum": 100,
+    "ids": "3,2,1",
+    "resultList": "$[]myCollection"
+}

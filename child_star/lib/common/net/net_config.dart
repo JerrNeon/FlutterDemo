@@ -107,6 +107,9 @@ class NetConfig {
   ///获取用户关注列表
   static const GET_MY_ATTENTION_LIST = "user/getFollowList";
 
+  ///获取收藏状态
+  static const GET_COLLECT_STATUS = "user/getCollectStatus";
+
   ///添加和取消收藏
   static const DO_COLLECT = "user/collect";
 

@@ -26,6 +26,8 @@ class SmartRefresherWidget<T> extends StatefulWidget {
   final GestureTapCallback onErrorRetryTap;
   final bool keepAlive;
   final bool isShowNoData;
+  final Widget noDataWidget;
+  final EdgeInsetsGeometry listPadding;
 
   SmartRefresherWidget({
     Key key,
@@ -38,9 +40,11 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onErrorRetryTap,
     this.keepAlive = false,
     this.isShowNoData = false,
+    this.noDataWidget,
   })  : listItemBuilder = null,
         listSeparatorBuilder = null,
         itemExtent = null,
+        listPadding = null,
         super(key: key);
 
   SmartRefresherWidget.list({
@@ -55,6 +59,8 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onErrorRetryTap,
     this.keepAlive = false,
     this.isShowNoData = true,
+    this.listPadding,
+    this.noDataWidget,
   })  : builder = null,
         listSeparatorBuilder = null,
         super(key: key);
@@ -72,6 +78,8 @@ class SmartRefresherWidget<T> extends StatefulWidget {
     this.onErrorRetryTap,
     this.keepAlive = false,
     this.isShowNoData = true,
+    this.listPadding,
+    this.noDataWidget,
   })  : builder = null,
         super(key: key);
 
@@ -89,6 +97,8 @@ class SmartRefresherWidget<T> extends StatefulWidget {
         onErrorRetryTap,
         keepAlive,
         isShowNoData,
+        noDataWidget,
+        listPadding,
       );
 }
 
@@ -106,6 +116,8 @@ class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   final GestureTapCallback onErrorRetryTap;
   final bool keepAlive;
   final bool isShowNoData;
+  final Widget noDataWidget;
+  final EdgeInsetsGeometry listPadding;
 
   Future<PageList<T>> _future;
   RefreshController _refreshController = RefreshController();
@@ -125,6 +137,8 @@ class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
     this.onErrorRetryTap,
     this.keepAlive,
     this.isShowNoData,
+    this.noDataWidget,
+    this.listPadding,
   );
 
   List<T> get data => _list;
@@ -189,6 +203,7 @@ class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
 
   Widget _buildListView() {
     return ListView.builder(
+      padding: listPadding,
       itemCount: _list?.length ?? 0,
       shrinkWrap: itemExtent ?? true,
       itemExtent: itemExtent,
@@ -199,6 +214,7 @@ class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
 
   Widget _buildSeparatedListView() {
     return ListView.separated(
+      padding: listPadding,
       itemCount: _list?.length ?? 0,
       shrinkWrap: itemExtent ?? true,
       itemBuilder: (context, index) =>
@@ -209,7 +225,7 @@ class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
   }
 
   Widget _buildNoData() {
-    return NoDataWidget();
+    return noDataWidget != null ? noDataWidget : NoDataWidget();
   }
 
   pullDownOnRefresh() async {

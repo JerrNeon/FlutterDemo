@@ -99,4 +99,19 @@ abstract class IRoutersNavigate {
 
   ///跳转到缓存详情界面[DownloadDetailPage]
   navigateToDownloadDetailPage(BuildContext context, int type, String path);
+
+  ///跳转到喜马拉雅搜索界面[XmlySearchPage]
+  navigateToXmlySearchPage(BuildContext context);
+
+  ///跳转到喜马拉雅分类界面[XmlyTypePage]
+  navigateToXmlyTypePage(BuildContext context, int index);
+
+  ///跳转到喜马拉雅专辑列表界面[XmlyAlbumPage]
+  navigateToXmlyAlbumPage(BuildContext context, int id, String title);
+
+  ///跳转到喜马拉雅专辑详情界面[XmlyAlbumDetailPage]
+  navigateToXmlyAlbumDetailPage(BuildContext context, int id);
+
+  ///跳转到喜马拉雅播放界面[XmlyPlayPage]
+  navigateToXmlyPlayPage(BuildContext context);
 }

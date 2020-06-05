@@ -4,7 +4,6 @@ import 'package:child_star/routes/home/home_index.dart';
 import 'package:child_star/routes/knowledge/knowledge_index.dart';
 import 'package:child_star/routes/login/login_index.dart';
 import 'package:child_star/routes/main_page.dart';
-import 'package:child_star/routes/user/download_detail_page.dart';
 import 'package:child_star/routes/user/mine_index.dart';
 import 'package:child_star/states/profile_notifier.dart';
 import 'package:child_star/utils/utils_index.dart';
@@ -43,6 +42,11 @@ class Routers {
   static const String mine_book = "/user/mine/book";
   static const String mine_download = "/user/mine/download";
   static const String mine_download_detail = "/user/mine/download/detail";
+  static const String xmly_search = "/xmly/search";
+  static const String xmly_type = "/xmly/type";
+  static const String xmly_album = "/xmly/album";
+  static const String xmly_album_detail = "/xmly/album/detail";
+  static const String xmly_play = "/xmly/play";
 
   static var router = Router();
 
@@ -83,6 +87,11 @@ class Routers {
     router.define(mine_book, handler: _myBookHandler);
     router.define(mine_download, handler: _myDownloadHandler);
     router.define(mine_download_detail, handler: _myDownloadDetailHandler);
+    router.define(xmly_search, handler: _xmlySearchHandler);
+    router.define(xmly_type, handler: _xmlyTypeHandler);
+    router.define(xmly_album, handler: _xmlyAlbumHandler);
+    router.define(xmly_album_detail, handler: _xmlyAlbumDetailHandler);
+    router.define(xmly_play, handler: _xmlyPlayHandler);
   }
 }
 
@@ -256,4 +265,33 @@ var _myDownloadDetailHandler = Handler(
   int type = int.tryParse(parameters["type"]?.first ?? "") ?? 0;
   String path = parameters["path"]?.first ?? "";
   return _isLogin(context) ? DownloadDetailPage(type, path) : LoginPage();
+});
+
+var _xmlySearchHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return XmlySearchPage();
+});
+
+var _xmlyTypeHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  int index = int.tryParse(parameters["index"]?.first ?? "") ?? 0;
+  return XmlyTypePage(index: index);
+});
+
+var _xmlyAlbumHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  int id = int.tryParse(parameters["id"]?.first ?? "") ?? 0;
+  String title = parameters["title"]?.first ?? "";
+  return XmlyAlbumPage(columnId: id, title: title);
+});
+
+var _xmlyAlbumDetailHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  int id = int.tryParse(parameters["id"]?.first ?? "") ?? 0;
+  return XmlyAlbumDetailPage(albumId: id);
+});
+
+var _xmlyPlayHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  return XmlyPlayPage();
 });

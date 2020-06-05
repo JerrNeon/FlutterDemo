@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-04T11:43:59.936991",
+  "@@last_modified": "2020-06-05T15:49:29.552237",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -705,8 +705,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "xmlyAlbumRecentTitle": "最近播放",
+  "@xmlyAlbumRecentTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
   "xmlyCollectTitle": "收藏",
   "@xmlyCollectTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyAlbumCollectTitle": "我的收藏",
+  "@xmlyAlbumCollectTitle": {
     "type": "text",
     "placeholders": {}
   },

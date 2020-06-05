@@ -328,4 +328,54 @@ class RoutersNavigate extends IRoutersNavigate {
       transitionBuilder: RouteAnimation.build(),
     );
   }
+
+  @override
+  navigateToXmlySearchPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.xmly_search,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToXmlyTypePage(BuildContext context, int index) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.xmly_type + "?index=$index",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToXmlyAlbumPage(BuildContext context, int id, String title) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.xmly_album + "?id=$id&title=${chineseEncode(title)}",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToXmlyAlbumDetailPage(BuildContext context, int id) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.xmly_album_detail + "?id=$id",
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
+
+  @override
+  navigateToXmlyPlayPage(BuildContext context) {
+    return Routers.router.navigateTo(
+      context,
+      Routers.xmly_play,
+      transition: TransitionType.custom,
+      transitionBuilder: RouteAnimation.build(),
+    );
+  }
 }

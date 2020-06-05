@@ -1,6 +1,7 @@
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/models/pagelist.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,16 @@ class _MyCollectionPageState extends State<MyCollectionPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  Future<PageList<MyCollection>> _initFuture(int type, int pageIndex) async {
+    MyCollectionPageList myCollectionPageList = await NetManager(context)
+        .getMyCollectionList(type: type, pageIndex: pageIndex);
+    PageList<MyCollection> pageList = PageList();
+    pageList.pageNum = myCollectionPageList.pageNum;
+    pageList.totalNum = myCollectionPageList.totalNum;
+    pageList.resultList = myCollectionPageList.resultList;
+    return pageList;
   }
 
   @override
@@ -80,8 +91,7 @@ class _MyCollectionPageState extends State<MyCollectionPage>
   Widget _buildList(int type) {
     return SmartRefresherWidget<MyCollection>.list(
       keepAlive: true,
-      onRefreshLoading: (pageIndex) => NetManager(context)
-          .getMyCollectionList(type: type, pageIndex: pageIndex),
+      onRefreshLoading: (pageIndex) => _initFuture(type, pageIndex),
       listItemBuilder: (context, index, data) {
         return GestureDetector(
             onTap: () {

@@ -476,10 +476,10 @@ class NetManager {
     return PageList.page(response, (e) => MyCourse.fromJson(e));
   }
 
-  ///type	否	int	收藏类型：1：资讯；2：讲堂 默认1
+  ///type	否	int	收藏类型：1：资讯；2：讲堂；3：玛雅专辑  默认1
   ///pageNum	否	int	页数	默认：1
   ///pageSize	否	int	分页大小	默认：10
-  Future<PageList<MyCollection>> getMyCollectionList({
+  Future<MyCollectionPageList> getMyCollectionList({
     int type = 1,
     @required int pageIndex,
     int pageSize = PAGE_SIZE,
@@ -490,7 +490,7 @@ class NetManager {
       "pageNum": pageIndex,
       "pageSize": pageSize,
     });
-    return PageList.page(response, (e) => MyCollection.fromJson(e));
+    return MyCollectionPageList.fromJson(response);
   }
 
   ///pageNum	否	int	页数	默认：1
@@ -508,7 +508,21 @@ class NetManager {
   }
 
   ///id	是	int	收藏的id
-  ///type	是	string	收藏类型：1：资讯；2：讲堂(非课程)；
+  ///type	是	string	收藏类型：1：资讯；2：讲堂；3：玛雅专辑  默认1
+  Future<Result> getCollectionStatus({
+    @required String id,
+    @required int type,
+  }) async {
+    var response =
+        await Net(context).post(NetConfig.GET_COLLECT_STATUS, params: {
+      "id": id,
+      "type": type,
+    });
+    return Result.fromJson(response);
+  }
+
+  ///id	是	int	收藏的id
+  ///type	是	string	收藏类型：1：资讯；2：讲堂；3：玛雅专辑  默认1
   Future<Result> doCollection({
     @required String id,
     @required int type,
@@ -764,5 +778,17 @@ class XmlyNetManager {
       "count": count.toString(),
     });
     return TrackPageList.fromJson(json.decode(jsonStr));
+  }
+
+  ///批量获取专辑信息
+  Future<List<Album>> getAlbumBatchList({
+    String ids, //	String	是	以英文逗号隔开的听单ID，一次最多传200个，超出部分的ID会被忽略
+  }) async {
+    String jsonStr =
+        await baseGetRequest(url: XmlyNetConfig.GET_ALBUMS_BATCH, params: {
+      "ids": ids,
+    });
+    List list = json.decode(jsonStr);
+    return list.map((e) => Album.fromJson(e)).toList();
   }
 }

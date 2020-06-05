@@ -13,3 +13,4 @@ export 'file_utils.dart';
 export 'db_utils.dart';
 export 'statusbar_utils.dart';
 export 'app_utils.dart';
+export 'xmly_utils.dart';

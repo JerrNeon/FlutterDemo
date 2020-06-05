@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DbUtils {
   static const DB_NAME = "child_star.db";
-  static const VERSION = 1;
+  static const VERSION = 2;
 
   Database _db;
 
@@ -16,9 +16,29 @@ class DbUtils {
   Future open() async {
     if (_db == null) {
       String path = await getPath();
-      _db = await openDatabase(path, version: VERSION,
-          onCreate: (db, version) async {
-        await db.execute('''
+      _db = await openDatabase(
+        path,
+        version: VERSION,
+        onCreate: (db, version) async {
+          var batch = db.batch();
+          _createTableMediaCacheV1(batch);
+          _createTableXmlyResourceV2(batch);
+          await batch.commit();
+        },
+        onUpgrade: (db, oldVersion, newVersion) async {
+          var batch = db.batch();
+          if (oldVersion == 1) {
+            _createTableXmlyResourceV2(batch);
+          }
+          await batch.commit();
+        },
+      );
+    }
+  }
+
+  _createTableMediaCacheV1(Batch batch) {
+    batch.execute('DROP TABLE IF EXISTS $tableMediaCache');
+    batch.execute('''
             create table $tableMediaCache (
               $columnId integer primary key autoincrement,
               $columnType integer,
@@ -31,8 +51,21 @@ class DbUtils {
               $columnPath text
             )
           ''');
-      });
-    }
+  }
+
+  _createTableXmlyResourceV2(Batch batch) {
+    batch.execute('DROP TABLE IF EXISTS $tableXmlyResource');
+    batch.execute('''
+            create table $tableXmlyResource (
+              $columnXmlyId integer primary key autoincrement,
+              $columnAlbumId integer,
+              $columnTrackId integer,
+              $columnTrackCoverUrl text,
+              $columnTrackOrderNum integer,
+              $columnCreatedAt integer,
+              $columnUpdateAt integer
+            )
+          ''');
   }
 
   Future<int> insert(MediaCache mediaCache) async {
@@ -97,6 +130,38 @@ class DbUtils {
     return _db?.delete(
       tableMediaCache,
       where: '$columnId = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<List<XmlyResource>> getXmlyResourceList() async {
+    List<Map<String, dynamic>> list =
+        await _db?.query(tableXmlyResource, orderBy: "$columnUpdateAt desc");
+    return list.map((e) => XmlyResource.fromMap(e)).toList();
+  }
+
+  Future<bool> isXmlyResourceInsert(int albumId) async {
+    List<Map<String, dynamic>> list = await _db?.query(
+      tableXmlyResource,
+      where: '$columnAlbumId = ?',
+      whereArgs: [albumId],
+    );
+    return list != null && list.isNotEmpty;
+  }
+
+  Future<int> updateXmlyResource(XmlyResource xmlyResource) async {
+    return _db?.update(
+      tableXmlyResource,
+      xmlyResource.toMap(),
+      where: '$columnXmlyId = ?',
+      whereArgs: [xmlyResource.id],
+    );
+  }
+
+  Future<int> deleteXmlyResource(int id) async {
+    return _db?.delete(
+      tableXmlyResource,
+      where: '$columnXmlyId = ?',
       whereArgs: [id],
     );
   }

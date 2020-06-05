@@ -164,6 +164,14 @@ class MyImages {
   static const AssetImage ic_xmly_logo = AssetImage("images/ic_xmly_logo.png");
   static const AssetImage ic_xmly_playcount =
       AssetImage("images/ic_xmly_playcount.png");
+  static const AssetImage ic_xmly_playcount_list =
+      AssetImage("images/ic_xmly_playcount_list.png");
+  static const AssetImage ic_xmly_partnum =
+      AssetImage("images/ic_xmly_partnum.png");
+  static const AssetImage ic_xmly_recent_play =
+      AssetImage("images/ic_xmly_recent_play.png");
+  static const AssetImage ic_xmly_album_empty =
+      AssetImage("images/ic_xmly_album_empty.png");
 }
 
 class MyImagesMultiple {

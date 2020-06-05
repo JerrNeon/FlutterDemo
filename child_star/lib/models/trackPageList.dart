@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:xmly/xmly_index.dart';
 
 part 'trackPageList.g.dart';
 
@@ -17,6 +18,7 @@ class TrackPageList {
     @JsonKey(name : 'cover_url_middle') String coverUrlMiddle;
     @JsonKey(name : 'cover_url_large') String coverUrlLarge;
     @JsonKey(name : 'can_download') bool canDownload;
+    List<Track> tracks;
     
     factory TrackPageList.fromJson(Map<String,dynamic> json) => _$TrackPageListFromJson(json);
     Map<String, dynamic> toJson() => _$TrackPageListToJson(this);
