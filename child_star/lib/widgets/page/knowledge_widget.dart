@@ -381,3 +381,40 @@ class AdWidget extends StatelessWidget {
     );
   }
 }
+
+class XmlyPlayCountWidget extends StatelessWidget {
+  final int playCount;
+
+  const XmlyPlayCountWidget({
+    Key key,
+    @required this.playCount,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: MySizes.s_4,
+        vertical: MySizes.s_5,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.only(topRight: Radius.circular(MySizes.s_3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Image(image: MyImages.ic_xmly_playcount),
+          SizedBox(width: MySizes.s_3),
+          Text(
+            NumberUtils.getPlayCount(context, playCount),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 11,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

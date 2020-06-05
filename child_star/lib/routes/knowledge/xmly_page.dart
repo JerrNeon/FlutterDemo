@@ -2,6 +2,7 @@ import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -78,19 +79,21 @@ class _XmlyPageState extends State<XmlyPage>
   }
 
   Widget _buildBanner(XmlyBannersPageList list) {
-    return SliverToBoxAdapter(
-      child: list != null && list.banners != null && list.banners.isNotEmpty
-          ? XmlyBannerWidget(
-              list.banners,
-              onTap: (index) {
-                XmlyBanners banner = list.banners[index];
-                if (banner.bannerContentType == 2) {
-                  _onTapAlbum(banner.bannerContentId);
-                }
-              },
-            )
-          : EmptyWidget(),
-    );
+    return SliverPadding(
+        padding: EdgeInsets.symmetric(horizontal: MySizes.s_4),
+        sliver: SliverToBoxAdapter(
+          child: list != null && list.banners != null && list.banners.isNotEmpty
+              ? XmlyBannerWidget(
+                  list.banners,
+                  onTap: (index) {
+                    XmlyBanners banner = list.banners[index];
+                    if (banner.bannerContentType == 2) {
+                      _onTapAlbum(banner.bannerContentId);
+                    }
+                  },
+                )
+              : EmptyWidget(),
+        ));
   }
 
   Widget _buildType(ColumnsPageList list) {
@@ -113,7 +116,7 @@ class _XmlyPageState extends State<XmlyPage>
       sliver: SliverGrid.count(
         crossAxisCount: 4,
         mainAxisSpacing: MySizes.s_20,
-        childAspectRatio: 1.0,
+        childAspectRatio: 1.4,
         children: columnList
             .map((e) => GestureDetector(
                   onTap: () => _onTapColumn(e.id),
@@ -130,7 +133,7 @@ class _XmlyPageState extends State<XmlyPage>
                               width: 42,
                               height: 42,
                             ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 6),
                       Text(
                         e.id == XmlyType.RECENT
                             ? gm.xmlyRecentTitle
@@ -239,89 +242,55 @@ class _XmlyPageState extends State<XmlyPage>
               pageList.values != null &&
               pageList.values.isNotEmpty) {
             List<Album> albumList = pageList.values;
-            return PaddingWidget(
-              right: MySizes.s_14,
-              child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: albumList?.length ?? 0,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: MySizes.s_14,
-                  childAspectRatio: 104.0 / 152.0,
-                ),
-                itemBuilder: (context, index) {
-                  Album data = albumList[index];
-                  return GestureDetector(
-                    onTap: () => _onTapAlbum(data.id),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            loadImage(
-                              data.coverUrlMiddle,
-                              width: 104,
-                              height: 104,
-                            ),
-                            Positioned(
-                              left: 0,
-                              top: 8,
-                              child: Image(image: MyImages.ic_xmly_logo),
-                            ),
-                            Positioned(
-                              left: 0,
-                              bottom: 0,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: MySizes.s_4,
-                                  vertical: MySizes.s_5,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black54,
-                                  borderRadius:
-                                      BorderRadius.circular(MySizes.s_3),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image(image: MyImages.ic_xmly_playcount),
-                                    SizedBox(width: MySizes.s_3),
-                                    Text(
-                                      NumberUtils.getPlayCount(
-                                          context, data.playCount),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 14),
-                        data.isFinished == 2
-                            ? Stack(
-                                children: <Widget>[
-                                  PaddingWidget(
-                                    left: MySizes.s_36,
-                                    child: Text(
-                                      data.albumTitle,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: MyColors.c_686868,
-                                        fontSize: MyFontSizes.s_14,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: MySizes.s_32,
+            return GridView.builder(
+              padding: EdgeInsets.only(right: MySizes.s_14),
+              shrinkWrap: true,
+              itemCount: albumList?.length ?? 0,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: MySizes.s_14,
+                childAspectRatio: 104.0 / 152.0,
+              ),
+              itemBuilder: (context, index) {
+                Album data = albumList[index];
+                return GestureDetector(
+                  onTap: () => _onTapAlbum(data.id),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          loadImage(
+                            data.coverUrlMiddle,
+                            width: 104,
+                            height: 104,
+                          ),
+                          Positioned(
+                            left: 0,
+                            top: 8,
+                            child: Image(image: MyImages.ic_xmly_logo),
+                          ),
+                          Positioned(
+                            left: 0,
+                            bottom: 0,
+                            child:
+                                XmlyPlayCountWidget(playCount: data.playCount),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 14),
+                      data.isFinished == 2
+                          ? Text.rich(
+                              TextSpan(children: [
+                                WidgetSpan(
+                                  child: Container(
                                     padding: EdgeInsets.symmetric(
-                                        vertical: MySizes.s_3),
+                                      horizontal: MySizes.s_6,
+                                      vertical: MySizes.s_1,
+                                    ),
+                                    margin: EdgeInsets.only(right: MySizes.s_4),
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                         color: MyColors.c_ff93a4,
@@ -338,22 +307,31 @@ class _XmlyPageState extends State<XmlyPage>
                                       ),
                                     ),
                                   ),
-                                ],
-                              )
-                            : Text(
-                                data.albumTitle,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: MyColors.c_686868,
-                                  fontSize: MyFontSizes.s_14,
                                 ),
+                                TextSpan(
+                                  text: data.albumTitle,
+                                  style: TextStyle(
+                                    color: MyColors.c_686868,
+                                    fontSize: MyFontSizes.s_14,
+                                  ),
+                                ),
+                              ]),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          : Text(
+                              data.albumTitle,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: MyColors.c_686868,
+                                fontSize: MyFontSizes.s_14,
                               ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                            ),
+                    ],
+                  ),
+                );
+              },
             );
           } else {
             return EmptyWidget();

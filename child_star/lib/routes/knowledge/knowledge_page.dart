@@ -11,9 +11,9 @@ class KnowledgePage extends StatefulWidget {
 
 class _KnowledgePageState extends State<KnowledgePage>
     with AutomaticKeepAliveClientMixin {
-  var _currentIndex = 0;
+  var _currentIndex = 1;
   var _list = [];
-  final PageController _pageController = PageController();
+  PageController _pageController;
 
   @override
   bool get wantKeepAlive => true;
@@ -21,6 +21,7 @@ class _KnowledgePageState extends State<KnowledgePage>
   @override
   void initState() {
     _list..add(RoomPage())..add(LecturePage())..add(XmlyPage());
+    _pageController = PageController(initialPage: _currentIndex);
     super.initState();
   }
 

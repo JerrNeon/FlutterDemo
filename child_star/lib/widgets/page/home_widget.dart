@@ -607,7 +607,7 @@ class HomeTopBarWidget extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: MyColors.c_f7f7f7,
-        borderRadius: BorderRadius.circular(MySizes.s_12),
+        borderRadius: BorderRadius.circular(MySizes.s_20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -622,17 +622,19 @@ class HomeTopBarWidget extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: currentIndex == index ? MyColors.c_ffa2b1 : MyColors.c_f7f7f7,
-          borderRadius: BorderRadius.circular(MySizes.s_12),
+          borderRadius: BorderRadius.circular(MySizes.s_20),
         ),
         child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: MySizes.s_18, vertical: MySizes.s_4),
+              horizontal: MySizes.s_18,
+              vertical: MySizes.s_4,
+            ),
             child: Text(
               text,
               style: TextStyle(
-                  color:
-                      currentIndex == index ? Colors.white : MyColors.c_a4a4a4,
-                  fontSize: MyFontSizes.s_15),
+                color: currentIndex == index ? Colors.white : MyColors.c_a4a4a4,
+                fontSize: MyFontSizes.s_15,
+              ),
             )),
       ),
       behavior: HitTestBehavior.opaque, //点击padding区域也有效
