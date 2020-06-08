@@ -9,6 +9,7 @@ import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:xmly/xmly_index.dart';
 
 class XmlyAlbumDetailPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class XmlyAlbumDetailPage extends StatefulWidget {
 class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   final int albumId;
   final GlobalKey<SmartRefresherWidgetState> _globalKey = GlobalKey();
+  final SolidController _solidController = SolidController();
   UserProvider _userProvider;
   Future<AlbumPageList> _albumFuture;
   IPlayStatusCallback _iPlayStatusCallback;
@@ -60,6 +62,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   ///初始化收藏状态、播放状态
   _initStatus() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _solidController.show();
       if (_userProvider.isLogin) {
         Result result = await NetManager()
             .getCollectionStatus(id: albumId.toString(), type: 3);
@@ -297,6 +300,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
                 ),
               ),
             ),
+            SizedBox(height: MySizes.s_42),
           ],
         );
       },
@@ -305,96 +309,116 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
 
   Widget _buildBottomSheet() {
     GmLocalizations gm = GmLocalizations.of(context);
-    return BottomSheet(
-        onClosing: () {},
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
+    return SolidBottomSheet(
+      controller: _solidController,
+      draggableBody: true,
+      headerBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(MySizes.s_10),
             topRight: Radius.circular(MySizes.s_10),
           ),
         ),
-        builder: (context) {
-          return Column(
-            children: <Widget>[
-              SizedBox(height: MySizes.s_4),
-              Container(
-                width: MySizes.s_36,
-                height: MySizes.s_4,
-                decoration: BoxDecoration(
-                  color: MyColors.c_d5d5d5,
-                  borderRadius: BorderRadius.circular(MySizes.s_2),
-                ),
-              ),
-              SizedBox(height: MySizes.s_34),
-              DividerWidget(
-                width: double.infinity,
-                color: MyColors.c_f4f4f4,
-              ),
-              SizedBox(height: MySizes.s_8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => _playAll(),
-                    behavior: HitTestBehavior.opaque,
-                    child: Container(
-                      margin: EdgeInsets.only(left: MySizes.s_18),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MySizes.s_14,
-                        vertical: MySizes.s_8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: MyColors.c_f4f4f4,
-                        borderRadius: BorderRadius.circular(MySizes.s_4),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            _playStatus == 1
-                                ? gm.xmlyAlbumPauseTitle
-                                : _playStatus == 2
-                                    ? gm.xmlyAlbumContinueTitle
-                                    : gm.xmlyAlbumPlayTitle,
-                            style: TextStyle(
-                              color: MyColors.c_686868,
-                              fontSize: MyFontSizes.s_14,
+        child: Column(children: <Widget>[
+          SizedBox(height: MySizes.s_4),
+          Container(
+            width: MySizes.s_36,
+            height: MySizes.s_4,
+            decoration: BoxDecoration(
+              color: MyColors.c_d5d5d5,
+              borderRadius: BorderRadius.circular(MySizes.s_2),
+            ),
+          ),
+          SizedBox(height: MySizes.s_34),
+          DividerWidget(
+            width: double.infinity,
+            color: MyColors.c_f4f4f4,
+          ),
+        ]),
+      ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: CustomSliverPersistentHeaderDelegate(
+              minHeight: MySizes.s_54,
+              maxHeight: MySizes.s_54,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(height: MySizes.s_8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => _playAll(),
+                          behavior: HitTestBehavior.opaque,
+                          child: Container(
+                            margin: EdgeInsets.only(left: MySizes.s_18),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: MySizes.s_14,
+                              vertical: MySizes.s_8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: MyColors.c_f4f4f4,
+                              borderRadius: BorderRadius.circular(MySizes.s_4),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(
+                                  _playStatus == 1
+                                      ? gm.xmlyAlbumPauseTitle
+                                      : _playStatus == 2
+                                          ? gm.xmlyAlbumContinueTitle
+                                          : gm.xmlyAlbumPlayTitle,
+                                  style: TextStyle(
+                                    color: MyColors.c_686868,
+                                    fontSize: MyFontSizes.s_14,
+                                  ),
+                                ),
+                                SizedBox(width: MySizes.s_8),
+                                Image(
+                                    image: _playStatus == 1
+                                        ? MyImages.ic_xmly_all_pause
+                                        : MyImages.ic_xmly_all_play),
+                              ],
                             ),
                           ),
-                          SizedBox(width: MySizes.s_8),
-                          Image(
-                              image: _playStatus == 1
-                                  ? MyImages.ic_xmly_all_pause
-                                  : MyImages.ic_xmly_all_play),
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: () => _doSort(),
+                          behavior: HitTestBehavior.opaque,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: MySizes.s_16),
+                            child: Image(
+                                image: _isAsc
+                                    ? MyImages.ic_xmly_album_asc
+                                    : MyImages.ic_xmly_album_desc),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () => _doSort(),
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: MySizes.s_16),
-                      child: Image(
-                          image: _isAsc
-                              ? MyImages.ic_xmly_album_asc
-                              : MyImages.ic_xmly_album_desc),
+                    SizedBox(height: MySizes.s_8),
+                    DividerWidget(
+                      width: double.infinity,
+                      color: MyColors.c_f4f4f4,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              SizedBox(height: MySizes.s_8),
-              DividerWidget(
-                width: double.infinity,
-                color: MyColors.c_f4f4f4,
-              ),
-              Expanded(
-                child: _buildList(),
-              ),
-            ],
-          );
-        });
+            ),
+          ),
+          SliverFillRemaining(
+            child: _buildList(),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildList() {
@@ -503,8 +527,8 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   }
 
   _doCollect() async {
-    UserProvider userProvider = Provider.of<UserProvider>(context);
-    if (userProvider.isLogin) {
+    bool isLogin = _userProvider?.isLogin ?? false;
+    if (isLogin) {
       Result result =
           await NetManager().doCollection(id: albumId.toString(), type: 3);
       if (mounted) {

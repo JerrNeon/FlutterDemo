@@ -49,6 +49,11 @@ class StatusBarUtils {
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
+  ///恢复状态栏设置到上一次的样式
+  static restoreSystemUIOverlays() {
+    SystemChrome.restoreSystemUIOverlays();
+  }
+
   ///设置竖屏
   static portrait() {
     // 如果是全屏就切换竖屏

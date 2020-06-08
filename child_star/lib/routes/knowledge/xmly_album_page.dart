@@ -1,12 +1,10 @@
 import 'package:child_star/common/resource_index.dart';
-import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:xmly/xmly_index.dart';
 
@@ -71,18 +69,13 @@ class _XmlyAlbumPageState extends State<XmlyAlbumPage> {
 
   @override
   Widget build(BuildContext context) {
-    GmLocalizations gm = GmLocalizations.of(context);
     return Scaffold(
       backgroundColor: MyColors.c_f0f0f0,
       appBar: MySystems.noAppBarPreferredSize,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AppBarWidget(columnId == XmlyType.RECENT
-              ? gm.xmlyAlbumRecentTitle
-              : columnId == XmlyType.COLLECT
-                  ? gm.xmlyAlbumCollectTitle
-                  : title),
+          AppBarWidget(title),
           Expanded(child: _buildList()),
         ],
       ),

@@ -343,8 +343,13 @@ class _XmlyPageState extends State<XmlyPage>
 
   ///点击听单分类
   _onTapColumnType(int index, int columnId) {
-    if (columnId == XmlyType.RECENT || columnId == XmlyType.COLLECT) {
-      RoutersNavigate().navigateToXmlyAlbumPage(context, columnId, "");
+    GmLocalizations gm = GmLocalizations.of(context);
+    if (columnId == XmlyType.RECENT) {
+      RoutersNavigate()
+          .navigateToXmlyAlbumPage(context, columnId, gm.xmlyAlbumRecentTitle);
+    } else if (columnId == XmlyType.COLLECT) {
+      RoutersNavigate()
+          .navigateToXmlyAlbumPage(context, columnId, gm.xmlyAlbumCollectTitle);
     } else {
       RoutersNavigate().navigateToXmlyTypePage(context, index);
     }

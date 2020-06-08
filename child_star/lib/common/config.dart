@@ -6,8 +6,8 @@ class MediaType {
 }
 
 class XmlyType {
-  static const RECENT = -1;
-  static const COLLECT = -2;
+  static const RECENT = 0;
+  static const COLLECT = 1;
 }
 
 class XmlyData {
