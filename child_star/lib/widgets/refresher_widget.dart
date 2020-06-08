@@ -143,6 +143,10 @@ class SmartRefresherWidgetState<T> extends State<SmartRefresherWidget>
 
   List<T> get data => _list;
 
+  set pageIndex(int pageIndex) => _pageIndex = pageIndex;
+
+  get pageIndex => _pageIndex;
+
   @override
   bool get wantKeepAlive => keepAlive;
 

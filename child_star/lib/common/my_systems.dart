@@ -13,9 +13,17 @@ class MySystems {
     statusBarBrightness: Brightness.light,
   );
 
+  ///黑底白字白色图标
+  static const SystemUiOverlayStyle light = SystemUiOverlayStyle.light;
+
   ///透明
   static const SystemUiOverlayStyle transparent = SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: null,
     statusBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.light,
+    statusBarBrightness: Brightness.light,
   );
 
   ///隐藏[Scaffold]的[AppBar] (Scaffold如果不设置AppBar的话，widget中的内容会显示到状态栏区域)

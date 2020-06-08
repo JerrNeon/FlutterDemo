@@ -84,6 +84,32 @@ class TimeUtils {
       return "";
     }
   }
+
+  ///毫秒换算时间(刚刚、xx分钟前、xx小时前、年月日)
+  static String getTimeFromMilliSeconds(int milliSecond) {
+    int time = DateTime.now().millisecond - milliSecond;
+    if (time < 1 * 60 * 1000) {
+      //1分钟以内
+      return "刚刚";
+    } else if (time < 1 * 60 * 60 * 1000) {
+      //1小时以内
+      int oneHour = 1 * 60 * 60 * 1000;
+      int minute = time % oneHour == 0 ? time ~/ oneHour : time ~/ oneHour + 1;
+      return "$minute分钟前";
+    } else if (time < 1 * 24 * 60 * 60 * 1000) {
+      //1天以内
+      int oneDay = 1 * 24 * 60 * 60 * 1000;
+      int hour = time % oneDay == 0 ? time ~/ oneDay : time ~/ oneDay + 1;
+      return "$hour小时前";
+    } else if (time < 10 * 24 * 60 * 60 * 1000) {
+      //10天以内
+      int tenDay = 10 * 24 * 60 * 60 * 1000;
+      int day = time % tenDay == 0 ? time ~/ tenDay : time ~/ tenDay + 1;
+      return "$day天前";
+    } else {
+      return DateUtils.formatDateMs(milliSecond, format: DataFormats.y_mo_d);
+    }
+  }
 }
 
 /// DateFormat.

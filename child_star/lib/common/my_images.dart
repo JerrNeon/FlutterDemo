@@ -172,6 +172,24 @@ class MyImages {
       AssetImage("images/ic_xmly_recent_play.png");
   static const AssetImage ic_xmly_album_empty =
       AssetImage("images/ic_xmly_album_empty.png");
+  static const AssetImage ic_xmly_collection =
+      AssetImage("images/ic_xmly_collection.png");
+  static const AssetImage ic_xmly_uncollection =
+      AssetImage("images/ic_xmly_uncollection.png");
+  static const AssetImage ic_xmly_album_asc =
+      AssetImage("images/ic_xmly_album_asc.png");
+  static const AssetImage ic_xmly_album_desc =
+      AssetImage("images/ic_xmly_album_desc.png");
+  static const AssetImage ic_xmly_album_play =
+      AssetImage("images/ic_xmly_album_play.png");
+  static const AssetImage ic_xmly_album_playnum =
+      AssetImage("images/ic_xmly_album_playnum.png");
+  static const AssetImage ic_xmly_album_time =
+      AssetImage("images/ic_xmly_album_time.png");
+  static const AssetImage ic_xmly_all_pause =
+      AssetImage("images/ic_xmly_all_pause.png");
+  static const AssetImage ic_xmly_all_play =
+      AssetImage("images/ic_xmly_all_play.png");
 }
 
 class MyImagesMultiple {
@@ -221,5 +239,10 @@ class MyImagesMultiple {
   static const collection_status = <bool, AssetImage>{
     true: MyImages.ic_newdetail_collection,
     false: MyImages.ic_newdetail_uncollection,
+  };
+
+  static const xmly_collection_status = <bool, AssetImage>{
+    true: MyImages.ic_xmly_collection,
+    false: MyImages.ic_xmly_uncollection,
   };
 }

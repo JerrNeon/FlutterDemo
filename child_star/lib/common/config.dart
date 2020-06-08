@@ -15,6 +15,8 @@ class XmlyData {
   static const COLUMN_POP_ID = 6977;
   static const COLUMN_IDS = "6976,6977,6880,6884,6879";
   static const PAGE_SIZE = 20;
+  static const ASC = "asc";
+  static const DESC = "desc";
 
   static int albumId; //专辑id
   static bool isAsc; //是否升序

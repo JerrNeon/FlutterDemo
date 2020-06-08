@@ -25,8 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    //设置状态栏透明
-    SystemChrome.setSystemUIOverlayStyle(MySystems.transparent);
+    StatusBarUtils.setTransparent();
   }
 
   @override

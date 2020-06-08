@@ -1,3 +1,4 @@
+import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/routes/consultation/consultation_index.dart';
 import 'package:child_star/routes/exercise/exercise_index.dart';
 import 'package:child_star/routes/home/home_index.dart';
@@ -282,6 +283,9 @@ var _xmlyAlbumHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
   int id = int.tryParse(parameters["id"]?.first ?? "") ?? 0;
   String title = parameters["title"]?.first ?? "";
+  if (id == XmlyType.COLLECT && !_isLogin(context)) {
+    return LoginPage();
+  }
   return XmlyAlbumPage(columnId: id, title: title);
 });
 

@@ -7,7 +7,6 @@ import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +26,9 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-     //初始化喜马拉雅
+    //初始化喜马拉雅
     Global.initXmly();
-    //设置状态栏透明
-    SystemChrome.setSystemUIOverlayStyle(MySystems.transparent);
+    StatusBarUtils.hideBar();
     _future = NetManager(context).getAdvertisement();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (_profileProvider.isFirst ?? false) {

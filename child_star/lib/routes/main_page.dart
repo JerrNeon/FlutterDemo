@@ -7,6 +7,7 @@ import 'package:child_star/routes/exercise/exercise_page.dart';
 import 'package:child_star/routes/home/home_page.dart';
 import 'package:child_star/routes/knowledge/knowledge_page.dart';
 import 'package:child_star/utils/dialog_utils.dart';
+import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,6 +23,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+    StatusBarUtils.showBar();
     _list
       ..add(HomePage())
       ..add(KnowledgePage())
@@ -32,6 +34,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    StatusBarUtils.setDark();
     final gm = GmLocalizations.of(context);
     return WillPopScope(
         child: Scaffold(

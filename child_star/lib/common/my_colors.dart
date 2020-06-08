@@ -86,6 +86,9 @@ class MyColors {
   static const Color c_ff93a4 = Color(0xFFFF93A4);
   static const Color c_6a8994 = Color(0xFF6A8994);
   static const Color c_e2e2e2 = Color(0xFFE2E2E2);
+  static const Color c_9e9e9e = Color(0xFF9E9E9E);
+  static const Color c_585858 = Color(0xFF585858);
+  static const Color c_919191 = Color(0xFF919191);
 }
 
 class MyColorsFul {

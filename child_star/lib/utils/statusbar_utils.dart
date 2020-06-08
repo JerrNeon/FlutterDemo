@@ -18,9 +18,35 @@ class StatusBarUtils {
     SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
   }
 
+  ///设置状态栏黑底白字
+  static setLight() {
+    SystemChrome.setSystemUIOverlayStyle(MySystems.light);
+  }
+
   ///设置状态栏透明
   static setTransparent() {
     SystemChrome.setSystemUIOverlayStyle(MySystems.transparent);
+  }
+
+  ///隐藏状态栏
+  static hideStatusBar() {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+  }
+
+  ///隐藏操作栏
+  static hideNavigationBar() {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  }
+
+  ///隐藏状态栏和操作栏
+  static showBar() {
+    SystemChrome.setEnabledSystemUIOverlays(
+        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+  }
+
+  ///隐藏状态栏和操作栏
+  static hideBar() {
+    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   ///设置竖屏
