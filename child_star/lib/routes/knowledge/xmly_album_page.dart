@@ -32,13 +32,6 @@ class _XmlyAlbumPageState extends State<XmlyAlbumPage> {
 
   _XmlyAlbumPageState(this.columnId, this.title);
 
-  @override
-  void initState() {
-    //设置状态栏透明
-    SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
-    super.initState();
-  }
-
   Future<PageList<Album>> _initAlbumFuture({
     @required num pageIndex,
   }) async {

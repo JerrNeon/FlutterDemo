@@ -23,7 +23,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    StatusBarUtils.showBar();
+     StatusBarUtils.showBar();
+     StatusBarUtils.setDark();
     _list
       ..add(HomePage())
       ..add(KnowledgePage())
@@ -34,7 +35,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    StatusBarUtils.setDark();
     final gm = GmLocalizations.of(context);
     return WillPopScope(
         child: Scaffold(

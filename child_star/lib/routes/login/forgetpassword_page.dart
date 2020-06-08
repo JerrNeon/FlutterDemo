@@ -30,12 +30,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   var _currentTime = 0; //当前倒计时剩余时长(单位：s)
 
   @override
-  void initState() {
-    super.initState();
-    StatusBarUtils.setTransparent();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     if (_timer != null && _timer.isActive) {

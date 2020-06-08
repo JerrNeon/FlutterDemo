@@ -37,11 +37,17 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
 
   @override
   void initState() {
-    StatusBarUtils.setLight();
+    StatusBarUtils.setTransparent();
     _initStatus();
     _initAlbumFuture();
     _initListener();
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    StatusBarUtils.setDark();
+    super.deactivate();
   }
 
   @override

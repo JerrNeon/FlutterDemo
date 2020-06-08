@@ -22,8 +22,6 @@ class _XmlySearchPageState extends State<XmlySearchPage> {
   @override
   void initState() {
     super.initState();
-    //设置状态栏透明
-    SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
     _listener = () {
       if (_keyword != null &&
           _keyword.isNotEmpty &&

@@ -38,7 +38,7 @@ class StatusBarUtils {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   }
 
-  ///隐藏状态栏和操作栏
+  ///显示状态栏和操作栏
   static showBar() {
     SystemChrome.setEnabledSystemUIOverlays(
         [SystemUiOverlay.top, SystemUiOverlay.bottom]);

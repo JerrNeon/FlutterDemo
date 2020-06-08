@@ -5,12 +5,13 @@ import 'package:flutter/services.dart';
 class MySystems {
   ///白底黑字黑色图标
   static const SystemUiOverlayStyle dark = SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.white,
+    systemNavigationBarColor: Colors.white, //Android底部navigationBar背景颜色
     systemNavigationBarDividerColor: null,
-    statusBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.light,
-    statusBarIconBrightness: Brightness.dark,
-    statusBarBrightness: Brightness.light,
+    statusBarColor: Colors.white, //Android状态栏背景颜色
+    systemNavigationBarIconBrightness:
+        Brightness.light, //Android底部navigationBar图标颜色(light：灰色,dark：黑色)
+    statusBarIconBrightness: Brightness.dark, //Android状态栏图标颜色(light：白色,dark：黑色)
+    statusBarBrightness: Brightness.dark, //IOS状态栏图标颜色(light：白色,dark：黑色)
   );
 
   ///黑底白字白色图标

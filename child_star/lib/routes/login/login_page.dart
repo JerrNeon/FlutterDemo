@@ -29,6 +29,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void deactivate() {
+    StatusBarUtils.setDark();
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final gm = GmLocalizations.of(context);
     return Scaffold(
