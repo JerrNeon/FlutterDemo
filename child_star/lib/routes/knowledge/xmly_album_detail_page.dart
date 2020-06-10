@@ -209,8 +209,8 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
                   children: <Widget>[
                     loadImage(
                       data.coverUrlMiddle,
-                      width: 104,
-                      height: 104,
+                      width: MySizes.s_104,
+                      height: MySizes.s_104,
                     ),
                     Positioned(
                       left: 0,

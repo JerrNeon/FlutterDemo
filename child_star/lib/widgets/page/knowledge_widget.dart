@@ -5,6 +5,8 @@ import 'package:child_star/utils/date_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:xmly/xmly_index.dart';
 
 class LectureItemWidget extends StatelessWidget {
   final Lecture data;
@@ -615,6 +617,402 @@ class XmlyAlbumEmptyWidget extends StatelessWidget {
       height: double.infinity,
       color: MyColors.c_f0f0f0,
       child: Image(image: MyImages.ic_xmly_album_empty),
+    );
+  }
+}
+
+class XmlyPlayListWidget extends StatefulWidget {
+  final bool isAsc;
+  final ValueChanged valueChanged;
+
+  const XmlyPlayListWidget({
+    Key key,
+    @required this.isAsc,
+    this.valueChanged,
+  }) : super(key: key);
+
+  @override
+  _XmlyPlayListWidgetState createState() =>
+      _XmlyPlayListWidgetState(isAsc, valueChanged);
+}
+
+class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
+  final ValueChanged valueChanged;
+  final RefreshController _refreshController = RefreshController();
+  IPlayStatusCallback _iPlayStatusCallback;
+  Track _currTrack; //当前正在播放的声音
+  List<Track> _tracks; //播放列表数据
+  PlayMode _playMode; //播放类型
+  bool _isAsc; //是否升序
+  int _pageIndex; //分页索引
+
+  _XmlyPlayListWidgetState(bool isAsc, this.valueChanged) : _isAsc = isAsc;
+
+  @override
+  void initState() {
+    _initTrack();
+    _initListener();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_iPlayStatusCallback != null)
+      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    super.dispose();
+  }
+
+  _initTrack() async {
+    _currTrack = await Xmly().getCurrSound();
+    _tracks = await Xmly().getPlayList();
+    _playMode = await Xmly().getPlayMode();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  _initListener() {
+    _iPlayStatusCallback ??= IPlayStatusCallback();
+    _iPlayStatusCallback.onSoundSwitch = () async {
+      _currTrack = await Xmly().getCurrSound();
+      if (mounted) {
+        setState(() {});
+      }
+    };
+    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return Container(
+      color: Colors.white,
+      height: ScreenUtils.height * 478 / 667,
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: MySizes.s_20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => _onTapPlayMode(),
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: MySizes.s_16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Image(
+                          image: _playMode == PlayMode.PLAY_MODEL_SINGLE_LOOP
+                              ? MyImages.ic_xmly_play_modesingle
+                              : _playMode == PlayMode.PLAY_MODEL_RANDOM
+                                  ? MyImages.ic_xmly_play_moderandom
+                                  : _playMode == PlayMode.PLAY_MODEL_LIST_LOOP
+                                      ? MyImages.ic_xmly_play_modelistrecycle
+                                      : MyImages.ic_xmly_play_modelist),
+                      SizedBox(width: MySizes.s_12),
+                      Text(
+                        _playMode == PlayMode.PLAY_MODEL_SINGLE_LOOP
+                            ? gm.xmlyPlayModeSigleLoop
+                            : _playMode == PlayMode.PLAY_MODEL_RANDOM
+                                ? gm.xmlyPlayModeRandom
+                                : _playMode == PlayMode.PLAY_MODEL_LIST_LOOP
+                                    ? gm.xmlyPlayModeListLoop
+                                    : gm.xmlyPlayModeList,
+                        style: TextStyle(
+                          color: MyColors.c_585858,
+                          fontSize: MyFontSizes.s_14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => _onTapSort(),
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: MySizes.s_16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Image(
+                          image: _isAsc
+                              ? MyImages.ic_xmly_album_desc
+                              : MyImages.ic_xmly_album_asc),
+                      SizedBox(width: MySizes.s_12),
+                      Text(
+                        _isAsc ? gm.xmlyPlaySortDesc : gm.xmlyPlaySortAsc,
+                        style: TextStyle(
+                          color: MyColors.c_585858,
+                          fontSize: MyFontSizes.s_14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: MySizes.s_20),
+          Expanded(
+            child: _tracks != null
+                ? SmartRefresher(
+                    controller: _refreshController,
+                    enablePullDown: isEnablePullDown,
+                    enablePullUp: isEnablePullUp,
+                    onRefresh: () => _onRefresh(),
+                    onLoading: () => _onLoading(),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        Track data = _tracks[index];
+                        return GestureDetector(
+                          onTap: () => _onTapItem(index),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: MySizes.s_14,
+                                  vertical: MySizes.s_16,
+                                ),
+                                child: Text(
+                                  data.trackTitle,
+                                  style: TextStyle(
+                                    color: data.id == _currTrack.id
+                                        ? MyColors.c_ffa2b1
+                                        : MyColors.c_585858,
+                                    fontSize: MyFontSizes.s_15,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Divider(
+                                height: MySizes.s_1,
+                                color: MyColors.c_f4f4f4,
+                                indent: MySizes.s_14,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      shrinkWrap: true,
+                      itemCount: _tracks?.length ?? 0,
+                    ),
+                  )
+                : Container(child: CircularProgressIndicator()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool get isEnablePullDown {
+    if (_isAsc) {
+      return XmlyData.prePage > 1;
+    } else {
+      return XmlyData.page < XmlyData.totalPage;
+    }
+  }
+
+  bool get isEnablePullUp {
+    if (XmlyData.isAsc) {
+      return XmlyData.page < XmlyData.totalPage;
+    } else {
+      return XmlyData.prePage > 1;
+    }
+  }
+
+  _onRefresh() async {
+    try {
+      if (_isAsc) {
+        XmlyData.prePage--;
+        _pageIndex = XmlyData.prePage;
+      } else {
+        XmlyData.page++;
+        _pageIndex = XmlyData.page;
+      }
+      TrackPageList trackPageList = await XmlyNetManager().getTracks(
+        albumId: XmlyData.albumId,
+        sort: XmlyData.isAsc ? XmlyData.ASC : XmlyData.DESC,
+        page: _pageIndex,
+      );
+      if (trackPageList != null &&
+          trackPageList.tracks != null &&
+          trackPageList.tracks.isNotEmpty) {
+        List<Track> list = trackPageList.tracks;
+        _tracks.insertAll(0, list);
+        await Xmly().insertTracksToPlayListHead(list: list);
+        if (mounted) {
+          setState(() {});
+        }
+      }
+      _refreshController.refreshCompleted();
+    } catch (e) {
+      if (_isAsc) {
+        XmlyData.prePage++;
+      } else {
+        XmlyData.page--;
+      }
+      _refreshController.refreshFailed();
+    }
+  }
+
+  _onLoading() async {
+    try {
+      if (_isAsc) {
+        XmlyData.page++;
+        _pageIndex = XmlyData.page;
+      } else {
+        XmlyData.prePage--;
+        _pageIndex = XmlyData.prePage;
+      }
+      TrackPageList trackPageList = await XmlyNetManager().getTracks(
+        albumId: XmlyData.albumId,
+        sort: XmlyData.isAsc ? XmlyData.ASC : XmlyData.DESC,
+        page: _pageIndex,
+      );
+      if (trackPageList != null &&
+          trackPageList.tracks != null &&
+          trackPageList.tracks.isNotEmpty) {
+        List<Track> list = trackPageList.tracks;
+        _tracks.addAll(list);
+        await Xmly().addTracksToPlayList(list: list);
+        if (mounted) {
+          setState(() {});
+        }
+      }
+      _refreshController.loadComplete();
+    } catch (e) {
+      if (_isAsc) {
+        XmlyData.page--;
+      } else {
+        XmlyData.prePage++;
+      }
+      _refreshController.loadFailed();
+    }
+  }
+
+  _onTapItem(int index) {
+    Xmly().play(playIndex: index);
+  }
+
+  _onTapPlayMode() {
+    if (_playMode == PlayMode.PLAY_MODEL_LIST) {
+      _playMode = PlayMode.PLAY_MODEL_SINGLE_LOOP;
+    } else if (_playMode == PlayMode.PLAY_MODEL_SINGLE_LOOP) {
+      _playMode = PlayMode.PLAY_MODEL_RANDOM;
+    } else if (_playMode == PlayMode.PLAY_MODEL_RANDOM) {
+      _playMode = PlayMode.PLAY_MODEL_LIST_LOOP;
+    } else {
+      _playMode = PlayMode.PLAY_MODEL_LIST;
+    }
+    Xmly().setPlayMode(mode: _playMode);
+  }
+
+  _onTapSort() async {
+    _isAsc = !_isAsc;
+    _tracks = _tracks.reversed;
+    await Xmly().permutePlayList();
+    if (valueChanged != null) {
+      valueChanged.call(_isAsc);
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
+}
+
+class XmlyTimerCloseWidget extends StatelessWidget {
+  final ValueChanged valueChanged;
+
+  const XmlyTimerCloseWidget({Key key, this.valueChanged}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Image(
+          width: double.infinity,
+          fit: BoxFit.cover,
+          image: MyImages.ic_xmly_playtimer_daynight,
+        ),
+        Container(
+          color: Colors.white,
+          child: GridView.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: MySizes.s_40,
+            crossAxisSpacing: MySizes.s_26,
+            padding: EdgeInsets.symmetric(
+              horizontal: MySizes.s_36,
+              vertical: MySizes.s_30,
+            ),
+            childAspectRatio: 138 / 43,
+            shrinkWrap: true,
+            children: <Widget>[
+              _buildItem(context, 0, gm),
+              _buildItem(context, 1, gm),
+              _buildItem(context, 2, gm),
+              _buildItem(context, 3, gm),
+            ],
+          ),
+        ),
+        DividerWidget(
+          width: double.infinity,
+          color: MyColors.c_f4f4f4,
+        ),
+        GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Container(
+            width: double.infinity,
+            color: Colors.white,
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(
+              vertical: MySizes.s_20,
+            ),
+            child: Text(
+              gm.xmlyPlayTimerCloseDialogCloseTitle,
+              style: TextStyle(
+                color: MyColors.c_585858,
+                fontSize: MyFontSizes.s_14,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildItem(BuildContext context, int index, GmLocalizations gm) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+        if (valueChanged != null) {
+          valueChanged.call(index);
+        }
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: MySizes.s_14),
+        decoration: BoxDecoration(
+          color: MyColors.c_f4f4f4,
+          borderRadius: BorderRadius.circular(MySizes.s_30),
+        ),
+        child: Text(
+          index == 3
+              ? gm.xmlyPlayTimerCloseDialogCancelTitle
+              : "${index == 0 ? 15 : index == 1 ? 30 : 60}${gm.xmlyPlayTimerCloseDialogTimeUnit}",
+          style: TextStyle(
+            color: MyColors.c_585858,
+            fontSize: MyFontSizes.s_14,
+          ),
+        ),
+      ),
     );
   }
 }

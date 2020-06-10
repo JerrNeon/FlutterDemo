@@ -190,6 +190,20 @@ class MyImages {
       AssetImage("images/ic_xmly_all_pause.png");
   static const AssetImage ic_xmly_all_play =
       AssetImage("images/ic_xmly_all_play.png");
+  static const AssetImage ic_xmly_play_list =
+      AssetImage("images/ic_xmly_play_list.png");
+  static const AssetImage ic_xmly_play_timerclose =
+      AssetImage("images/ic_xmly_play_timerclose.png");
+  static const AssetImage ic_xmly_play_modesingle =
+      AssetImage("images/ic_xmly_play_modesingle.png");
+  static const AssetImage ic_xmly_play_modelist =
+      AssetImage("images/ic_xmly_play_modelist.png");
+  static const AssetImage ic_xmly_play_moderandom =
+      AssetImage("images/ic_xmly_play_moderandom.png");
+  static const AssetImage ic_xmly_play_modelistrecycle =
+      AssetImage("images/ic_xmly_play_modelistrecycle.png");
+  static const AssetImage ic_xmly_playtimer_daynight =
+      AssetImage("images/ic_xmly_playtimer_daynight.png");
 }
 
 class MyImagesMultiple {

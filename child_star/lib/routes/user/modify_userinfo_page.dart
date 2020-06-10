@@ -231,7 +231,8 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
       builder: (context) {
         return ModifyAvatarWidget(
           onCameraTap: () async {
-            var image = await ImagePicker.pickImage(source: ImageSource.camera);
+            var image =
+                await ImagePicker().getImage(source: ImageSource.camera);
             //设置状态栏颜色(白底黑字黑色图标)-选择完照片后状态栏字体变成白色了
             SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
             if (image != null) {
@@ -242,7 +243,7 @@ class _ModifyUserInfoPageState extends State<ModifyUserInfoPage> {
           },
           onAlbumTap: () async {
             var image =
-                await ImagePicker.pickImage(source: ImageSource.gallery);
+                await ImagePicker().getImage(source: ImageSource.gallery);
             //设置状态栏颜色(白底黑字黑色图标)-选择完照片后状态栏字体变成白色了
             SystemChrome.setSystemUIOverlayStyle(MySystems.dark);
             if (image != null) {

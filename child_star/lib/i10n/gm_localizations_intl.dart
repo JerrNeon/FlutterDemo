@@ -654,6 +654,10 @@ class GmLocalizations {
     return Intl.message("分钟", name: "xmlyPlayTimerCloseDialogTimeUnit");
   }
 
+  String get xmlyPlayTimerCloseDialogCancelTitle {
+    return Intl.message("取消", name: "xmlyPlayTimerCloseDialogCancelTitle");
+  }
+
   String get xmlyPlayTimerCloseDialogCloseTitle {
     return Intl.message("关闭", name: "xmlyPlayTimerCloseDialogCloseTitle");
   }
