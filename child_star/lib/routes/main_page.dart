@@ -9,6 +9,7 @@ import 'package:child_star/routes/knowledge/knowledge_page.dart';
 import 'package:child_star/utils/dialog_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/material.dart';
+import 'package:xmly/xmly_index.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -31,6 +32,12 @@ class _MainPageState extends State<MainPage> {
       ..add(ExercisePage())
       ..add(ConsultationPage());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Xmly().release();
+    super.dispose();
   }
 
   @override

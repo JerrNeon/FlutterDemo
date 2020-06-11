@@ -17,8 +17,22 @@ class XmlyUtils {
     int pageSize = XmlyData.PAGE_SIZE,
     int prePage,
     int page,
+    bool isNavigateToXmlyPlayPage = true,
   }) async {
     if (list != null && list.isNotEmpty) {
+      bool isUpdatePlayList;
+      if (albumId != XmlyData.albumId) {
+        isUpdatePlayList = true;
+      } else if (isAsc != XmlyData.isAsc) {
+        isUpdatePlayList = true;
+      } else {
+        List<Track> playList = await Xmly().getPlayList();
+        if (list.length != playList.length) {
+          isUpdatePlayList = true;
+        } else {
+          isUpdatePlayList = false;
+        }
+      }
       XmlyData.albumId = albumId;
       XmlyData.isAsc = isAsc;
       XmlyData.totalPage = totalPage;
@@ -28,17 +42,36 @@ class XmlyUtils {
       XmlyData.page = page;
       bool isConnected = await Xmly().isConnected();
       if (isConnected) {
-        Xmly().playList(list: list, playIndex: playIndex);
-        RoutersNavigate().navigateToXmlyPlayPage(context);
+        if (isUpdatePlayList) {
+          XmlyData.isPlayAsc = true;
+          Xmly().playList(list: list, playIndex: playIndex);
+        } else {
+          int currentIndex = await Xmly().getCurrentIndex();
+          if (currentIndex != playIndex) {
+            Xmly().play(playIndex: playIndex);
+          } else {
+            bool isPlaying = await Xmly().isPlaying();
+            if (!isPlaying) {
+              Xmly().play();
+            }
+          }
+        }
+        if (isNavigateToXmlyPlayPage) {
+          RoutersNavigate().navigateToXmlyPlayPage(context);
+        }
       } else {
         _iConnectCallback = () {
           Xmly().removeOnConnectedListener(_iConnectCallback);
           _iConnectCallback = null;
+          XmlyData.isPlayAsc = true;
           Xmly().playList(list: list, playIndex: playIndex);
-          RoutersNavigate().navigateToXmlyPlayPage(context);
+          if (isNavigateToXmlyPlayPage) {
+            RoutersNavigate().navigateToXmlyPlayPage(context);
+          }
         };
         Xmly().addOnConnectedListener(_iConnectCallback);
         var packageInfo = await AppUtils.getPackageInfo();
+        LogUtils.d("xmly utils -> ${packageInfo.packageName}.MainActivity");
         Xmly().initPlayer(
           notificationId: DateTime.now().millisecond,
           notificationClassName: "${packageInfo.packageName}.MainActivity",

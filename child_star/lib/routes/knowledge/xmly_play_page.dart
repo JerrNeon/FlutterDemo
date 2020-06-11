@@ -21,10 +21,10 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
   double _progress = 0; //当前播放进度
   Timer _timer; //倒计时
   var _currentTime = 0; //当前倒计时剩余时长(单位：s)
-  bool _isAsc = true; //是否升序
 
   @override
   void initState() {
+    _initCountDownTimer();
     _initTrack();
     _initListener();
     super.initState();
@@ -32,15 +32,48 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
 
   @override
   void dispose() {
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
     if (_timer != null && _timer.isActive) {
-      _timer.cancel();
+      _cancelTimer();
+      XmlyData.countDownTime = _currentTime;
       _timer = null;
     }
+    if (_iPlayStatusCallback != null)
+      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
     super.dispose();
   }
 
+  ///初始化倒计时，恢复上次未完成的倒计时(定时关闭)
+  _initCountDownTimer() {
+    _currentTime = XmlyData.countDownTime ?? 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startTimer();
+    });
+  }
+
+  ///开始倒计时
+  _startTimer() {
+    if (_currentTime != 0) {
+      _cancelTimer();
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        _currentTime--;
+        if (_currentTime == 0) {
+          timer.cancel();
+        }
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
+  }
+
+  ///取消倒计时
+  _cancelTimer() {
+    if (_timer != null && _timer.isActive) {
+      _timer.cancel();
+    }
+  }
+
+  ///获取播放状态，当前正在播放的声音信息
   _initTrack() async {
     _currTrack = await Xmly().getCurrSound();
     _isPlaying = await Xmly().isPlaying();
@@ -49,6 +82,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
     }
   }
 
+  ///初始化播放状态回调
   _initListener() {
     _iPlayStatusCallback ??= IPlayStatusCallback();
     _iPlayStatusCallback.onPlayStart = () async {
@@ -56,19 +90,21 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
       if (mounted) {
         setState(() {});
       }
+      LogUtils.d("xmly play -> onPlayStart");
     };
     _iPlayStatusCallback.onPlayPause = () async {
       _isPlaying = false;
       if (mounted) {
         setState(() {});
       }
+      LogUtils.d("xmly play -> onPlayPause");
     };
     _iPlayStatusCallback.onSoundSwitch = () async {
       _currTrack = await Xmly().getCurrSound();
       if (mounted) {
         setState(() {});
       }
-      print("xmly play -> onSoundSwitch");
+      LogUtils.d("xmly play -> onSoundSwitch");
     };
     _iPlayStatusCallback.onBufferProgress = (progress) async {};
     _iPlayStatusCallback.onPlayProgress = (progress) async {
@@ -269,13 +305,11 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
   }
 
   _onTapPlayList() {
-    showCupertinoModalPopup(
+    showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (context) {
-          return XmlyPlayListWidget(
-            isAsc: _isAsc,
-            valueChanged: (value) => _isAsc = value,
-          );
+          return XmlyPlayListWidget();
         });
   }
 
@@ -286,37 +320,29 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
           return XmlyTimerCloseWidget(
             valueChanged: (index) async {
               int timeMillis;
-              int currTimeMillis = DateTime.now().millisecond;
+              int currTimeMillis = DateTime.now().millisecondsSinceEpoch;
               if (index == 0) {
                 //15分钟
                 timeMillis = currTimeMillis + 15 * 60 * 1000;
+                _currentTime = 15 * 60;
               } else if (index == 1) {
                 //30分钟
                 timeMillis = currTimeMillis + 30 * 60 * 1000;
+                _currentTime = 30 * 60;
               } else if (index == 2) {
                 //60分钟
                 timeMillis = currTimeMillis + 60 * 60 * 1000;
+                _currentTime = 60 * 60;
               } else {
                 //取消
                 timeMillis = 0;
+                _currentTime = 0;
               }
               await Xmly().pausePlayInMillis(timeMillis);
               if (timeMillis != 0) {
-                _currentTime = 15 * 60;
-                _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-                  _currentTime--;
-                  if (_currentTime == 0) {
-                    timer.cancel();
-                  }
-                });
+                _startTimer();
               } else {
-                _currentTime = 0;
-                if (_timer != null && _timer.isActive) {
-                  _timer.cancel();
-                }
-              }
-              if (mounted) {
-                setState(() {});
+                _cancelTimer();
               }
             },
           );

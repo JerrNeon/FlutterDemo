@@ -622,31 +622,22 @@ class XmlyAlbumEmptyWidget extends StatelessWidget {
 }
 
 class XmlyPlayListWidget extends StatefulWidget {
-  final bool isAsc;
-  final ValueChanged valueChanged;
-
-  const XmlyPlayListWidget({
-    Key key,
-    @required this.isAsc,
-    this.valueChanged,
-  }) : super(key: key);
-
   @override
-  _XmlyPlayListWidgetState createState() =>
-      _XmlyPlayListWidgetState(isAsc, valueChanged);
+  _XmlyPlayListWidgetState createState() => _XmlyPlayListWidgetState();
 }
 
 class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
-  final ValueChanged valueChanged;
   final RefreshController _refreshController = RefreshController();
+  final ScrollController _scrollController = ScrollController();
+  static const ITEM_HEIGHT = MySizes.s_48;
   IPlayStatusCallback _iPlayStatusCallback;
   Track _currTrack; //当前正在播放的声音
   List<Track> _tracks; //播放列表数据
   PlayMode _playMode; //播放类型
-  bool _isAsc; //是否升序
+  bool _isAsc = XmlyData.isPlayAsc; //是否升序
   int _pageIndex; //分页索引
 
-  _XmlyPlayListWidgetState(bool isAsc, this.valueChanged) : _isAsc = isAsc;
+  _XmlyPlayListWidgetState();
 
   @override
   void initState() {
@@ -659,6 +650,8 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   void dispose() {
     if (_iPlayStatusCallback != null)
       Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    if (_refreshController != null) _refreshController.dispose();
+    if (_scrollController != null) _scrollController.dispose();
     super.dispose();
   }
 
@@ -666,6 +659,8 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
     _currTrack = await Xmly().getCurrSound();
     _tracks = await Xmly().getPlayList();
     _playMode = await Xmly().getPlayMode();
+    int index = await Xmly().getCurrentIndex();
+    _scrollController.jumpTo(index * ITEM_HEIGHT);
     if (mounted) {
       setState(() {});
     }
@@ -764,6 +759,8 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
                     onRefresh: () => _onRefresh(),
                     onLoading: () => _onLoading(),
                     child: ListView.builder(
+                      controller: _scrollController,
+                      itemExtent: ITEM_HEIGHT,
                       itemBuilder: (context, index) {
                         Track data = _tracks[index];
                         return GestureDetector(
@@ -772,21 +769,23 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: MySizes.s_14,
-                                  vertical: MySizes.s_16,
-                                ),
-                                child: Text(
-                                  data.trackTitle,
-                                  style: TextStyle(
-                                    color: data.id == _currTrack.id
-                                        ? MyColors.c_ffa2b1
-                                        : MyColors.c_585858,
-                                    fontSize: MyFontSizes.s_15,
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: MySizes.s_14,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  child: Text(
+                                    data.trackTitle,
+                                    style: TextStyle(
+                                      color: data.id == _currTrack.id
+                                          ? MyColors.c_ffa2b1
+                                          : MyColors.c_585858,
+                                      fontSize: MyFontSizes.s_15,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
                               Divider(
@@ -798,11 +797,10 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
                           ),
                         );
                       },
-                      shrinkWrap: true,
                       itemCount: _tracks?.length ?? 0,
                     ),
                   )
-                : Container(child: CircularProgressIndicator()),
+                : Center(child: CircularProgressIndicator()),
           ),
         ],
       ),
@@ -818,7 +816,7 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   }
 
   bool get isEnablePullUp {
-    if (XmlyData.isAsc) {
+    if (_isAsc) {
       return XmlyData.page < XmlyData.totalPage;
     } else {
       return XmlyData.prePage > 1;
@@ -899,7 +897,7 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
     Xmly().play(playIndex: index);
   }
 
-  _onTapPlayMode() {
+  _onTapPlayMode() async {
     if (_playMode == PlayMode.PLAY_MODEL_LIST) {
       _playMode = PlayMode.PLAY_MODEL_SINGLE_LOOP;
     } else if (_playMode == PlayMode.PLAY_MODEL_SINGLE_LOOP) {
@@ -909,16 +907,17 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
     } else {
       _playMode = PlayMode.PLAY_MODEL_LIST;
     }
-    Xmly().setPlayMode(mode: _playMode);
+    await Xmly().setPlayMode(mode: _playMode);
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   _onTapSort() async {
     _isAsc = !_isAsc;
-    _tracks = _tracks.reversed;
+    _tracks = _tracks.reversed.toList();
     await Xmly().permutePlayList();
-    if (valueChanged != null) {
-      valueChanged.call(_isAsc);
-    }
+    XmlyData.isPlayAsc = _isAsc;
     if (mounted) {
       setState(() {});
     }

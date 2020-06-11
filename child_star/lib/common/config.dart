@@ -25,4 +25,7 @@ class XmlyData {
   static int pageSize;
   static int prePage;
   static int page;
+
+  static bool isPlayAsc; //是否升序(播放列表)
+  static int countDownTime; //倒计时剩余时间
 }

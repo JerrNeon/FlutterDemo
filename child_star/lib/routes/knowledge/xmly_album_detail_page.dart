@@ -23,7 +23,7 @@ class XmlyAlbumDetailPage extends StatefulWidget {
 
 class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   final int albumId;
-  final GlobalKey<SmartRefresherWidgetState> _globalKey = GlobalKey();
+  GlobalKey<SmartRefresherWidgetState> _globalKey;
   final SolidController _solidController = SolidController();
   UserProvider _userProvider;
   Future<AlbumPageList> _albumFuture;
@@ -34,6 +34,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   bool _isAsc = true;
   int _totalPage = 0;
   int _totalCount = 0;
+  bool _isShowBottomSheet = true; //是否显示BottomSheet
 
   _XmlyAlbumDetailPageState(this.albumId);
 
@@ -56,37 +57,39 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   void dispose() {
     if (_iPlayStatusCallback != null)
       Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    if (_solidController != null) _solidController.dispose();
     super.dispose();
   }
 
   ///初始化收藏状态、播放状态
   _initStatus() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _solidController.show();
       if (_userProvider.isLogin) {
         Result result = await NetManager()
             .getCollectionStatus(id: albumId.toString(), type: 3);
         _isCollect = result.status == 1;
-        Track track = await Xmly().getCurrSound();
-        if (track != null) {
-          _currPlayTrackId = track.id;
-          var album = track.subordinated_album;
-          if (album.id == albumId) {
-            bool isPlaying = await Xmly().isPlaying();
-            _playStatus = isPlaying ? 1 : 2;
-          }
+      }
+      Track track = await Xmly().getCurrSound();
+      if (track != null) {
+        _currPlayTrackId = track.id;
+        var album = track.subordinated_album;
+        if (album.id == albumId) {
+          bool isPlaying = await Xmly().isPlaying();
+          _playStatus = isPlaying ? 1 : 2;
         }
-        if (mounted) {
-          setState(() {});
-        }
+      }
+      if (mounted) {
+        setState(() {});
       }
     });
   }
 
+  ///获取专辑详情
   _initAlbumFuture() {
     _albumFuture = XmlyNetManager().getSearchAlbumList(id: albumId);
   }
 
+  ///获取专辑下的声音列表
   Future<PageList<Track>> _initTrackFuture(int pageIndex) async {
     TrackPageList trackPageList = await XmlyNetManager().getTracks(
       albumId: albumId,
@@ -104,6 +107,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
     return pageList;
   }
 
+  ///初始化播放状态回调
   _initListener() async {
     _iPlayStatusCallback ??= IPlayStatusCallback();
     _iPlayStatusCallback.onPlayStart = () async {
@@ -117,7 +121,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
           }
         }
       }
-      print("xmly -> onPlayStart");
+      LogUtils.d("xmly album detail -> onPlayStart");
     };
     _iPlayStatusCallback.onPlayPause = () async {
       Track track = await Xmly().getCurrSound();
@@ -130,7 +134,17 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
           }
         }
       }
-      print("xmly -> onPlayPause");
+      LogUtils.d("xmly album detail -> onPlayPause");
+    };
+    _iPlayStatusCallback.onSoundPrepared = () async {
+      Track track = await Xmly().getCurrSound();
+      if (track != null) {
+        _currPlayTrackId = track.id;
+        if (mounted) {
+          setState(() {});
+        }
+      }
+      LogUtils.d("xmly album detail -> onSoundPrepared");
     };
     _iPlayStatusCallback.onSoundSwitch = () async {
       Track track = await Xmly().getCurrSound();
@@ -140,7 +154,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
           setState(() {});
         }
       }
-      print("xmly -> onSoundSwitch");
+      LogUtils.d("xmly album detail -> onSonSoundSwitch");
     };
     Xmly().addPlayerStatusListener(_iPlayStatusCallback);
   }
@@ -312,6 +326,9 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
     return SolidBottomSheet(
       controller: _solidController,
       draggableBody: true,
+      showOnAppear: _isShowBottomSheet,
+      onShow: () => _isShowBottomSheet = true,
+      onHide: () => _isShowBottomSheet = false,
       headerBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -422,9 +439,11 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   }
 
   Widget _buildList() {
+    _globalKey = GlobalKey<SmartRefresherWidgetState>();
     return SmartRefresherWidget<Track>.list(
       key: _globalKey,
       onRefreshLoading: (pageIndex) => _initTrackFuture(pageIndex),
+      keepAlive: true,
       listItemBuilder: (context, index, data) => GestureDetector(
         onTap: () => _play(index),
         child: Container(
@@ -555,11 +574,11 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
     } else if (_playStatus == 2) {
       Xmly().play();
     } else {
-      _play(0);
+      _play(0, isNavigateToXmlyPlayPage: false);
     }
   }
 
-  _play(int index) {
+  _play(int index, {bool isNavigateToXmlyPlayPage = true}) {
     List<Track> tracks = _globalKey.currentState.data;
     int prePage = 1;
     int pageIndex = _globalKey.currentState.pageIndex;
@@ -572,6 +591,7 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
       totalSize: _totalCount,
       prePage: prePage,
       page: pageIndex,
+      isNavigateToXmlyPlayPage: isNavigateToXmlyPlayPage,
     );
   }
 }
