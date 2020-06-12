@@ -134,6 +134,22 @@ class DbUtils {
     );
   }
 
+  Future<int> insertXmlyResource(XmlyResource xmlyResource) async {
+    return await _db?.insert(tableXmlyResource, xmlyResource.toMap());
+  }
+
+  Future<XmlyResource> getXmlyResource(int albumId) async {
+    List<Map<String, dynamic>> list = await _db?.query(
+      tableXmlyResource,
+      where: '$columnAlbumId = ?',
+      whereArgs: [albumId],
+    );
+    if (list != null && list.isNotEmpty) {
+      return XmlyResource.fromMap(list.first);
+    }
+    return null;
+  }
+
   Future<List<XmlyResource>> getXmlyResourceList() async {
     List<Map<String, dynamic>> list =
         await _db?.query(tableXmlyResource, orderBy: "$columnUpdateAt desc");

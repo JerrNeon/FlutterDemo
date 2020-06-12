@@ -7,6 +7,7 @@ import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:xmly/xmly_index.dart';
 
 class XmlyPage extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class _XmlyPageState extends State<XmlyPage>
   Future<XmlyBannersPageList> _bannersFuture;
   Future<ColumnsPageList> _columnListFuture;
   Future<ColumnBatchAlbumPageList> _columnAlbumFuture;
+  IPlayStatusCallback _iPlayStatusCallback;
+  DbUtils _dbUtils;
 
   @override
   bool get wantKeepAlive => true;
@@ -26,7 +29,16 @@ class _XmlyPageState extends State<XmlyPage>
   @override
   void initState() {
     _initFuture();
+    _initListener();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_iPlayStatusCallback != null)
+      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    _dbUtils?.close();
+    super.dispose();
   }
 
   _initFuture() {
@@ -36,6 +48,55 @@ class _XmlyPageState extends State<XmlyPage>
         .getColumnBatchAlbumList(ids: XmlyData.COLUMN_IDS, count: 3);
     _future =
         Future.wait([_bannersFuture, _columnListFuture, _columnAlbumFuture]);
+  }
+
+  ///初始化播放状态回调
+  _initListener() {
+    _iPlayStatusCallback ??= IPlayStatusCallback();
+    _iPlayStatusCallback.onSoundSwitch = () async {
+      //保存当前播放数据到本地
+      Track track = await Xmly().getCurrSound();
+      if (track != null) {
+        SubordinatedAlbum album = track.subordinated_album;
+        if (album != null) {
+          if (_dbUtils == null) {
+            _dbUtils = DbUtils();
+            await _dbUtils.open();
+          }
+          bool isExit = await _dbUtils.isXmlyResourceInsert(album.id);
+          if (isExit) {
+            XmlyResource xmlyResource =
+                await _dbUtils.getXmlyResource(album.id);
+            if (xmlyResource != null) {
+              if (xmlyResource.trackId != track.id) {
+                //新的声音
+                xmlyResource.trackId = track.id;
+                xmlyResource.trackCoverUrl = track.coverUrlMiddle;
+                xmlyResource.trackOrderNum = XmlyData.isAsc
+                    ? track.orderNum
+                    : XmlyData.totalSize - track.orderNum - 1;
+              }
+              xmlyResource.updateAt = DateTime.now().millisecondsSinceEpoch;
+              _dbUtils.updateXmlyResource(xmlyResource);
+            }
+          } else {
+            //新的专辑
+            int nowTimeMillis = DateTime.now().millisecondsSinceEpoch;
+            _dbUtils.insertXmlyResource(XmlyResource(
+              albumId: album.id,
+              trackId: track.id,
+              trackCoverUrl: track.coverUrlMiddle,
+              trackOrderNum: XmlyData.isAsc
+                  ? track.orderNum
+                  : XmlyData.totalSize - track.orderNum - 1,
+              createdAt: nowTimeMillis,
+              updateAt: nowTimeMillis,
+            ));
+          }
+        }
+      }
+    };
+    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
   }
 
   @override

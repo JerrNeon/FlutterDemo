@@ -41,7 +41,8 @@ class _XmlyAlbumPageState extends State<XmlyAlbumPage> {
       }
       _xmlyResourceList = await _dbUtils.getXmlyResourceList();
       if (_xmlyResourceList != null && _xmlyResourceList.isNotEmpty) {
-        String ids = _xmlyResourceList.join(",");
+        List<int> idList = _xmlyResourceList.map((e) => e.albumId).toList();
+        String ids = idList.join(",");
         List<Album> albumList =
             await XmlyNetManager().getAlbumBatchList(ids: ids);
         pageList.resultList = albumList;
@@ -104,6 +105,24 @@ class _XmlyAlbumPageState extends State<XmlyAlbumPage> {
   }
 
   _onTapRecent(XmlyResource data) async {
+    List<Track> playList = await Xmly().getPlayList();
+    if (playList != null && playList.isNotEmpty) {
+      //当前播放列表是否已经有此声音
+      int index = playList.indexWhere((element) => element.id == data.trackId);
+      if (index != -1) {
+        Track currTrack = await Xmly().getCurrSound();
+        if (currTrack.id == data.trackId) {
+          bool isPlaying = await Xmly().isPlaying();
+          if (!isPlaying) {
+            Xmly().play();
+          }
+        } else {
+          Xmly().play(playIndex: index);
+        }
+        RoutersNavigate().navigateToXmlyPlayPage(context);
+        return;
+      }
+    }
     int orderNum = data.trackOrderNum;
     int pageIndex;
     if (orderNum % XmlyData.PAGE_SIZE != 0) {

@@ -16,7 +16,14 @@ class XmlyResource {
   int createdAt; //	Long	专辑创建时间，Unix毫秒数时间戳
   int updateAt; //	Long	专辑更新时间，Unix毫秒数时间戳
 
-  XmlyResource();
+  XmlyResource({
+    this.albumId,
+    this.trackId,
+    this.trackCoverUrl,
+    this.trackOrderNum,
+    this.createdAt,
+    this.updateAt,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
