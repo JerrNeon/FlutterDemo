@@ -155,12 +155,15 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
           ),
         ),
         SizedBox(height: MySizes.s_30),
-        Text(
-          _currTrack.trackTitle,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: MyFontSizes.s_18,
-            fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: MySizes.s_20),
+          child: Text(
+            _currTrack.trackTitle,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: MyFontSizes.s_18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         SizedBox(height: MySizes.s_50),

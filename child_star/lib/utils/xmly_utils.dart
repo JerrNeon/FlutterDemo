@@ -60,19 +60,20 @@ class XmlyUtils {
           RoutersNavigate().navigateToXmlyPlayPage(context);
         }
       } else {
-        _iConnectCallback = () {
-          Xmly().removeOnConnectedListener(_iConnectCallback);
-          _iConnectCallback = null;
+        _iConnectCallback = () async {
           XmlyData.isPlayAsc = true;
-          Xmly().playList(list: list, playIndex: playIndex);
+          await Xmly().playList(list: list, playIndex: playIndex);
+          await Xmly()
+              .removeOnConnectedListener(_iConnectCallback, isCancel: true);
+          _iConnectCallback = null;
           if (isNavigateToXmlyPlayPage) {
             RoutersNavigate().navigateToXmlyPlayPage(context);
           }
         };
-        Xmly().addOnConnectedListener(_iConnectCallback);
+        await Xmly().addOnConnectedListener(_iConnectCallback);
         var packageInfo = await AppUtils.getPackageInfo();
         LogUtils.d("xmly utils -> ${packageInfo.packageName}.MainActivity");
-        Xmly().initPlayer(
+        await Xmly().initPlayer(
           notificationId: DateTime.now().millisecond,
           notificationClassName: "${packageInfo.packageName}.MainActivity",
         );

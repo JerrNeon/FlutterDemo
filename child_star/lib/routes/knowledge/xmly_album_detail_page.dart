@@ -146,16 +146,6 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
       }
       LogUtils.d("xmly album detail -> onSoundPrepared");
     };
-    _iPlayStatusCallback.onSoundSwitch = () async {
-      Track track = await Xmly().getCurrSound();
-      if (track != null) {
-        _currPlayTrackId = track.id;
-        if (mounted) {
-          setState(() {});
-        }
-      }
-      LogUtils.d("xmly album detail -> onSonSoundSwitch");
-    };
     Xmly().addPlayerStatusListener(_iPlayStatusCallback);
   }
 

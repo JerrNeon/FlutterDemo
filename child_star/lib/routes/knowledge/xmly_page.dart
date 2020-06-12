@@ -36,7 +36,7 @@ class _XmlyPageState extends State<XmlyPage>
   @override
   void dispose() {
     if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+      Xmly().removePlayerStatusListener(_iPlayStatusCallback, isCancel: true);
     _dbUtils?.close();
     super.dispose();
   }
@@ -53,7 +53,8 @@ class _XmlyPageState extends State<XmlyPage>
   ///初始化播放状态回调
   _initListener() {
     _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onSoundSwitch = () async {
+    _iPlayStatusCallback.onSoundPrepared = () async {
+      LogUtils.d("xmly home -> onSoundPrepared");
       //保存当前播放数据到本地
       Track track = await Xmly().getCurrSound();
       if (track != null) {
@@ -77,12 +78,12 @@ class _XmlyPageState extends State<XmlyPage>
                     : XmlyData.totalSize - track.orderNum - 1;
               }
               xmlyResource.updateAt = DateTime.now().millisecondsSinceEpoch;
-              _dbUtils.updateXmlyResource(xmlyResource);
+              await _dbUtils.updateXmlyResource(xmlyResource);
             }
           } else {
             //新的专辑
             int nowTimeMillis = DateTime.now().millisecondsSinceEpoch;
-            _dbUtils.insertXmlyResource(XmlyResource(
+            await _dbUtils.insertXmlyResource(XmlyResource(
               albumId: album.id,
               trackId: track.id,
               trackCoverUrl: track.coverUrlMiddle,
