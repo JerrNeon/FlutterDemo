@@ -635,7 +635,6 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   List<Track> _tracks; //播放列表数据
   PlayMode _playMode; //播放类型
   bool _isAsc = XmlyData.isPlayAsc; //是否升序
-  int _pageIndex; //分页索引
 
   _XmlyPlayListWidgetState();
 
@@ -824,73 +823,59 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   }
 
   _onRefresh() async {
-    try {
-      if (_isAsc) {
-        XmlyData.prePage--;
-        _pageIndex = XmlyData.prePage;
-      } else {
-        XmlyData.page++;
-        _pageIndex = XmlyData.page;
-      }
-      TrackPageList trackPageList = await XmlyNetManager().getTracks(
-        albumId: XmlyData.albumId,
-        sort: XmlyData.isAsc ? XmlyData.ASC : XmlyData.DESC,
-        page: _pageIndex,
-      );
-      if (trackPageList != null &&
-          trackPageList.tracks != null &&
-          trackPageList.tracks.isNotEmpty) {
-        List<Track> list = trackPageList.tracks;
-        _tracks.insertAll(0, list);
-        await Xmly().insertTracksToPlayListHead(list: list);
+    int playListSize = await Xmly().getPlayListSize();
+    //[XmlyPage]中onSoundSwitch会自动加载前一页数据
+    //这里判断当前列表的数据数量是否与播放列表一致，如果不一致则重新赋值
+    //如果不能加载前一页数据，则直接更新数据
+    if (_tracks != null && _tracks.length != playListSize) {
+      _tracks = await Xmly().getPlayList();
+      if (!isEnablePullDown) {
         if (mounted) {
           setState(() {});
         }
+        return;
       }
-      _refreshController.refreshCompleted();
-    } catch (e) {
-      if (_isAsc) {
-        XmlyData.prePage++;
-      } else {
-        XmlyData.page--;
-      }
-      _refreshController.refreshFailed();
     }
+    XmlyUtils.autoLoadPreToPlayList(
+      onDataChanged: (data) {
+        if (mounted) {
+          _tracks.insertAll(0, data);
+          setState(() {});
+          _refreshController.refreshCompleted();
+        }
+      },
+      onErrorCallback: () {
+        _refreshController.refreshFailed();
+      },
+    );
   }
 
   _onLoading() async {
-    try {
-      if (_isAsc) {
-        XmlyData.page++;
-        _pageIndex = XmlyData.page;
-      } else {
-        XmlyData.prePage--;
-        _pageIndex = XmlyData.prePage;
-      }
-      TrackPageList trackPageList = await XmlyNetManager().getTracks(
-        albumId: XmlyData.albumId,
-        sort: XmlyData.isAsc ? XmlyData.ASC : XmlyData.DESC,
-        page: _pageIndex,
-      );
-      if (trackPageList != null &&
-          trackPageList.tracks != null &&
-          trackPageList.tracks.isNotEmpty) {
-        List<Track> list = trackPageList.tracks;
-        _tracks.addAll(list);
-        await Xmly().addTracksToPlayList(list: list);
+    int playListSize = await Xmly().getPlayListSize();
+    //[XmlyPage]中onSoundSwitch会自动加载后一页数据
+    //这里判断当前列表的数据数量是否与播放列表一致，如果不一致则重新赋值
+    //如果不能加载后一页数据，则直接更新数据
+    if (_tracks != null && _tracks.length != playListSize) {
+      _tracks = await Xmly().getPlayList();
+      if (!isEnablePullUp) {
         if (mounted) {
           setState(() {});
         }
+        return;
       }
-      _refreshController.loadComplete();
-    } catch (e) {
-      if (_isAsc) {
-        XmlyData.page--;
-      } else {
-        XmlyData.prePage++;
-      }
-      _refreshController.loadFailed();
     }
+    XmlyUtils.autoLoadNextToPlayList(
+      onDataChanged: (data) {
+        if (mounted) {
+          _tracks.addAll(data);
+          setState(() {});
+          _refreshController.loadComplete();
+        }
+      },
+      onErrorCallback: () {
+        _refreshController.loadFailed();
+      },
+    );
   }
 
   _onTapItem(int index) {

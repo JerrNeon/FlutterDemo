@@ -15,13 +15,19 @@ class XmlyPage extends StatefulWidget {
 }
 
 class _XmlyPageState extends State<XmlyPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   Future _future;
   Future<XmlyBannersPageList> _bannersFuture;
   Future<ColumnsPageList> _columnListFuture;
   Future<ColumnBatchAlbumPageList> _columnAlbumFuture;
   IPlayStatusCallback _iPlayStatusCallback;
   DbUtils _dbUtils;
+  AnimationController _animationController; //旋转动画
+  Animation<double> _turns; //动画值
+  XmlyResource _xmlyResource; //本地历史声音
+  Track _currTrack; //当前正在播放的声音
+  double _playProgress = 0; //播放进度
+  bool _isPlayVisible = true;
 
   @override
   bool get wantKeepAlive => true;
@@ -29,6 +35,8 @@ class _XmlyPageState extends State<XmlyPage>
   @override
   void initState() {
     _initFuture();
+    _initTrack();
+    _initAnimation();
     _initListener();
     super.initState();
   }
@@ -38,6 +46,7 @@ class _XmlyPageState extends State<XmlyPage>
     if (_iPlayStatusCallback != null)
       Xmly().removePlayerStatusListener(_iPlayStatusCallback, isCancel: true);
     _dbUtils?.close();
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -50,14 +59,50 @@ class _XmlyPageState extends State<XmlyPage>
         Future.wait([_bannersFuture, _columnListFuture, _columnAlbumFuture]);
   }
 
+  _initTrack() async {
+    _currTrack = await Xmly().getCurrSound();
+    if (_currTrack == null) {
+      if (_dbUtils == null) {
+        _dbUtils = DbUtils();
+        await _dbUtils.open();
+      }
+      List<XmlyResource> list = await _dbUtils.getXmlyResourceList();
+      if (list != null && list.isNotEmpty) {
+        _xmlyResource = list[0];
+        if (mounted) {
+          setState(() {});
+        }
+      }
+    } else {
+      bool isPlaying = await Xmly().isPlaying();
+      _isPlayVisible = !isPlaying;
+      if (isPlaying) {
+        _animationController.repeat();
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  _initAnimation() async {
+    _animationController =
+        AnimationController(duration: Duration(seconds: 4), vsync: this);
+    _turns = Tween(begin: 0.0, end: 1.0).animate(_animationController);
+  }
+
   ///初始化播放状态回调
   _initListener() {
     _iPlayStatusCallback ??= IPlayStatusCallback();
     _iPlayStatusCallback.onSoundPrepared = () async {
       LogUtils.d("xmly home -> onSoundPrepared");
       //保存当前播放数据到本地
-      Track track = await Xmly().getCurrSound();
-      if (track != null) {
+      Track track = _currTrack = await Xmly().getCurrSound();
+      if (mounted) {
+        _animationController?.reset();
+        setState(() {});
+      }
+      if (track != null && XmlyData.isAsc != null) {
         SubordinatedAlbum album = track.subordinated_album;
         if (album != null) {
           if (_dbUtils == null) {
@@ -97,6 +142,35 @@ class _XmlyPageState extends State<XmlyPage>
         }
       }
     };
+    _iPlayStatusCallback.onSoundSwitch = () async {
+      int currentIndex = await Xmly().getCurrentIndex();
+      int playListSize = await Xmly().getPlayListSize();
+      if (currentIndex < 2) {
+        XmlyUtils.autoLoadPreToPlayList();
+      } else if (currentIndex >= playListSize - 2) {
+        XmlyUtils.autoLoadNextToPlayList();
+      }
+    };
+    _iPlayStatusCallback.onPlayStart = () {
+      _isPlayVisible = false;
+      if (mounted) {
+        _animationController?.repeat();
+        setState(() {});
+      }
+    };
+    _iPlayStatusCallback.onPlayPause = () {
+      _isPlayVisible = true;
+      if (mounted) {
+        _animationController?.stop(canceled: false);
+        setState(() {});
+      }
+    };
+    _iPlayStatusCallback.onPlayProgress = (progress) {
+      _playProgress = progress;
+      if (mounted) {
+        setState(() {});
+      }
+    };
     Xmly().addPlayerStatusListener(_iPlayStatusCallback);
   }
 
@@ -105,40 +179,119 @@ class _XmlyPageState extends State<XmlyPage>
     super.build(context);
     return Scaffold(
       backgroundColor: MyColors.c_f4f4f4,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SearchWidget(
-            onTap: () => RoutersNavigate().navigateToXmlySearchPage(context),
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SearchWidget(
+                onTap: () =>
+                    RoutersNavigate().navigateToXmlySearchPage(context),
+              ),
+              Expanded(
+                child: FutureBuilderWidget(
+                  future: _future,
+                  onErrorRetryTap: () {
+                    if (mounted) {
+                      _initFuture();
+                      setState(() {});
+                    }
+                  },
+                  builder: (context, snapshot) {
+                    List list = snapshot.data;
+                    if (list != null && list.isNotEmpty && list.length == 3) {
+                      return CustomScrollView(
+                        slivers: <Widget>[
+                          _buildBanner(list[0]),
+                          _buildType(list[1]),
+                          _buildList(list[2]),
+                        ],
+                      );
+                    } else {
+                      return EmptyWidget();
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: FutureBuilderWidget(
-              future: _future,
-              onErrorRetryTap: () {
-                if (mounted) {
-                  _initFuture();
-                  setState(() {});
-                }
-              },
-              builder: (context, snapshot) {
-                List list = snapshot.data;
-                if (list != null && list.isNotEmpty && list.length == 3) {
-                  return CustomScrollView(
-                    slivers: <Widget>[
-                      _buildBanner(list[0]),
-                      _buildType(list[1]),
-                      _buildList(list[2]),
-                    ],
-                  );
-                } else {
-                  return EmptyWidget();
-                }
-              },
-            ),
-          ),
+          _buildPlay(),
         ],
       ),
     );
+  }
+
+  Widget _buildPlay() {
+    return _xmlyResource != null || _currTrack != null
+        ? Positioned(
+            left: 0,
+            bottom: MySizes.s_30,
+            child: GestureDetector(
+              onTap: () => _onTapPlay(),
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: MySizes.s_18,
+                  top: MySizes.s_4,
+                  right: MySizes.s_4,
+                  bottom: MySizes.s_4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(MySizes.s_60),
+                    bottomRight: Radius.circular(MySizes.s_60),
+                  ),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, offset: Offset(2.0, 2.0))
+                  ],
+                ),
+                child: SizedBox(
+                  width: MySizes.s_60,
+                  height: MySizes.s_60,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      SizedBox.expand(
+                        child: CircularProgressIndicator(
+                          value: 1.0,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              MyColors.c_7fd4d1d5),
+                          strokeWidth: MySizes.s_2,
+                        ),
+                      ),
+                      SizedBox.expand(
+                        child: CircularProgressIndicator(
+                          value: _playProgress,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(MyColors.c_ffa2b1),
+                          strokeWidth: MySizes.s_3,
+                        ),
+                      ),
+                      RotationTransition(
+                        turns: _turns,
+                        child: loadImage(
+                          _currTrack != null
+                              ? _currTrack.coverUrlMiddle
+                              : _xmlyResource.trackCoverUrl,
+                          width: MySizes.s_58,
+                          height: MySizes.s_58,
+                          loadingWidth: 0,
+                          loadingHeight: 0,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      Visibility(
+                        visible: _isPlayVisible,
+                        child: Image(image: MyImages.ic_xmly_home_play),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+        : SizedBox();
   }
 
   Widget _buildBanner(XmlyBannersPageList list) {
@@ -425,5 +578,39 @@ class _XmlyPageState extends State<XmlyPage>
   ///点击专辑
   _onTapAlbum(int albumId) {
     RoutersNavigate().navigateToXmlyAlbumDetailPage(context, albumId);
+  }
+
+  ///点击正在播放的声音
+  _onTapPlay() async {
+    if (_currTrack != null) {
+      bool isPlaying = await Xmly().isPlaying();
+      if (!isPlaying) {
+        await Xmly().play();
+      }
+      RoutersNavigate().navigateToXmlyPlayPage(context);
+    } else if (_xmlyResource != null) {
+      int orderNum = _xmlyResource.trackOrderNum;
+      int pageIndex;
+      if (orderNum % XmlyData.PAGE_SIZE != 0) {
+        pageIndex = orderNum ~/ XmlyData.PAGE_SIZE + 1;
+      } else {
+        pageIndex = orderNum ~/ XmlyData.PAGE_SIZE;
+      }
+      TrackPageList trackPageList = await XmlyNetManager()
+          .getTracks(albumId: _xmlyResource.albumId, page: pageIndex);
+      List<Track> tracks = trackPageList?.tracks;
+      if (tracks != null && tracks.isNotEmpty) {
+        XmlyUtils.playList(
+          context,
+          list: tracks,
+          playIndex: 0,
+          albumId: _xmlyResource.albumId,
+          totalPage: trackPageList.totalPage,
+          totalSize: trackPageList.totalCount,
+          prePage: pageIndex,
+          page: pageIndex,
+        );
+      }
+    }
   }
 }

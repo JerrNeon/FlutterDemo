@@ -1,4 +1,5 @@
 import 'package:child_star/common/resource_index.dart';
+import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/widgets.dart';
 import 'package:xmly/xmly_index.dart';
@@ -77,6 +78,86 @@ class XmlyUtils {
           notificationId: DateTime.now().millisecond,
           notificationClassName: "${packageInfo.packageName}.MainActivity",
         );
+      }
+    }
+  }
+
+  ///自动加载前一页数据到播放列表
+  static autoLoadPreToPlayList({
+    ValueChanged<List<Track>> onDataChanged,
+    VoidCallback onErrorCallback,
+  }) async {
+    try {
+      int pageIndex;
+      if (XmlyData.isPlayAsc) {
+        XmlyData.prePage--;
+        pageIndex = XmlyData.prePage;
+      } else {
+        XmlyData.page++;
+        pageIndex = XmlyData.page;
+      }
+      TrackPageList trackPageList = await XmlyNetManager().getTracks(
+        albumId: XmlyData.albumId,
+        sort: XmlyData.isAsc ? XmlyData.ASC : XmlyData.DESC,
+        page: pageIndex,
+      );
+      if (trackPageList != null &&
+          trackPageList.tracks != null &&
+          trackPageList.tracks.isNotEmpty) {
+        List<Track> list = trackPageList.tracks;
+        await Xmly().insertTracksToPlayListHead(list: list);
+        if (onDataChanged != null) {
+          onDataChanged.call(list);
+        }
+      }
+    } catch (e) {
+      if (XmlyData.isPlayAsc) {
+        XmlyData.prePage++;
+      } else {
+        XmlyData.page--;
+      }
+      if (onErrorCallback != null) {
+        onErrorCallback.call();
+      }
+    }
+  }
+
+  ///自动加载后一页数据到播放列表
+  static autoLoadNextToPlayList({
+    ValueChanged<List<Track>> onDataChanged,
+    VoidCallback onErrorCallback,
+  }) async {
+    try {
+      int pageIndex;
+      if (XmlyData.isPlayAsc) {
+        XmlyData.page++;
+        pageIndex = XmlyData.page;
+      } else {
+        XmlyData.prePage--;
+        pageIndex = XmlyData.prePage;
+      }
+      TrackPageList trackPageList = await XmlyNetManager().getTracks(
+        albumId: XmlyData.albumId,
+        sort: XmlyData.isAsc ? XmlyData.ASC : XmlyData.DESC,
+        page: pageIndex,
+      );
+      if (trackPageList != null &&
+          trackPageList.tracks != null &&
+          trackPageList.tracks.isNotEmpty) {
+        List<Track> list = trackPageList.tracks;
+        await Xmly().addTracksToPlayList(list: list);
+        if (onDataChanged != null) {
+          onDataChanged.call(list);
+        }
+      }
+    } catch (e) {
+      if (XmlyData.isPlayAsc) {
+        XmlyData.page--;
+      } else {
+        XmlyData.prePage++;
+      }
+      if (onErrorCallback != null) {
+        onErrorCallback.call();
       }
     }
   }
