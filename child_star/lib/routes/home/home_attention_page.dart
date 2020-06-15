@@ -332,7 +332,7 @@ class _HomeAttentionPageState extends State<HomeAttentionPage>
   _doFollow(Author data) async {
     try {
       await NetManager(context).doFollow(authorId: data.id.toString());
-      Provider.of<FollowProvider>(context).reset();
+      Provider.of<FollowProvider>(context,listen: false).reset();
       _globalKey.currentState.pullDownOnRefresh();
     } catch (e) {
       LogUtils.e(e);

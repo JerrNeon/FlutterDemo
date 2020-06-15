@@ -332,7 +332,7 @@ class NewsFollowWidget extends StatelessWidget {
     try {
       Result result = await NetManager(context).doFollow(authorId: authorId);
       //1：已关注 0：未关注
-      Provider.of<FollowProvider>(context)
+      Provider.of<FollowProvider>(context, listen: false)
           .setConcernData(authorId, result.status == 1);
     } catch (e) {
       LogUtils.e(e);

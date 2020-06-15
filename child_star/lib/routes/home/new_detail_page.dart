@@ -33,7 +33,7 @@ class _NewDetailPageState extends State<NewDetailPage> {
   void initState() {
     _newsDetailFuture = NetManager(context).getNewsDetail(id);
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Provider.of<FollowProvider>(context).reset());
+        (_) => Provider.of<FollowProvider>(context,listen: false).reset());
     _dbUtils = DbUtils();
     super.initState();
   }

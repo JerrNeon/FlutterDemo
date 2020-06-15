@@ -87,7 +87,7 @@ class TimeUtils {
 
   ///毫秒换算时间(刚刚、xx分钟前、xx小时前、年月日)
   static String getTimeFromMilliSeconds(int milliSecond) {
-    int time = DateTime.now().millisecond - milliSecond;
+    int time = DateTime.now().millisecondsSinceEpoch - milliSecond;
     if (time < 1 * 60 * 1000) {
       //1分钟以内
       return "刚刚";

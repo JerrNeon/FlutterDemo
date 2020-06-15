@@ -97,7 +97,7 @@ class Routers {
 }
 
 bool _isLogin(BuildContext context) {
-  UserProvider userProvider = Provider.of<UserProvider>(context);
+  UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
   return userProvider.isLogin;
 }
 

@@ -555,7 +555,7 @@ class NetManager {
       "authorId": authorId,
     });
     User user = await getUserInfo();
-    Provider.of<UserProvider>(context).saveUser(user);
+    Provider.of<UserProvider>(context, listen: false).saveUser(user);
     return Result.fromJson(response);
   }
 
