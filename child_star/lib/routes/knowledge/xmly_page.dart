@@ -99,7 +99,6 @@ class _XmlyPageState extends State<XmlyPage>
       //保存当前播放数据到本地
       Track track = _currTrack = await Xmly().getCurrSound();
       if (mounted) {
-        _animationController?.reset();
         setState(() {});
       }
       if (track != null && XmlyData.isAsc != null) {
@@ -143,6 +142,7 @@ class _XmlyPageState extends State<XmlyPage>
       }
     };
     _iPlayStatusCallback.onSoundSwitch = () async {
+      LogUtils.d("xmly home -> onSoundSwitch");
       int currentIndex = await Xmly().getCurrentIndex();
       int playListSize = await Xmly().getPlayListSize();
       if (currentIndex < 2) {
@@ -152,6 +152,7 @@ class _XmlyPageState extends State<XmlyPage>
       }
     };
     _iPlayStatusCallback.onPlayStart = () {
+      LogUtils.d("xmly home -> onPlayStart");
       _isPlayVisible = false;
       if (mounted) {
         _animationController?.repeat();
@@ -159,6 +160,7 @@ class _XmlyPageState extends State<XmlyPage>
       }
     };
     _iPlayStatusCallback.onPlayPause = () {
+      LogUtils.d("xmly home -> onPlayPause");
       _isPlayVisible = true;
       if (mounted) {
         _animationController?.stop(canceled: false);

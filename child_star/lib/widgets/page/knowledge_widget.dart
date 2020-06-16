@@ -1,10 +1,12 @@
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/utils/date_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xmly/xmly_index.dart';
 
@@ -618,6 +620,244 @@ class XmlyAlbumEmptyWidget extends StatelessWidget {
       color: MyColors.c_f0f0f0,
       child: Image(image: MyImages.ic_xmly_album_empty),
     );
+  }
+}
+
+class XmlyAlbumDetailCollectionWidget extends StatefulWidget {
+  final int albumId;
+
+  const XmlyAlbumDetailCollectionWidget({Key key, @required this.albumId})
+      : super(key: key);
+  @override
+  _XmlyAlbumDetailCollectionWidgetState createState() =>
+      _XmlyAlbumDetailCollectionWidgetState();
+}
+
+class _XmlyAlbumDetailCollectionWidgetState
+    extends State<XmlyAlbumDetailCollectionWidget> {
+  Future<Result> _collectionFuture;
+  bool _isCollect;
+
+  @override
+  void initState() {
+    _collectionFuture = NetManager()
+        .getCollectionStatus(id: widget.albumId.toString(), type: 3);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserProvider>(
+      builder: (context, value, child) {
+        bool isLogin = value.isLogin;
+        if (isLogin) {
+          return EmptyFutureBuilderWidget<Result>(
+              future: _collectionFuture,
+              builder: (context, snapshot) {
+                _isCollect ??= snapshot.data.status == 1;
+                return _buildCollection(isLogin);
+              });
+        } else {
+          return _buildCollection(isLogin);
+        }
+      },
+    );
+  }
+
+  Widget _buildCollection(bool isLogin) {
+    return GestureDetector(
+      onTap: () => _doCollect(isLogin),
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.all(MySizes.s_12),
+        child: Image(
+            image:
+                MyImagesMultiple.xmly_collection_status[_isCollect ?? false]),
+      ),
+    );
+  }
+
+  _doCollect(bool isLogin) async {
+    if (isLogin) {
+      Result result = await NetManager()
+          .doCollection(id: widget.albumId.toString(), type: 3);
+      if (mounted) {
+        _isCollect = result.status == 1;
+        setState(() {});
+      }
+    } else {
+      RoutersNavigate().navigateToLogin(context);
+    }
+  }
+}
+
+class XmlyAlbumDetailTrackTopWidget extends StatefulWidget {
+  final int albumId;
+  final ValueChanged<int> onTapPlayAll;
+  final ValueChanged<bool> onSortChanged;
+
+  const XmlyAlbumDetailTrackTopWidget({
+    Key key,
+    @required this.albumId,
+    this.onTapPlayAll,
+    this.onSortChanged,
+  }) : super(key: key);
+
+  @override
+  _XmlyAlbumDetailTrackTopWidgetState createState() =>
+      _XmlyAlbumDetailTrackTopWidgetState();
+}
+
+class _XmlyAlbumDetailTrackTopWidgetState
+    extends State<XmlyAlbumDetailTrackTopWidget> {
+  IPlayStatusCallback _iPlayStatusCallback;
+  int _playStatus = 0; //0：未在播放 1：正在播放 2：暂停播放
+  bool _isAsc = true; //是否升序(默认升序)
+
+  @override
+  void initState() {
+    _initStatus();
+    _initListener();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_iPlayStatusCallback != null)
+      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    super.dispose();
+  }
+
+  //初始化播放状态
+  _initStatus() async {
+    Track track = await Xmly().getCurrSound();
+    if (track != null) {
+      var album = track.subordinated_album;
+      if (album.id == widget.albumId) {
+        bool isPlaying = await Xmly().isPlaying();
+        _playStatus = isPlaying ? 1 : 2;
+      }
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  ///初始化播放状态回调
+  _initListener() async {
+    _iPlayStatusCallback ??= IPlayStatusCallback();
+    _iPlayStatusCallback.onPlayStart = () async {
+      Track track = await Xmly().getCurrSound();
+      if (track != null) {
+        var album = track.subordinated_album;
+        if (album.id == widget.albumId) {
+          _playStatus = 1;
+          if (mounted) {
+            setState(() {});
+          }
+        }
+      }
+    };
+    _iPlayStatusCallback.onPlayPause = () async {
+      Track track = await Xmly().getCurrSound();
+      if (track != null) {
+        var album = track.subordinated_album;
+        if (album.id == widget.albumId) {
+          _playStatus = 2;
+          if (mounted) {
+            setState(() {});
+          }
+        }
+      }
+    };
+    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    GmLocalizations gm = GmLocalizations.of(context);
+    return Container(
+      color: Colors.white,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(height: MySizes.s_8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => _doPlayAll(),
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  margin: EdgeInsets.only(left: MySizes.s_18),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MySizes.s_14,
+                    vertical: MySizes.s_8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: MyColors.c_f4f4f4,
+                    borderRadius: BorderRadius.circular(MySizes.s_4),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        _playStatus == 1
+                            ? gm.xmlyAlbumPauseTitle
+                            : _playStatus == 2
+                                ? gm.xmlyAlbumContinueTitle
+                                : gm.xmlyAlbumPlayTitle,
+                        style: TextStyle(
+                          color: MyColors.c_686868,
+                          fontSize: MyFontSizes.s_14,
+                        ),
+                      ),
+                      SizedBox(width: MySizes.s_8),
+                      Image(
+                          image: _playStatus == 1
+                              ? MyImages.ic_xmly_all_pause
+                              : MyImages.ic_xmly_all_play),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => _doSort(),
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: MySizes.s_16),
+                  child: Image(
+                      image: _isAsc
+                          ? MyImages.ic_xmly_album_asc
+                          : MyImages.ic_xmly_album_desc),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: MySizes.s_8),
+          DividerWidget(
+            width: double.infinity,
+            color: MyColors.c_f4f4f4,
+          ),
+        ],
+      ),
+    );
+  }
+
+  _doPlayAll() {
+    if (widget.onTapPlayAll != null) {
+      widget.onTapPlayAll.call(_playStatus);
+    }
+  }
+
+  _doSort() {
+    _isAsc = !_isAsc;
+    if (widget.onSortChanged != null) {
+      widget.onSortChanged.call(_isAsc);
+    }
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 
