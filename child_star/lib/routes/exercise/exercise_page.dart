@@ -17,10 +17,8 @@ class ExercisePage extends StatefulWidget {
 
 class _ExercisePageState extends State<ExercisePage>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  Future<List<Banners>> _bannerFuture;
-  Future<PageList<ExerciseTag>> _exerciseTagFuture;
+  Future _future;
   TabController _tabController;
-  List<ExerciseTag> _exerciseTagList = [];
 
   @override
   bool get wantKeepAlive => true;
@@ -39,8 +37,10 @@ class _ExercisePageState extends State<ExercisePage>
 
   void _initFuture() {
     NetManager netManager = NetManager(context);
-    _bannerFuture = netManager.getBannerList(id: 3);
-    _exerciseTagFuture = netManager.getExerciseTagList();
+    _future = Future.wait([
+      netManager.getBannerList(id: 3),
+      netManager.getExerciseTagList(),
+    ]);
   }
 
   @override
@@ -50,34 +50,40 @@ class _ExercisePageState extends State<ExercisePage>
       appBar: MySystems.noAppBarPreferredSize,
       body: Container(
         color: Colors.white,
-        child: FutureBuilderWidget<PageList<ExerciseTag>>(
-          future: _exerciseTagFuture,
+        child: FutureBuilderWidget<List>(
+          future: _future,
           onErrorRetryTap: () {
             _initFuture();
             setState(() {});
           },
           builder: (context, snapshot) {
-            _exerciseTagList.clear();
-            _exerciseTagList.addAll(snapshot.data.resultList);
-            ExerciseTag tag = ExerciseTag();
-            tag.id = 0;
-            tag.name = GmLocalizations.of(context).exerciseAllTitle;
-            _exerciseTagList?.insert(0, tag);
-            _tabController ??=
-                TabController(length: _exerciseTagList.length, vsync: this);
-            return EmptyFutureBuilderWidget<List<Banners>>(
-                future: _bannerFuture,
-                builder: (context, snapshot) {
-                  return NestedScrollView(
-                    headerSliverBuilder: (context, innerBoxIsScrolled) {
-                      return [
-                        _buildBanner(snapshot.data),
-                        _buildTabBar(),
-                      ];
-                    },
-                    body: _buildTabBarView(),
-                  );
-                });
+            List list = snapshot.data;
+            if (list != null && list.isNotEmpty && list.length == 2) {
+              List<Banners> banners = list[0];
+              PageList<ExerciseTag> pageList = list[1];
+              List<ExerciseTag> exerciseTags = pageList.resultList;
+              ExerciseTag tag = ExerciseTag();
+              tag.id = 0;
+              tag.name = GmLocalizations.of(context).exerciseAllTitle;
+              if (exerciseTags != null && exerciseTags.isNotEmpty) {
+                exerciseTags.removeWhere((element) => element.id == 0);
+                exerciseTags.insert(0, tag);
+              } else {
+                exerciseTags = [tag];
+              }
+              _tabController ??=
+                  TabController(length: exerciseTags.length, vsync: this);
+              return NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    _buildBanner(banners),
+                    _buildTabBar(exerciseTags),
+                  ];
+                },
+                body: _buildTabBarView(exerciseTags),
+              );
+            }
+            return EmptyWidget();
           },
         ),
       ),
@@ -97,7 +103,7 @@ class _ExercisePageState extends State<ExercisePage>
     );
   }
 
-  Widget _buildTabBar() {
+  Widget _buildTabBar(List<ExerciseTag> list) {
     return SliverPersistentHeader(
       pinned: true,
       delegate: TabBarSliverPersistentHeaderDelegate(
@@ -117,18 +123,37 @@ class _ExercisePageState extends State<ExercisePage>
             fontSize: MyFontSizes.s_15,
             fontWeight: FontWeight.bold,
           ),
-          tabs: _exerciseTagList.map((e) {
-            return Tab(text: e.name);
+          labelPadding: EdgeInsets.symmetric(
+            horizontal: MySizes.s_16,
+            vertical: MySizes.s_4,
+          ),
+          tabs: list.map((e) {
+            return Tab(
+              text: e.name,
+              icon: e.id == 0
+                  ? Image(
+                      image: MyImages.ic_exercise_taball,
+                      width: MySizes.s_34,
+                      height: MySizes.s_34,
+                    )
+                  : loadImage(
+                      e.icon,
+                      width: MySizes.s_34,
+                      height: MySizes.s_34,
+                    ),
+              iconMargin:
+                  EdgeInsets.only(top: MySizes.s_4, bottom: MySizes.s_4),
+            );
           }).toList(),
         ),
       ),
     );
   }
 
-  Widget _buildTabBarView() {
+  Widget _buildTabBarView(List<ExerciseTag> list) {
     return TabBarView(
       controller: _tabController,
-      children: _exerciseTagList.map((e) => _buildList(e)).toList(),
+      children: list.map((e) => _buildList(e)).toList(),
     );
   }
 

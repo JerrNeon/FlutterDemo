@@ -181,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "xmlyPlaySortAsc" : MessageLookupByLibrary.simpleMessage("正序"),
     "xmlyPlaySortDesc" : MessageLookupByLibrary.simpleMessage("倒序"),
     "xmlyPlayTimerClose" : MessageLookupByLibrary.simpleMessage("定时关闭"),
+    "xmlyPlayTimerCloseDialogCancelTitle" : MessageLookupByLibrary.simpleMessage("取消"),
     "xmlyPlayTimerCloseDialogCloseTitle" : MessageLookupByLibrary.simpleMessage("关闭"),
     "xmlyPlayTimerCloseDialogTimeUnit" : MessageLookupByLibrary.simpleMessage("分钟"),
     "xmlyRecentTitle" : MessageLookupByLibrary.simpleMessage("最近"),

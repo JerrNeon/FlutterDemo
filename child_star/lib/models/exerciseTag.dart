@@ -8,6 +8,7 @@ class ExerciseTag {
 
     num id;
     String name;
+    String icon;
     
     factory ExerciseTag.fromJson(Map<String,dynamic> json) => _$ExerciseTagFromJson(json);
     Map<String, dynamic> toJson() => _$ExerciseTagToJson(this);

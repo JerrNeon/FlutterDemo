@@ -206,6 +206,8 @@ class MyImages {
       AssetImage("images/ic_xmly_playtimer_daynight.png");
   static const AssetImage ic_xmly_home_play =
       AssetImage("images/ic_xmly_home_play.png");
+  static const AssetImage ic_exercise_taball =
+      AssetImage("images/ic_exercise_taball.png");
 }
 
 class MyImagesMultiple {

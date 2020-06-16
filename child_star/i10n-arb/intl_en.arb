@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-05T15:49:29.552237",
+  "@@last_modified": "2020-06-16T16:56:15.197373",
   "appName": "child_star",
   "@appName": {
     "type": "text",
@@ -787,6 +787,11 @@
   },
   "xmlyPlayTimerCloseDialogTimeUnit": "分钟",
   "@xmlyPlayTimerCloseDialogTimeUnit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "xmlyPlayTimerCloseDialogCancelTitle": "取消",
+  "@xmlyPlayTimerCloseDialogCancelTitle": {
     "type": "text",
     "placeholders": {}
   },

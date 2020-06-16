@@ -9,8 +9,13 @@ part of 'exerciseTag.dart';
 ExerciseTag _$ExerciseTagFromJson(Map<String, dynamic> json) {
   return ExerciseTag()
     ..id = json['id'] as num
-    ..name = json['name'] as String;
+    ..name = json['name'] as String
+    ..icon = json['icon'] as String;
 }
 
 Map<String, dynamic> _$ExerciseTagToJson(ExerciseTag instance) =>
-    <String, dynamic>{'id': instance.id, 'name': instance.name};
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'icon': instance.icon
+    };
