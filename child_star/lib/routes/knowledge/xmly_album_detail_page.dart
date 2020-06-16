@@ -336,13 +336,17 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
                   Container(
                     width: 60,
                     alignment: Alignment.center,
-                    child: Text(
-                      _isAsc
-                          ? "${data.orderNum + 1}"
-                          : "${_totalCount - data.orderNum}",
-                      style: TextStyle(
-                        color: MyColors.c_919191,
-                        fontSize: MyFontSizes.s_15,
+                    child: Visibility(
+                      visible: data.id == _currPlayTrackId,
+                      child: XmlyPlayAnimationWidget(),
+                      replacement: Text(
+                        _isAsc
+                            ? "${data.orderNum + 1}"
+                            : "${_totalCount - data.orderNum}",
+                        style: TextStyle(
+                          color: MyColors.c_919191,
+                          fontSize: MyFontSizes.s_15,
+                        ),
                       ),
                     ),
                   ),

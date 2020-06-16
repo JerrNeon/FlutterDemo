@@ -861,6 +861,98 @@ class _XmlyAlbumDetailTrackTopWidgetState
   }
 }
 
+class XmlyPlayAnimationWidget extends StatefulWidget {
+  @override
+  _XmlyPlayAnimationWidgetState createState() =>
+      _XmlyPlayAnimationWidgetState();
+}
+
+class _XmlyPlayAnimationWidgetState extends State<XmlyPlayAnimationWidget>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  IPlayStatusCallback _iPlayStatusCallback;
+
+  @override
+  void initState() {
+    _initListener();
+    _controller =
+        AnimationController(duration: Duration(milliseconds: 800), vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_iPlayStatusCallback != null)
+      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  ///初始化播放状态回调
+  _initListener() async {
+    bool isPlaying = await Xmly().isPlaying();
+    if (isPlaying) {
+      _controller?.repeat(reverse: true);
+    }
+    _iPlayStatusCallback ??= IPlayStatusCallback();
+    _iPlayStatusCallback.onPlayStart = () async {
+      _controller?.repeat(reverse: true);
+    };
+    _iPlayStatusCallback.onPlayPause = () async {
+      _controller?.stop(canceled: false);
+    };
+    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MySizes.s_18,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          SizeTransition(
+            axisAlignment: 1.0,
+            sizeFactor: Tween(begin: 0.1, end: 1.0).animate(_controller),
+            child: Container(
+              color: MyColors.c_ffa2b1,
+              width: MySizes.s_2,
+            ),
+          ),
+          SizedBox(width: MySizes.s_2),
+          SizeTransition(
+            axisAlignment: 1.0,
+            sizeFactor: Tween(begin: 1.0, end: 0.1).animate(_controller),
+            child: Container(
+              color: MyColors.c_ffa2b1,
+              width: MySizes.s_2,
+            ),
+          ),
+          SizedBox(width: MySizes.s_2),
+          SizeTransition(
+            axisAlignment: 1.0,
+            sizeFactor: Tween(begin: 0.15, end: 1.0).animate(_controller),
+            child: Container(
+              color: MyColors.c_ffa2b1,
+              width: MySizes.s_2,
+            ),
+          ),
+          SizedBox(width: MySizes.s_2),
+          SizeTransition(
+            axisAlignment: 1.0,
+            sizeFactor: Tween(begin: 1.0, end: 0.15).animate(_controller),
+            child: Container(
+              color: MyColors.c_ffa2b1,
+              width: MySizes.s_2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class XmlyPlayListWidget extends StatefulWidget {
   @override
   _XmlyPlayListWidgetState createState() => _XmlyPlayListWidgetState();
@@ -1005,26 +1097,32 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
                         return GestureDetector(
                           onTap: () => _onTapItem(index),
                           child: Column(
-                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Expanded(
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: MySizes.s_14,
-                                  ),
-                                  child: Text(
-                                    data.trackTitle,
-                                    style: TextStyle(
-                                      color: data.id == _currTrack.id
-                                          ? MyColors.c_ffa2b1
-                                          : MyColors.c_585858,
-                                      fontSize: MyFontSizes.s_15,
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: MySizes.s_14),
+                                    Visibility(
+                                      visible: data.id == _currTrack.id,
+                                      child: XmlyPlayAnimationWidget(),
                                     ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                    SizedBox(width: MySizes.s_14),
+                                    Expanded(
+                                      child: Text(
+                                        data.trackTitle,
+                                        style: TextStyle(
+                                          color: data.id == _currTrack.id
+                                              ? MyColors.c_ffa2b1
+                                              : MyColors.c_585858,
+                                          fontSize: MyFontSizes.s_15,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    SizedBox(width: MySizes.s_14),
+                                  ],
                                 ),
                               ),
                               Divider(
