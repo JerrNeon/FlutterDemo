@@ -10,24 +10,27 @@ import 'package:flutter/widgets.dart';
 
 ///育儿百科列表界面
 class WikiListPage extends StatefulWidget {
+  final int parentIndex;
   final int index;
   final String title;
   final String tagList;
 
   const WikiListPage({
     Key key,
+    @required this.parentIndex,
     @required this.index,
     @required this.title,
     @required this.tagList,
   }) : super(key: key);
 
   @override
-  _WikiListPageState createState() => _WikiListPageState(
-      index, chineseDecode(title), jsonDecode(chineseDecode(tagList)));
+  _WikiListPageState createState() => _WikiListPageState(parentIndex, index,
+      chineseDecode(title), jsonDecode(chineseDecode(tagList)));
 }
 
 class _WikiListPageState extends State<WikiListPage>
     with SingleTickerProviderStateMixin {
+  final int parentIndex;
   final int index;
   final String title;
   final List tagList;
@@ -35,7 +38,7 @@ class _WikiListPageState extends State<WikiListPage>
   TabController _tabController;
   List<Tag> _tabList;
 
-  _WikiListPageState(this.index, this.title, this.tagList);
+  _WikiListPageState(this.parentIndex, this.index, this.title, this.tagList);
 
   @override
   void initState() {
@@ -66,7 +69,7 @@ class _WikiListPageState extends State<WikiListPage>
       return TabBar(
         controller: _tabController,
         isScrollable: true,
-        indicatorColor: MyColorsFul.wiki_tag[index % 10],
+        indicatorColor: MyColorsFul.wiki_tag[parentIndex % 10],
         indicatorWeight: MySizes.s_3,
         indicatorSize: TabBarIndicatorSize.label,
         unselectedLabelStyle: TextStyle(
@@ -74,7 +77,7 @@ class _WikiListPageState extends State<WikiListPage>
           fontWeight: FontWeight.bold,
         ),
         unselectedLabelColor: MyColors.c_686868,
-        labelColor: MyColorsFul.wiki_tag[index % 10],
+        labelColor: MyColorsFul.wiki_tag[parentIndex % 10],
         labelStyle: TextStyle(
           fontSize: MyFontSizes.s_15,
           fontWeight: FontWeight.bold,

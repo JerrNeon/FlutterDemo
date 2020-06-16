@@ -130,6 +130,7 @@ class _WikiTagPageState extends State<WikiTagPage> {
               onTap: () => RoutersNavigate().navigateToWikiListPage(
                 context,
                 parentIndex,
+                index,
                 tag.name,
                 tag.tags,
               ),

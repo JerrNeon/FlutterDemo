@@ -226,13 +226,13 @@ class RoutersNavigate extends IRoutersNavigate {
   }
 
   @override
-  navigateToWikiListPage(
-      BuildContext context, int index, String title, List<Tag> tagList) {
+  navigateToWikiListPage(BuildContext context, int parentIndex, int index,
+      String title, List<Tag> tagList) {
     String json = jsonEncode(tagList.map((e) => e.toJson()).toList());
     return Routers.router.navigateTo(
       context,
       Routers.consultation_wiki_list +
-          "?index=$index&title=${chineseEncode(title)}&tagList=${chineseEncode(json)}",
+          "?parentIndex=$parentIndex&index=$index&title=${chineseEncode(title)}&tagList=${chineseEncode(json)}",
       transition: TransitionType.custom,
       transitionBuilder: RouteAnimation.build(),
     );

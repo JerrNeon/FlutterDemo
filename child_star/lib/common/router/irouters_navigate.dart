@@ -70,8 +70,8 @@ abstract class IRoutersNavigate {
   navigateToWikiTagPage(BuildContext context);
 
   ///跳转到育儿百科列表界面[WikiListPage]
-  navigateToWikiListPage(
-      BuildContext context, int index, String title, List<Tag> tagList);
+  navigateToWikiListPage(BuildContext context, int parentIndex, int index,
+      String title, List<Tag> tagList);
 
   ///跳转到我的订单列表界面[MyOrderPage]
   navigateToMyOrderPage(BuildContext context);

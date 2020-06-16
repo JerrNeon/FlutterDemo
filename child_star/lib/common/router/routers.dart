@@ -210,10 +210,12 @@ var _consultationWikiTagHandler = Handler(
 
 var _consultationWikiListHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> parameters) {
+  int parentIndex = int.tryParse(parameters["parentIndex"]?.first ?? "") ?? 0;
   int index = int.tryParse(parameters["index"]?.first ?? "") ?? 0;
   String title = parameters["title"]?.first ?? "";
   String tagList = parameters["tagList"]?.first ?? "";
   return WikiListPage(
+    parentIndex: parentIndex,
     index: index,
     title: title,
     tagList: tagList,
