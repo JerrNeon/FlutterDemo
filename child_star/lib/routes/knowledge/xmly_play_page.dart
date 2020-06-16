@@ -18,6 +18,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
   IPlayStatusCallback _iPlayStatusCallback;
   Track _currTrack; //当前正在播放的声音
   bool _isPlaying = false; //是否正在播放
+  bool _isLoading = true; //是否正在加载
   double _progress = 0; //当前播放进度
   Timer _timer; //倒计时
   var _currentTime = 0; //当前倒计时剩余时长(单位：s)
@@ -86,6 +87,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
   _initListener() {
     _iPlayStatusCallback ??= IPlayStatusCallback();
     _iPlayStatusCallback.onPlayStart = () async {
+      _isLoading = false;
       _isPlaying = true;
       if (mounted) {
         setState(() {});
@@ -93,21 +95,24 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
       LogUtils.d("xmly play -> onPlayStart");
     };
     _iPlayStatusCallback.onPlayPause = () async {
+      _isLoading = false;
       _isPlaying = false;
       if (mounted) {
         setState(() {});
       }
       LogUtils.d("xmly play -> onPlayPause");
     };
-    _iPlayStatusCallback.onSoundSwitch = () async {
+    _iPlayStatusCallback.onSoundPrepared = () async {
+      _isLoading = true;
+      _isPlaying = false;
       _currTrack = await Xmly().getCurrSound();
       if (mounted) {
         setState(() {});
       }
-      LogUtils.d("xmly play -> onSoundSwitch");
+      LogUtils.d("xmly play -> onSoundPrepared");
     };
-    _iPlayStatusCallback.onBufferProgress = (progress) async {};
     _iPlayStatusCallback.onPlayProgress = (progress) async {
+      _isLoading = false;
       _progress = progress;
       if (mounted) {
         setState(() {});
@@ -248,23 +253,38 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
                   onPressed: () => Xmly().playPre(),
                 ),
                 SizedBox(width: MySizes.s_30),
-                IconButton(
-                  iconSize: MySizes.s_50,
-                  icon: Icon(
-                    _isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    if (_isPlaying) {
-                      await Xmly().pause();
-                    } else {
-                      await Xmly().play();
-                    }
-
-                    setState(() {
-                      _isPlaying = !_isPlaying;
-                    });
-                  },
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: MySizes.s_70,
+                      height: MySizes.s_70,
+                      child: Offstage(
+                        offstage: !_isLoading,
+                        child: CircularProgressIndicator(
+                          strokeWidth: MySizes.s_2,
+                          valueColor: AlwaysStoppedAnimation(Colors.white70),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      iconSize: MySizes.s_50,
+                      icon: Icon(
+                        _isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        if (_isPlaying) {
+                          await Xmly().pause();
+                        } else {
+                          await Xmly().play();
+                        }
+                        setState(() {
+                          _isPlaying = !_isPlaying;
+                        });
+                      },
+                    ),
+                  ],
                 ),
                 SizedBox(width: MySizes.s_30),
                 IconButton(
