@@ -8,7 +8,6 @@ import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/models/models_index.dart';
-import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/banner_widget.dart';
 import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/search_widget.dart';
@@ -24,11 +23,8 @@ class HomeNewPage extends StatefulWidget {
 
 class _HomeNewPageState extends State<HomeNewPage>
     with AutomaticKeepAliveClientMixin {
-  final RefreshController _refreshController = RefreshController();
-
-  Future<List<Tag>> _tagList;
-  Future<List<Banners>> _bannersList;
-  Future<PageList<News>> _newsList;
+  final _refreshController = RefreshController();
+  Future _future;
   List<News> _news;
   var pageIndex;
 
@@ -37,11 +33,17 @@ class _HomeNewPageState extends State<HomeNewPage>
 
   @override
   void initState() {
-    var netManager = NetManager(context);
-    _tagList = netManager.getHotTagList();
-    _bannersList = netManager.getBannerList();
-    _newsList = netManager.getNewsList(pageIndex = PAGE_INDEX);
+    _initFuture();
     super.initState();
+  }
+
+  _initFuture() {
+    var netManager = NetManager(context);
+    _future = Future.wait([
+      netManager.getHotTagList(),
+      netManager.getBannerList(),
+      netManager.getNewsList(pageIndex = PAGE_INDEX),
+    ]);
   }
 
   @override
@@ -53,86 +55,92 @@ class _HomeNewPageState extends State<HomeNewPage>
         child: Column(
           children: <Widget>[
             SearchWidget(),
-            _buildTag(),
-            _buildBody(_refreshController),
+            Expanded(
+                child: FutureBuilderWidget<List>(
+                    future: _future,
+                    onErrorRetryTap: () {
+                      _initFuture();
+                      if (mounted) {
+                        setState(() {});
+                      }
+                    },
+                    builder: (context, snapshot) {
+                      List list = snapshot.data;
+                      if (list != null && list.isNotEmpty && list.length == 3) {
+                        List<Tag> tags = list[0];
+                        List<Banners> banners = list[1] ?? [];
+                        PageList<News> pageList = list[2];
+                        _news = pageList?.resultList ?? [];
+                        return Column(
+                          children: <Widget>[
+                            _buildTag(tags),
+                            Expanded(child: _buildBody(banners)),
+                          ],
+                        );
+                      }
+                      return EmptyWidget();
+                    })),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTag() {
-    return FutureBuilder(
-        future: _tagList,
-        builder: (context, AsyncSnapshot<List<Tag>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              LogUtils.e(snapshot.error.toString());
-              return EmptyWidget();
-            } else {
-              List<Tag> tagList = snapshot.data;
-              return Container(
-                height: MySizes.s_48,
-                margin: EdgeInsets.only(
-                    top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
-                padding: EdgeInsets.symmetric(
-                    horizontal: MySizes.s_8, vertical: MySizes.s_8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(MySizes.s_40),
-                    bottomRight: Radius.circular(MySizes.s_40),
-                  ),
+  Widget _buildTag(List<Tag> tagList) {
+    return Container(
+      height: MySizes.s_48,
+      margin: EdgeInsets.only(
+          top: MySizes.s_6, bottom: MySizes.s_6, right: MySizes.s_6),
+      padding:
+          EdgeInsets.symmetric(horizontal: MySizes.s_8, vertical: MySizes.s_8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(MySizes.s_40),
+          bottomRight: Radius.circular(MySizes.s_40),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Image(
+            image: MyImages.icon_home_tag,
+            width: MySizes.s_25,
+            height: MySizes.s_20,
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: MySizes.s_4),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(
+                  left: MySizes.s_6,
+                  right: MySizes.s_6,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Image(
-                      image: MyImages.icon_home_tag,
-                      width: MySizes.s_25,
-                      height: MySizes.s_20,
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: MySizes.s_4),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(
-                            left: MySizes.s_6,
-                            right: MySizes.s_6,
-                          ),
-                          itemBuilder: (context, index) {
-                            return _buildTagItem(
-                                tagList != null
-                                    ? tagList[index].id.toString()
-                                    : "",
-                                tagList != null ? tagList[index].name : "");
-                          },
-                          itemCount: tagList != null
-                              ? tagList.length > 3 ? 3 : tagList.length
-                              : 0,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      child: Image(
-                        image: MyImages.icon_home_tagall,
-                        width: MySizes.s_30,
-                        height: MySizes.s_30,
-                      ),
-                      onTap: () =>
-                          RoutersNavigate().navigateToHomeTagListPage(context),
-                    )
-                  ],
-                ),
-              );
-            }
-          } else {
-            return EmptyWidget();
-          }
-        });
+                itemBuilder: (context, index) {
+                  return _buildTagItem(
+                      tagList != null ? tagList[index].id.toString() : "",
+                      tagList != null ? tagList[index].name : "");
+                },
+                itemCount: tagList != null
+                    ? tagList.length > 3 ? 3 : tagList.length
+                    : 0,
+              ),
+            ),
+          ),
+          GestureDetector(
+            child: Image(
+              image: MyImages.icon_home_tagall,
+              width: MySizes.s_30,
+              height: MySizes.s_30,
+            ),
+            onTap: () => RoutersNavigate().navigateToHomeTagListPage(context),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildTagItem(String id, String text) {
@@ -159,53 +167,36 @@ class _HomeNewPageState extends State<HomeNewPage>
     );
   }
 
-  Widget _buildBody(RefreshController refreshController) {
-    return Expanded(
-      child: FutureBuilder(
-        future: _newsList,
-        builder: (context, AsyncSnapshot<PageList<News>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              LogUtils.e(snapshot.error.toString());
-              return EmptyWidget();
-            } else {
-              _news = snapshot.data.resultList;
-              return SmartRefresher(
-                controller: _refreshController,
-                enablePullUp: true,
-                onRefresh: () => _onRefresh(),
-                onLoading: () => _onLoad(),
-                child: CustomScrollView(
-                  shrinkWrap: true,
-                  slivers: <Widget>[
-                    SliverToBoxAdapter(
-                      child: _buildBanner(),
-                    ),
-                    SliverPadding(
-                      padding: EdgeInsets.only(
-                        left: MySizes.s_5,
-                        top: MySizes.s_5,
-                        right: MySizes.s_5,
-                      ),
-                      sliver: SliverStaggeredGrid.countBuilder(
-                        crossAxisCount: 2,
-                        staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                        itemBuilder: (context, index) {
-                          return HomeNewsItemWidget(data: _news[index]);
-                        },
-                        itemCount: _news?.length ?? 0,
-                        mainAxisSpacing: MySizes.s_5,
-                        crossAxisSpacing: MySizes.s_5,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+  Widget _buildBody(List<Banners> list) {
+    return SmartRefresher(
+      controller: _refreshController,
+      enablePullUp: true,
+      onRefresh: () => _onRefresh(),
+      onLoading: () => _onLoad(),
+      child: CustomScrollView(
+        shrinkWrap: true,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: _buildBanner(list),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.only(
+              left: MySizes.s_5,
+              top: MySizes.s_5,
+              right: MySizes.s_5,
+            ),
+            sliver: SliverStaggeredGrid.countBuilder(
+              crossAxisCount: 2,
+              staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+              itemBuilder: (context, index) {
+                return HomeNewsItemWidget(data: _news[index]);
+              },
+              itemCount: _news?.length ?? 0,
+              mainAxisSpacing: MySizes.s_5,
+              crossAxisSpacing: MySizes.s_5,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -213,7 +204,7 @@ class _HomeNewPageState extends State<HomeNewPage>
   _onRefresh() async {
     try {
       PageList<News> newsList =
-          await NetManager(context).getNewsList(pageIndex = 1);
+          await NetManager(context).getNewsList(pageIndex = PAGE_INDEX);
       _news?.clear();
       _news?.addAll(newsList.resultList);
       if (mounted) {
@@ -245,26 +236,13 @@ class _HomeNewPageState extends State<HomeNewPage>
     }
   }
 
-  Widget _buildBanner() {
-    return FutureBuilder(
-        future: _bannersList,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              LogUtils.e(snapshot.error.toString());
-              return EmptyWidget();
-            } else {
-              return Padding(
-                padding: EdgeInsets.only(
-                  left: MySizes.s_4,
-                  right: MySizes.s_4,
-                ),
-                child: BannerWidget(snapshot.data),
-              );
-            }
-          } else {
-            return EmptyWidget();
-          }
-        });
+  Widget _buildBanner(List<Banners> list) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: MySizes.s_4,
+        right: MySizes.s_4,
+      ),
+      child: BannerWidget(list),
+    );
   }
 }
