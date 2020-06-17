@@ -1,8 +1,6 @@
-import 'package:child_star/common/my_colors.dart';
-import 'package:child_star/common/my_sizes.dart';
-import 'package:child_star/common/my_systems.dart';
+import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/utils/utils_index.dart';
-import 'package:child_star/widgets/appbar_widget.dart';
+import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -18,8 +16,8 @@ class H5Page extends StatefulWidget {
 
 class _H5PageState extends State<H5Page> {
   final String url;
-  var title;
-  double progress;
+  var _title;
+  double _progress;
   InAppWebViewController _controller;
 
   _H5PageState(this.url);
@@ -28,18 +26,17 @@ class _H5PageState extends State<H5Page> {
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
-          appBar: MySystems.noAppBarPreferredSize,
+          appBar: AppBarWidget(_title ?? ""),
           body: Container(
             color: Colors.white,
             child: Column(
               children: <Widget>[
-                AppBarWidget(title ?? ""),
                 Offstage(
-                  offstage: progress == 1,
+                  offstage: _progress == 1,
                   child: SizedBox(
-                    height: MySizes.s_4,
+                    height: MySizes.s_3,
                     child: LinearProgressIndicator(
-                      value: progress,
+                      value: _progress,
                       backgroundColor: Colors.grey[200],
                       valueColor: AlwaysStoppedAnimation(MyColors.c_ffa2b1),
                     ),
@@ -48,14 +45,13 @@ class _H5PageState extends State<H5Page> {
                 Expanded(
                   child: InAppWebView(
                     initialUrl: url,
-                    initialOptions: InAppWebViewWidgetOptions(
-                      inAppWebViewOptions: InAppWebViewOptions(),
-                    ),
                     onProgressChanged:
                         (InAppWebViewController controller, int progress) {
-                      setState(() {
-                        this.progress = progress / 100;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          this._progress = progress / 100;
+                        });
+                      }
                     },
                     //javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (InAppWebViewController controller) {
@@ -84,7 +80,7 @@ class _H5PageState extends State<H5Page> {
 
   _getTitle() async {
     if (mounted) {
-      title = await _controller.getTitle();
+      _title = await _controller.getTitle();
       setState(() {});
     }
   }

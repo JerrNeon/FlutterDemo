@@ -1,13 +1,10 @@
-import 'package:child_star/common/net/net_manager.dart';
 import 'package:child_star/common/resource_index.dart';
-import 'package:child_star/common/router/routers_navigate.dart';
 import 'package:child_star/i10n/i10n_index.dart';
-import 'package:child_star/models/exercise.dart';
+import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
-import 'package:child_star/widgets/page/exercise_widget.dart';
+import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ExerciseDetailPage extends StatefulWidget {
   final String id;
@@ -64,66 +61,59 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
 
   Widget _buildBody(Exercise data) {
     return Expanded(
-      child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            _buildTop(data),
-          ];
-        },
-        body: _buildWebView(data),
+      child: ListView(
+        children: <Widget>[
+          _buildTop(data),
+          _buildWebView(data),
+        ],
       ),
     );
   }
 
   Widget _buildTop(Exercise data) {
     //type 1：图文；2：电子书
-    return SliverPersistentHeader(
-      delegate: CustomSliverPersistentHeaderDelegate(
-        minHeight: data.type == 1 ? MySizes.s_246 : MySizes.s_286,
-        maxHeight: data.type == 1 ? MySizes.s_246 : MySizes.s_286,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: MySizes.s_4),
-              child: loadImage(
-                data.headUrl,
-                width: double.infinity,
-                height: MySizes.s_153,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MySizes.s_5,
-                vertical: MySizes.s_12,
-              ),
-              child: Text(
-                data.title,
-                style: TextStyle(
-                  color: MyColors.c_777777,
-                  fontSize: MyFontSizes.s_15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: MySizes.s_5,
-                right: MySizes.s_5,
-                bottom: data.type == 1 ? MySizes.s_12 : MySizes.s_6,
-              ),
-              child: Text(
-                data.descr,
-                style: TextStyle(
-                  color: MyColors.c_777777,
-                  fontSize: MyFontSizes.s_12,
-                ),
-              ),
-            ),
-            _buildDownload(data),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: MySizes.s_4),
+          child: loadImage(
+            data.headUrl,
+            width: double.infinity,
+            height: MySizes.s_153,
+          ),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MySizes.s_5,
+            vertical: MySizes.s_12,
+          ),
+          child: Text(
+            data.title,
+            style: TextStyle(
+              color: MyColors.c_777777,
+              fontSize: MyFontSizes.s_15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            left: MySizes.s_5,
+            right: MySizes.s_5,
+            bottom: data.type == 1 ? MySizes.s_12 : MySizes.s_6,
+          ),
+          child: Text(
+            data.descr,
+            style: TextStyle(
+              color: MyColors.c_777777,
+              fontSize: MyFontSizes.s_12,
+            ),
+          ),
+        ),
+        _buildDownload(data),
+      ],
     );
   }
 
@@ -163,17 +153,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   }
 
   Widget _buildWebView(Exercise data) {
-    return InAppWebView(
-      initialData: InAppWebViewInitialData(
-        data: transformHtml(data.content),
-      ),
-      initialOptions: InAppWebViewWidgetOptions(
-        inAppWebViewOptions: InAppWebViewOptions(
-          disableVerticalScroll: true,
-          verticalScrollBarEnabled: false,
-        ),
-      ),
-    );
+    return WebViewWidget(data: data.content);
   }
 
   Widget _buildBottom(Exercise data) {

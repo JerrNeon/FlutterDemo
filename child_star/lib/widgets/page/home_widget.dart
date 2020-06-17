@@ -9,6 +9,7 @@ import 'package:child_star/utils/utils_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -443,23 +444,46 @@ class WebViewWidget extends StatefulWidget {
 
 class _WebViewWidgetState extends State<WebViewWidget> {
   final String data;
-  double height;
 
   _WebViewWidgetState(this.data);
 
+  @override
+  Widget build(BuildContext context) {
+    if (AppUtils.isMobile) {
+      return Html(data: data);
+    } else {
+      return Container();
+    }
+  }
+}
+
+class WebViewWidget2 extends StatefulWidget {
+  final String data;
+
+  const WebViewWidget2({Key key, this.data}) : super(key: key);
+
+  @override
+  _WebViewWidget2State createState() => _WebViewWidget2State(data);
+}
+
+class _WebViewWidget2State extends State<WebViewWidget2> {
+  final String data;
+  double _height;
+
+  _WebViewWidget2State(this.data);
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     if (AppUtils.isMobile) {
       return Container(
-        height: height ?? screenHeight,
+        height: _height ?? screenHeight,
         child: InAppWebView(
           initialData: InAppWebViewInitialData(
             data: transformHtml(data),
           ),
-          initialOptions: InAppWebViewWidgetOptions(
-            inAppWebViewOptions: InAppWebViewOptions(
+          initialOptions: InAppWebViewGroupOptions(
+            crossPlatform: InAppWebViewOptions(
               disableVerticalScroll: true,
               verticalScrollBarEnabled: false,
             ),
@@ -468,8 +492,10 @@ class _WebViewWidgetState extends State<WebViewWidget> {
             controller.evaluateJavascript(source: JS_HTML_HEIGHT).then((value) {
               var valueDp = value / devicePixelRatio;
               if (valueDp < screenHeight) {
-                height = valueDp;
-                setState(() {});
+                _height = valueDp;
+                if (mounted) {
+                  setState(() {});
+                }
               }
             });
           },
