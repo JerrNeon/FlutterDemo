@@ -8,7 +8,7 @@ import 'package:child_star/utils/utils_index.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class NetManager {
   NetManager([this.context]);

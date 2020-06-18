@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
@@ -7,7 +9,7 @@ import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class XmlyPage extends StatefulWidget {
   @override
@@ -16,11 +18,8 @@ class XmlyPage extends StatefulWidget {
 
 class _XmlyPageState extends State<XmlyPage>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  final xmly = Xmly();
   Future _future;
-  Future<XmlyBannersPageList> _bannersFuture;
-  Future<ColumnsPageList> _columnListFuture;
-  Future<ColumnBatchAlbumPageList> _columnAlbumFuture;
-  IPlayStatusCallback _iPlayStatusCallback;
   DbUtils _dbUtils;
   AnimationController _animationController; //旋转动画
   Animation<double> _turns; //动画值
@@ -43,24 +42,23 @@ class _XmlyPageState extends State<XmlyPage>
 
   @override
   void dispose() {
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback, isCancel: true);
+    xmly.dispose();
     _dbUtils?.close();
     _animationController?.dispose();
     super.dispose();
   }
 
   _initFuture() {
-    _bannersFuture = XmlyNetManager().getBannerList();
-    _columnListFuture = XmlyNetManager().getColumnList();
-    _columnAlbumFuture = XmlyNetManager()
-        .getColumnBatchAlbumList(ids: XmlyData.COLUMN_IDS, count: 3);
-    _future =
-        Future.wait([_bannersFuture, _columnListFuture, _columnAlbumFuture]);
+    _future = Future.wait([
+      XmlyNetManager().getBannerList(),
+      XmlyNetManager().getColumnList(),
+      XmlyNetManager()
+          .getColumnBatchAlbumList(ids: XmlyData.COLUMN_IDS, count: 3),
+    ]);
   }
 
   _initTrack() async {
-    _currTrack = await Xmly().getCurrSound();
+    _currTrack = await xmly.getCurrSound();
     if (_currTrack == null) {
       if (_dbUtils == null) {
         _dbUtils = DbUtils();
@@ -74,7 +72,7 @@ class _XmlyPageState extends State<XmlyPage>
         }
       }
     } else {
-      bool isPlaying = await Xmly().isPlaying();
+      bool isPlaying = await xmly.isPlaying();
       _isPlayVisible = !isPlaying;
       if (isPlaying) {
         _animationController.repeat();
@@ -93,11 +91,11 @@ class _XmlyPageState extends State<XmlyPage>
 
   ///初始化播放状态回调
   _initListener() {
-    _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onSoundPrepared = () async {
+    xmly.initListener();
+    xmly.onSoundPrepared.listen((event) async {
       LogUtils.d("xmly home -> onSoundPrepared");
       //保存当前播放数据到本地
-      Track track = _currTrack = await Xmly().getCurrSound();
+      Track track = _currTrack = await xmly.getCurrSound();
       if (mounted) {
         setState(() {});
       }
@@ -140,40 +138,39 @@ class _XmlyPageState extends State<XmlyPage>
           }
         }
       }
-    };
-    _iPlayStatusCallback.onSoundSwitch = () async {
+    });
+    xmly.onSoundSwitch.listen((event) async {
       LogUtils.d("xmly home -> onSoundSwitch");
-      int currentIndex = await Xmly().getCurrentIndex();
-      int playListSize = await Xmly().getPlayListSize();
+      int currentIndex = await xmly.getCurrentIndex();
+      int playListSize = await xmly.getPlayListSize();
       if (currentIndex < 2) {
         XmlyUtils.autoLoadPreToPlayList();
       } else if (currentIndex >= playListSize - 2) {
         XmlyUtils.autoLoadNextToPlayList();
       }
-    };
-    _iPlayStatusCallback.onPlayStart = () {
+    });
+    xmly.onPlayStart.listen((event) {
       LogUtils.d("xmly home -> onPlayStart");
       _isPlayVisible = false;
       if (mounted) {
         _animationController?.repeat();
         setState(() {});
       }
-    };
-    _iPlayStatusCallback.onPlayPause = () {
+    });
+    xmly.onPlayPause.listen((event) {
       LogUtils.d("xmly home -> onPlayPause");
       _isPlayVisible = true;
       if (mounted) {
         _animationController?.stop(canceled: false);
         setState(() {});
       }
-    };
-    _iPlayStatusCallback.onPlayProgress = (progress) {
+    });
+    xmly.onPlayProgress.listen((progress) {
       _playProgress = progress;
       if (mounted) {
         setState(() {});
       }
-    };
-    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+    });
   }
 
   @override
@@ -585,9 +582,9 @@ class _XmlyPageState extends State<XmlyPage>
   ///点击正在播放的声音
   _onTapPlay() async {
     if (_currTrack != null) {
-      bool isPlaying = await Xmly().isPlaying();
+      bool isPlaying = await xmly.isPlaying();
       if (!isPlaying) {
-        await Xmly().play();
+        await xmly.play();
       }
       RoutersNavigate().navigateToXmlyPlayPage(context);
     } else if (_xmlyResource != null) {

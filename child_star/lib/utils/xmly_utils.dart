@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/widgets.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class XmlyUtils {
-  static IConnectCallback _iConnectCallback;
+  static StreamSubscription _onConnectedSubscription;
 
   static playList(
     BuildContext context, {
@@ -21,13 +23,14 @@ class XmlyUtils {
     bool isNavigateToXmlyPlayPage = true,
   }) async {
     if (list != null && list.isNotEmpty) {
+      final xmly = Xmly();
       bool isUpdatePlayList;
       if (albumId != XmlyData.albumId) {
         isUpdatePlayList = true;
       } else if (isAsc != XmlyData.isAsc) {
         isUpdatePlayList = true;
       } else {
-        List<Track> playList = await Xmly().getPlayList();
+        List<Track> playList = await xmly.getPlayList();
         if (list.length != playList.length) {
           isUpdatePlayList = true;
         } else {
@@ -41,19 +44,19 @@ class XmlyUtils {
       XmlyData.pageSize = pageSize;
       XmlyData.prePage = prePage;
       XmlyData.page = page;
-      bool isConnected = await Xmly().isConnected();
+      bool isConnected = await xmly.isConnected();
       if (isConnected) {
         if (isUpdatePlayList) {
           XmlyData.isPlayAsc = true;
-          Xmly().playList(list: list, playIndex: playIndex);
+          xmly.playList(list: list, playIndex: playIndex);
         } else {
-          int currentIndex = await Xmly().getCurrentIndex();
+          int currentIndex = await xmly.getCurrentIndex();
           if (currentIndex != playIndex) {
-            Xmly().play(playIndex: playIndex);
+            xmly.play(playIndex: playIndex);
           } else {
-            bool isPlaying = await Xmly().isPlaying();
+            bool isPlaying = await xmly.isPlaying();
             if (!isPlaying) {
-              Xmly().play();
+              xmly.play();
             }
           }
         }
@@ -61,20 +64,18 @@ class XmlyUtils {
           RoutersNavigate().navigateToXmlyPlayPage(context);
         }
       } else {
-        _iConnectCallback = () async {
+        _onConnectedSubscription = xmly.onConnected.listen((event) async {
           XmlyData.isPlayAsc = true;
-          await Xmly().playList(list: list, playIndex: playIndex);
-          await Xmly()
-              .removeOnConnectedListener(_iConnectCallback, isCancel: true);
-          _iConnectCallback = null;
+          await xmly.playList(list: list, playIndex: playIndex);
+          _onConnectedSubscription.cancel();
+          _onConnectedSubscription = null;
           if (isNavigateToXmlyPlayPage) {
             RoutersNavigate().navigateToXmlyPlayPage(context);
           }
-        };
-        await Xmly().addOnConnectedListener(_iConnectCallback);
+        });
         var packageInfo = await AppUtils.getPackageInfo();
         LogUtils.d("xmly utils -> ${packageInfo.packageName}.MainActivity");
-        await Xmly().initPlayer(
+        await xmly.initPlayer(
           notificationId: DateTime.now().millisecond,
           notificationClassName: "${packageInfo.packageName}.MainActivity",
         );
@@ -88,6 +89,9 @@ class XmlyUtils {
     VoidCallback onErrorCallback,
   }) async {
     try {
+      if (!isEnablePullDown) {
+        return;
+      }
       int pageIndex;
       if (XmlyData.isPlayAsc) {
         XmlyData.prePage--;
@@ -128,6 +132,9 @@ class XmlyUtils {
     VoidCallback onErrorCallback,
   }) async {
     try {
+      if (!isEnablePullUp) {
+        return;
+      }
       int pageIndex;
       if (XmlyData.isPlayAsc) {
         XmlyData.page++;
@@ -159,6 +166,22 @@ class XmlyUtils {
       if (onErrorCallback != null) {
         onErrorCallback.call();
       }
+    }
+  }
+
+  static bool get isEnablePullDown {
+    if (XmlyData.isPlayAsc) {
+      return XmlyData.prePage > 1;
+    } else {
+      return XmlyData.page < XmlyData.totalPage;
+    }
+  }
+
+  static bool get isEnablePullUp {
+    if (XmlyData.isPlayAsc) {
+      return XmlyData.page < XmlyData.totalPage;
+    } else {
+      return XmlyData.prePage > 1;
     }
   }
 }

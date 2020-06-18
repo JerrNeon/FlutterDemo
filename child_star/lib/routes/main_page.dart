@@ -9,7 +9,7 @@ import 'package:child_star/routes/knowledge/knowledge_page.dart';
 import 'package:child_star/utils/dialog_utils.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:flutter/material.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class MainPage extends StatefulWidget {
   @override

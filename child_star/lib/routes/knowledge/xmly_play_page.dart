@@ -7,7 +7,7 @@ import 'package:child_star/widgets/page/page_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class XmlyPlayPage extends StatefulWidget {
   @override
@@ -15,7 +15,11 @@ class XmlyPlayPage extends StatefulWidget {
 }
 
 class _XmlyPlayPageState extends State<XmlyPlayPage> {
-  IPlayStatusCallback _iPlayStatusCallback;
+  final xmly = Xmly();
+  StreamSubscription _onPlayStartSubscription;
+  StreamSubscription _onPlayPauseSubscription;
+  StreamSubscription _onSoundPreparedSubscription;
+  StreamSubscription _onPlayProgressSubscription;
   Track _currTrack; //当前正在播放的声音
   bool _isPlaying = false; //是否正在播放
   bool _isLoading = true; //是否正在加载
@@ -38,8 +42,10 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
       XmlyData.countDownTime = _currentTime;
       _timer = null;
     }
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    _onPlayStartSubscription?.cancel();
+    _onPlayPauseSubscription?.cancel();
+    _onSoundPreparedSubscription?.cancel();
+    _onPlayProgressSubscription?.cancel();
     super.dispose();
   }
 
@@ -76,8 +82,8 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
 
   ///获取播放状态，当前正在播放的声音信息
   _initTrack() async {
-    _currTrack = await Xmly().getCurrSound();
-    _isPlaying = await Xmly().isPlaying();
+    _currTrack = await xmly.getCurrSound();
+    _isPlaying = await xmly.isPlaying();
     if (mounted) {
       setState(() {});
     }
@@ -85,40 +91,38 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
 
   ///初始化播放状态回调
   _initListener() {
-    _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onPlayStart = () async {
+    _onPlayStartSubscription = xmly.onPlayStart.listen((event) async {
+      LogUtils.d("xmly play -> onPlayStart");
       _isLoading = false;
       _isPlaying = true;
       if (mounted) {
         setState(() {});
       }
-      LogUtils.d("xmly play -> onPlayStart");
-    };
-    _iPlayStatusCallback.onPlayPause = () async {
+    });
+    _onPlayPauseSubscription = xmly.onPlayPause.listen((event) async {
+      LogUtils.d("xmly play -> onPlayPause");
       _isLoading = false;
       _isPlaying = false;
       if (mounted) {
         setState(() {});
       }
-      LogUtils.d("xmly play -> onPlayPause");
-    };
-    _iPlayStatusCallback.onSoundPrepared = () async {
+    });
+    _onSoundPreparedSubscription = xmly.onSoundPrepared.listen((event) async {
+      LogUtils.d("xmly play -> onSoundPrepared");
       _isLoading = true;
       _isPlaying = false;
-      _currTrack = await Xmly().getCurrSound();
+      _currTrack = await xmly.getCurrSound();
       if (mounted) {
         setState(() {});
       }
-      LogUtils.d("xmly play -> onSoundPrepared");
-    };
-    _iPlayStatusCallback.onPlayProgress = (progress) async {
+    });
+    _onPlayProgressSubscription = xmly.onPlayProgress.listen((progress) async {
       _isLoading = false;
       _progress = progress;
       if (mounted) {
         setState(() {});
       }
-    };
-    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+    });
   }
 
   @override
@@ -208,7 +212,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
             _progress = value;
           },
           onChangeEnd: (value) {
-            Xmly().seekToByPercent(percent: value);
+            xmly.seekToByPercent(percent: value);
           },
           inactiveColor: Colors.white30,
           activeColor: Colors.white,
@@ -250,7 +254,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
                     Icons.skip_previous,
                     color: Colors.white,
                   ),
-                  onPressed: () => Xmly().playPre(),
+                  onPressed: () => xmly.playPre(),
                 ),
                 SizedBox(width: MySizes.s_30),
                 Stack(
@@ -275,9 +279,9 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
                       ),
                       onPressed: () async {
                         if (_isPlaying) {
-                          await Xmly().pause();
+                          await xmly.pause();
                         } else {
-                          await Xmly().play();
+                          await xmly.play();
                         }
                         setState(() {
                           _isPlaying = !_isPlaying;
@@ -293,7 +297,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
                     Icons.skip_next,
                     color: Colors.white,
                   ),
-                  onPressed: () => Xmly().playNext(),
+                  onPressed: () => xmly.playNext(),
                 ),
               ],
             ),
@@ -361,7 +365,7 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
                 timeMillis = 0;
                 _currentTime = 0;
               }
-              await Xmly().pausePlayInMillis(timeMillis);
+              await xmly.pausePlayInMillis(timeMillis);
               if (timeMillis != 0) {
                 _startTimer();
               } else {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/models/index.dart';
@@ -8,7 +10,7 @@ import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class LectureItemWidget extends StatelessWidget {
   final Lecture data;
@@ -710,7 +712,9 @@ class XmlyAlbumDetailTrackTopWidget extends StatefulWidget {
 
 class _XmlyAlbumDetailTrackTopWidgetState
     extends State<XmlyAlbumDetailTrackTopWidget> {
-  IPlayStatusCallback _iPlayStatusCallback;
+  final xmly = Xmly();
+  StreamSubscription _onPlayStartSubscription;
+  StreamSubscription _onPlayPauseSubscription;
   int _playStatus = 0; //0：未在播放 1：正在播放 2：暂停播放
   bool _isAsc = true; //是否升序(默认升序)
 
@@ -723,18 +727,18 @@ class _XmlyAlbumDetailTrackTopWidgetState
 
   @override
   void dispose() {
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    _onPlayStartSubscription?.cancel();
+    _onPlayPauseSubscription?.cancel();
     super.dispose();
   }
 
   //初始化播放状态
   _initStatus() async {
-    Track track = await Xmly().getCurrSound();
+    Track track = await xmly.getCurrSound();
     if (track != null) {
       var album = track.subordinated_album;
       if (album.id == widget.albumId) {
-        bool isPlaying = await Xmly().isPlaying();
+        bool isPlaying = await xmly.isPlaying();
         _playStatus = isPlaying ? 1 : 2;
       }
     }
@@ -745,9 +749,8 @@ class _XmlyAlbumDetailTrackTopWidgetState
 
   ///初始化播放状态回调
   _initListener() async {
-    _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onPlayStart = () async {
-      Track track = await Xmly().getCurrSound();
+    _onPlayStartSubscription = xmly.onPlayStart.listen((event) async {
+      Track track = await xmly.getCurrSound();
       if (track != null) {
         var album = track.subordinated_album;
         if (album.id == widget.albumId) {
@@ -757,9 +760,9 @@ class _XmlyAlbumDetailTrackTopWidgetState
           }
         }
       }
-    };
-    _iPlayStatusCallback.onPlayPause = () async {
-      Track track = await Xmly().getCurrSound();
+    });
+    _onPlayPauseSubscription = xmly.onPlayPause.listen((event) async {
+      Track track = await xmly.getCurrSound();
       if (track != null) {
         var album = track.subordinated_album;
         if (album.id == widget.albumId) {
@@ -769,8 +772,7 @@ class _XmlyAlbumDetailTrackTopWidgetState
           }
         }
       }
-    };
-    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+    });
   }
 
   @override
@@ -870,7 +872,9 @@ class XmlyPlayAnimationWidget extends StatefulWidget {
 class _XmlyPlayAnimationWidgetState extends State<XmlyPlayAnimationWidget>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  IPlayStatusCallback _iPlayStatusCallback;
+  final xmly = Xmly();
+  StreamSubscription _onPlayStartSubscription;
+  StreamSubscription _onPlayPauseSubscription;
 
   @override
   void initState() {
@@ -882,26 +886,24 @@ class _XmlyPlayAnimationWidgetState extends State<XmlyPlayAnimationWidget>
 
   @override
   void dispose() {
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    _onPlayStartSubscription?.cancel();
+    _onPlayPauseSubscription?.cancel();
     _controller?.dispose();
     super.dispose();
   }
 
   ///初始化播放状态回调
   _initListener() async {
-    bool isPlaying = await Xmly().isPlaying();
+    bool isPlaying = await xmly.isPlaying();
     if (isPlaying) {
       _controller?.repeat(reverse: true);
     }
-    _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onPlayStart = () async {
+    _onPlayStartSubscription = xmly.onPlayStart.listen((event) async {
       _controller?.repeat(reverse: true);
-    };
-    _iPlayStatusCallback.onPlayPause = () async {
+    });
+    _onPlayPauseSubscription = xmly.onPlayPause.listen((event) async {
       _controller?.stop(canceled: false);
-    };
-    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+    });
   }
 
   @override
@@ -961,8 +963,9 @@ class XmlyPlayListWidget extends StatefulWidget {
 class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   final RefreshController _refreshController = RefreshController();
   final ScrollController _scrollController = ScrollController();
+  final xmly = Xmly();
+  StreamSubscription _onSoundSwitchSubscription;
   static const ITEM_HEIGHT = MySizes.s_48;
-  IPlayStatusCallback _iPlayStatusCallback;
   Track _currTrack; //当前正在播放的声音
   List<Track> _tracks; //播放列表数据
   PlayMode _playMode; //播放类型
@@ -979,18 +982,17 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
 
   @override
   void dispose() {
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
-    if (_refreshController != null) _refreshController.dispose();
-    if (_scrollController != null) _scrollController.dispose();
+    _onSoundSwitchSubscription?.cancel();
+    _refreshController?.dispose();
+    _scrollController?.dispose();
     super.dispose();
   }
 
   _initTrack() async {
-    _currTrack = await Xmly().getCurrSound();
-    _tracks = await Xmly().getPlayList();
-    _playMode = await Xmly().getPlayMode();
-    int index = await Xmly().getCurrentIndex();
+    _currTrack = await xmly.getCurrSound();
+    _tracks = await xmly.getPlayList();
+    _playMode = await xmly.getPlayMode();
+    int index = await xmly.getCurrentIndex();
     _scrollController.jumpTo(index * ITEM_HEIGHT);
     if (mounted) {
       setState(() {});
@@ -998,14 +1000,12 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   }
 
   _initListener() {
-    _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onSoundSwitch = () async {
-      _currTrack = await Xmly().getCurrSound();
+    _onSoundSwitchSubscription = xmly.onSoundSwitch.listen((event) async {
+      _currTrack = await xmly.getCurrSound();
       if (mounted) {
         setState(() {});
       }
-    };
-    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+    });
   }
 
   @override
@@ -1161,12 +1161,12 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   }
 
   _onRefresh() async {
-    int playListSize = await Xmly().getPlayListSize();
+    int playListSize = await xmly.getPlayListSize();
     //[XmlyPage]中onSoundSwitch会自动加载前一页数据
     //这里判断当前列表的数据数量是否与播放列表一致，如果不一致则重新赋值
     //如果不能加载前一页数据，则直接更新数据
     if (_tracks != null && _tracks.length != playListSize) {
-      _tracks = await Xmly().getPlayList();
+      _tracks = await xmly.getPlayList();
       if (!isEnablePullDown) {
         if (mounted) {
           setState(() {});
@@ -1189,12 +1189,12 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   }
 
   _onLoading() async {
-    int playListSize = await Xmly().getPlayListSize();
+    int playListSize = await xmly.getPlayListSize();
     //[XmlyPage]中onSoundSwitch会自动加载后一页数据
     //这里判断当前列表的数据数量是否与播放列表一致，如果不一致则重新赋值
     //如果不能加载后一页数据，则直接更新数据
     if (_tracks != null && _tracks.length != playListSize) {
-      _tracks = await Xmly().getPlayList();
+      _tracks = await xmly.getPlayList();
       if (!isEnablePullUp) {
         if (mounted) {
           setState(() {});
@@ -1217,7 +1217,7 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   }
 
   _onTapItem(int index) {
-    Xmly().play(playIndex: index);
+    xmly.play(playIndex: index);
   }
 
   _onTapPlayMode() async {
@@ -1230,7 +1230,7 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
     } else {
       _playMode = PlayMode.PLAY_MODEL_LIST;
     }
-    await Xmly().setPlayMode(mode: _playMode);
+    await xmly.setPlayMode(mode: _playMode);
     if (mounted) {
       setState(() {});
     }
@@ -1239,7 +1239,7 @@ class _XmlyPlayListWidgetState extends State<XmlyPlayListWidget> {
   _onTapSort() async {
     _isAsc = !_isAsc;
     _tracks = _tracks.reversed.toList();
-    await Xmly().permutePlayList();
+    await xmly.permutePlayList();
     XmlyData.isPlayAsc = _isAsc;
     if (mounted) {
       setState(() {});

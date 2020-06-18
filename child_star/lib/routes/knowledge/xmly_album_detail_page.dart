@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/i10n_index.dart';
 import 'package:child_star/models/index.dart';
@@ -8,7 +10,7 @@ import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class XmlyAlbumDetailPage extends StatefulWidget {
   final int albumId;
@@ -23,8 +25,11 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   final int albumId;
   final _solidController = SolidController();
   final _globalKey = GlobalKey<SmartRefresherWidgetState>();
+  final xmly = Xmly();
+  StreamSubscription _onPlayStartSubscription;
+  StreamSubscription _onPlayPauseSubscription;
+  StreamSubscription _onSoundPreparedSubscription;
   Future<AlbumPageList> _albumFuture;
-  IPlayStatusCallback _iPlayStatusCallback;
   bool _isAsc = true;
   int _currPlayTrackId;
   int _totalPage = 0;
@@ -50,8 +55,9 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
 
   @override
   void dispose() {
-    if (_iPlayStatusCallback != null)
-      Xmly().removePlayerStatusListener(_iPlayStatusCallback);
+    _onPlayStartSubscription?.cancel();
+    _onPlayPauseSubscription?.cancel();
+    _onSoundPreparedSubscription?.cancel();
     if (_solidController != null) _solidController.dispose();
     super.dispose();
   }
@@ -91,23 +97,17 @@ class _XmlyAlbumDetailPageState extends State<XmlyAlbumDetailPage> {
   }
 
   ///初始化播放状态回调
-  _initListener() async {
-    _iPlayStatusCallback ??= IPlayStatusCallback();
-    _iPlayStatusCallback.onPlayStart = () async {
-      Track track = await Xmly().getCurrSound();
-      if (track != null) {}
+  _initListener() {
+    _onPlayStartSubscription = xmly.onPlayStart.listen((event) {
       LogUtils.d("xmly album detail -> onPlayStart");
-    };
-    _iPlayStatusCallback.onPlayPause = () async {
-      Track track = await Xmly().getCurrSound();
-      if (track != null) {}
+    });
+    _onPlayPauseSubscription = xmly.onPlayPause.listen((event) {
       LogUtils.d("xmly album detail -> onPlayPause");
-    };
-    _iPlayStatusCallback.onSoundPrepared = () async {
-      _initStatus();
+    });
+    _onSoundPreparedSubscription = xmly.onSoundPrepared.listen((event) {
       LogUtils.d("xmly album detail -> onSoundPrepared");
-    };
-    Xmly().addPlayerStatusListener(_iPlayStatusCallback);
+      _initStatus();
+    });
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:child_star/models/index.dart';
 import 'package:child_star/utils/utils_index.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 ///应用入口信息初始化
 class Global {
@@ -30,15 +30,16 @@ class Global {
   }
 
   static Future initXmly() async {
-    await Xmly.isDebug(isDebug: !isRelease);
+    final xmly = Xmly();
+    await xmly.isDebug(isDebug: !isRelease);
     PackageInfo packageInfo = await AppUtils.getPackageInfo();
-    await Xmly.init(
+    await xmly.init(
       appKey: "857b7fc3d1ab3a0388f1c27a63f3ef85",
       packId: packageInfo.packageName,
       appSecret: "21b73a1e994be13be6673b8d9d3a0151",
     );
-    await Xmly.useHttps(useHttps: true);
-    await Xmly.isTargetSDKVersion24More(isTargetSDKVersion24More: true);
+    await xmly.useHttps(useHttps: true);
+    await xmly.isTargetSDKVersion24More(isTargetSDKVersion24More: true);
   }
 
   static void saveProfile() {

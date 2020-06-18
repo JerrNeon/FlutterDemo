@@ -6,7 +6,7 @@ import 'package:child_star/widgets/page/page_index.dart';
 import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:xmly/xmly_index.dart';
+import 'package:xmly/xmly_plugin.dart';
 
 class XmlyAlbumPage extends StatefulWidget {
   final int columnId;
