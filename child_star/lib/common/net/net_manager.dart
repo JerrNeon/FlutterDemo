@@ -512,12 +512,16 @@ class NetManager {
   Future<Result> getCollectionStatus({
     @required String id,
     @required int type,
+    bool isShowErrorMsg = true,
   }) async {
-    var response =
-        await Net(context).post(NetConfig.GET_COLLECT_STATUS, params: {
-      "id": id,
-      "type": type,
-    });
+    var response = await Net(context).post(
+      NetConfig.GET_COLLECT_STATUS,
+      params: {
+        "id": id,
+        "type": type,
+      },
+      isShowErrorMsg: isShowErrorMsg,
+    );
     return Result.fromJson(response);
   }
 

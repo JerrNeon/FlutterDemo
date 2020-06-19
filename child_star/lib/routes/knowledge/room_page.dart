@@ -12,7 +12,7 @@ class _RoomPageState extends State<RoomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(GmLocalizations.of(context).homeCommunityTitle),
+        child: Text(GmLocalizations.of(context).knowledgeRoomTitle),
       ),
     );
   }

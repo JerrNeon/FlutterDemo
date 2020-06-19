@@ -642,8 +642,8 @@ class _XmlyAlbumDetailCollectionWidgetState
 
   @override
   void initState() {
-    _collectionFuture = NetManager()
-        .getCollectionStatus(id: widget.albumId.toString(), type: 3);
+    _collectionFuture = NetManager().getCollectionStatus(
+        id: widget.albumId.toString(), type: 3, isShowErrorMsg: false);
     super.initState();
   }
 

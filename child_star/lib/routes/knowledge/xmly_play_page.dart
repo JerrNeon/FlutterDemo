@@ -139,8 +139,11 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
                 _buildBottom(gm),
               ],
             )
-          : CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.white),
+          : Container(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.white),
+              ),
             ),
     );
   }

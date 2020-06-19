@@ -1,8 +1,10 @@
 import 'package:child_star/common/resource_index.dart';
 import 'package:child_star/i10n/gm_localizations_intl.dart';
 import 'package:child_star/routes/home/home_index.dart';
+import 'package:child_star/states/states_index.dart';
 import 'package:child_star/widgets/page/page_index.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -34,47 +36,53 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MySystems.noAppBarPreferredSize,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                  icon: Image(image: MyImages.ic_home_personal),
-                  onPressed: () => RoutersNavigate().navigateToMine(context)),
-              HomeTopBarWidget(
-                currentIndex: _currentIndex,
-                data: [
-                  gm.homeNewTitle,
-                  gm.homeAttentionTitle,
-                  gm.homeCommunityTitle,
-                ],
-                onTap: (index) {
-                  _pageController.jumpToPage(index);
-                },
-              ),
-              IconButton(
-                  icon: Image(image: MyImages.ic_home_message),
-                  onPressed: () {}),
-            ],
-          ),
-          Expanded(
-              child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: _list.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  onPageChanged: (index) {
-                    setState(() {
-                      if (_currentIndex != index) {
-                        _currentIndex = index;
-                      }
-                    });
+      body: Consumer<UserProvider>(
+        builder: (context, value, child) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                    icon: Image(image: MyImages.ic_home_personal),
+                    onPressed: () => RoutersNavigate().navigateToMine(context)),
+                HomeTopBarWidget(
+                  currentIndex: _currentIndex,
+                  data: [
+                    gm.homeNewTitle,
+                    gm.homeAttentionTitle,
+                    gm.homeCommunityTitle,
+                  ],
+                  onTap: (index) {
+                    index != 1
+                        ? _pageController.jumpToPage(index)
+                        : value.isLogin
+                            ? _pageController.jumpToPage(index)
+                            : RoutersNavigate().navigateToLogin(context);
                   },
-                  itemBuilder: (context, index) {
-                    return _list[index];
-                  })),
-        ],
+                ),
+                IconButton(
+                    icon: Image(image: MyImages.ic_home_message),
+                    onPressed: () {}),
+              ],
+            ),
+            Expanded(
+                child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _list.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (index) {
+                      setState(() {
+                        if (_currentIndex != index) {
+                          _currentIndex = index;
+                        }
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return _list[index];
+                    })),
+          ],
+        ),
       ),
     );
   }
