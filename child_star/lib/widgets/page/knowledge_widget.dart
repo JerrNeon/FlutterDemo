@@ -1301,6 +1301,7 @@ class XmlyTimerCloseWidget extends StatelessWidget {
               style: TextStyle(
                 color: MyColors.c_585858,
                 fontSize: MyFontSizes.s_14,
+                decoration: TextDecoration.none,
               ),
             ),
           ),
@@ -1330,9 +1331,9 @@ class XmlyTimerCloseWidget extends StatelessWidget {
               ? gm.xmlyPlayTimerCloseDialogCancelTitle
               : "${index == 0 ? 15 : index == 1 ? 30 : 60}${gm.xmlyPlayTimerCloseDialogTimeUnit}",
           style: TextStyle(
-            color: MyColors.c_585858,
-            fontSize: MyFontSizes.s_14,
-          ),
+              color: MyColors.c_585858,
+              fontSize: MyFontSizes.s_14,
+              decoration: TextDecoration.none),
         ),
       ),
     );

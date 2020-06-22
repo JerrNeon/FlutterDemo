@@ -222,6 +222,17 @@ class _XmlyPlayPageState extends State<XmlyPlayPage> {
           label:
               "${TimeUtils.formatDateS(_currTrack.duration * _progress)}/${TimeUtils.formatDateS(_currTrack.duration)}",
         ),
+        Container(
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.symmetric(horizontal: MySizes.s_20),
+          child: Text(
+            "${TimeUtils.formatDateS(_currTrack.duration * _progress)}/${TimeUtils.formatDateS(_currTrack.duration)}",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: MyFontSizes.s_8,
+            ),
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
