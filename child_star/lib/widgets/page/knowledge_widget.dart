@@ -343,7 +343,7 @@ class CourseCommentWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        DateUtils.formatDateStr(
+                        DatesUtils.formatDateStr(
                           data.createdAt,
                           format: DataFormats.y_mo_d,
                         ),

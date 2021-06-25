@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 ///MD5加密

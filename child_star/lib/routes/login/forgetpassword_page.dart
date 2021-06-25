@@ -150,7 +150,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     autofocus: true,
                     maxLength: 11,
                     inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly,
+                      FilteringTextInputFormatter.digitsOnly,
                     ],
                     onEditingComplete: () => FocusScope.of(context)
                         .requestFocus(_verifyCodeFocusNode),
@@ -225,7 +225,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               textAlign: TextAlign.center,
               maxLength: 6,
               inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly,
               ],
               onEditingComplete: () =>
                   FocusScope.of(context).requestFocus(_passwordFocusNode),
@@ -284,7 +284,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   Widget _buildForgetPasswordBtn(GmLocalizations gm) {
     return Padding(
       padding: EdgeInsets.only(top: MySizes.s_28),
-      child: FlatButton(
+      child: MaterialButton(
         onPressed: () => _forgetPassword(),
         color: Colors.white,
         shape: RoundedRectangleBorder(

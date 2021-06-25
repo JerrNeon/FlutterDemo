@@ -18,14 +18,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   var _currentIndex = 0;
-  var _list = List();
+  var _list = [];
   var _pageController = PageController();
   DateTime _lastPressedDateTime; //上次点击时间
 
   @override
   void initState() {
-     StatusBarUtils.showBar();
-     StatusBarUtils.setDark();
+    StatusBarUtils.showBar();
+    StatusBarUtils.setDark();
     _list
       ..add(HomePage())
       ..add(KnowledgePage())
@@ -59,6 +59,10 @@ class _MainPageState extends State<MainPage> {
             currentIndex: _currentIndex,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
+            unselectedLabelStyle:
+                TextStyle(color: MyColors.c_929292, fontSize: MyFontSizes.s_11),
+            selectedLabelStyle:
+                TextStyle(color: MyColors.c_929292, fontSize: MyFontSizes.s_11),
             onTap: (index) {
               _pageController.jumpToPage(index);
             },
@@ -98,10 +102,7 @@ class _MainPageState extends State<MainPage> {
     return BottomNavigationBarItem(
       icon: Image(image: icon),
       activeIcon: Image(image: activeIcon),
-      title: Text(
-        title,
-        style: TextStyle(color: MyColors.c_929292, fontSize: MyFontSizes.s_11),
-      ),
+      label: title,
     );
   }
 }

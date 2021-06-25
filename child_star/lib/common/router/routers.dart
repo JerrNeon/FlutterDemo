@@ -49,7 +49,7 @@ class Routers {
   static const String xmly_album_detail = "/xmly/album/detail";
   static const String xmly_play = "/xmly/play";
 
-  static var router = Router();
+  static var router = FluroRouter();
 
   static init() {
     router.notFoundHandler = Handler(handlerFunc:

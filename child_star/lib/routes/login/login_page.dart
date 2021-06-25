@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
               autofocus: true,
               maxLength: 11,
               inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly,
               ],
               onEditingComplete: () =>
                   FocusScope.of(context).requestFocus(_passwordFocusNode),

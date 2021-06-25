@@ -139,9 +139,8 @@ class _ExerciseDetailDownloadWidgetState
 
   _download() async {
     String downloadUrl = data.downloadUrl;
-    var result =
-        await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-    if (result[PermissionGroup.storage] == PermissionStatus.granted) {
+    var result = await Permission.storage.request();
+    if (result.isGranted) {
       var fileName = downloadUrl
           .substring(downloadUrl.lastIndexOf(FileUtils.separator) + 1);
       var savePath = await FileUtils.getDownloadPath(fileName);

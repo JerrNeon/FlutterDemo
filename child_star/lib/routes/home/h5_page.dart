@@ -44,7 +44,7 @@ class _H5PageState extends State<H5Page> {
                 ),
                 Expanded(
                   child: InAppWebView(
-                    initialUrl: url,
+                    initialUrlRequest: URLRequest(url: Uri.parse(url)),
                     onProgressChanged:
                         (InAppWebViewController controller, int progress) {
                       if (mounted) {
@@ -58,7 +58,7 @@ class _H5PageState extends State<H5Page> {
                       _controller = controller;
                     },
                     onLoadStop:
-                        (InAppWebViewController controller, String url) {
+                        (InAppWebViewController controller, Uri url) {
                       _getTitle();
                     },
                   ),

@@ -7,7 +7,7 @@ class GmCupertinoLocalizations {
 
 class _GmCupertinoLocalizationsDelegate
     extends LocalizationsDelegate<CupertinoLocalizations> {
-  const _GmCupertinoLocalizationsDelegate({Key key});
+  const _GmCupertinoLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {

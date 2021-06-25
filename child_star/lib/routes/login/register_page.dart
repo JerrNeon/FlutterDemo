@@ -151,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     autofocus: true,
                     maxLength: 11,
                     inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly,
+                      FilteringTextInputFormatter.digitsOnly,
                     ],
                     onEditingComplete: () => FocusScope.of(context)
                         .requestFocus(_verifyCodeFocusNode),
@@ -226,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
               textAlign: TextAlign.center,
               maxLength: 6,
               inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly,
               ],
               onEditingComplete: () =>
                   FocusScope.of(context).requestFocus(_passwordFocusNode),
@@ -285,7 +285,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildRegisterBtn(GmLocalizations gm) {
     return Padding(
       padding: EdgeInsets.only(top: MySizes.s_28),
-      child: FlatButton(
+      child: MaterialButton(
         onPressed: () => _register(),
         color: Colors.white,
         shape: RoundedRectangleBorder(

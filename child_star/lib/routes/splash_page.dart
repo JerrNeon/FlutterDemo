@@ -153,13 +153,13 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
-  Future<Map<PermissionGroup, PermissionStatus>> _requestPermission() async {
+  Future<Map<Permission, PermissionStatus>> _requestPermission() async {
     if (AppUtils.isMobile) {
-      return await PermissionHandler().requestPermissions([
-        PermissionGroup.camera,
-        PermissionGroup.photos,
-        PermissionGroup.storage,
-      ]);
+      return await [
+        Permission.camera,
+        Permission.photos,
+        Permission.storage,
+      ].request();
     }
     return null;
   }

@@ -8,7 +8,7 @@ import 'package:child_star/widgets/widget_index.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-enum PlayerState { stopped, playing, paused }
+enum PlayerStates { stopped, playing, paused }
 
 class VideoPlayerWidget extends StatefulWidget {
   final String url; //视频Url
@@ -29,7 +29,7 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   VideoPlayerController _controller;
-  PlayerState _playerState = PlayerState.stopped;
+  PlayerStates _playerState = PlayerStates.stopped;
   double progress = 0;
   var isShowUI = false;
   bool _isFullScreen = false;
@@ -64,7 +64,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     Size size = MediaQuery.of(context).size;
     //全屏时的比例
     double screenAspectRatio = size.width / size.height;
-    return _controller.value.initialized
+    return _controller.value.isInitialized
         ? WillPopScope(
             onWillPop: () async {
               if (_isFullScreen) {
@@ -95,7 +95,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                           : _controller.value.aspectRatio,
                       child: GestureDetector(
                         onTap: () {
-                          if (_playerState == PlayerState.playing) {
+                          if (_playerState == PlayerStates.playing) {
                             setState(() {
                               isShowUI = !isShowUI;
                             });
@@ -111,7 +111,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     offstage: !isShowUI,
                     child: GestureDetector(
                       onTap: () {
-                        if (_playerState == PlayerState.playing) {
+                        if (_playerState == PlayerStates.playing) {
                           _pause();
                           setState(() {});
                           _progressTimer?.cancel();
@@ -126,8 +126,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                         }
                       },
                       child: Image(
-                          image: MyImagesMultiple
-                              .video_play[_playerState == PlayerState.playing]),
+                          image: MyImagesMultiple.video_play[
+                              _playerState == PlayerStates.playing]),
                     ),
                   ),
                   //全屏图标
@@ -201,12 +201,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   _play() {
     _controller.play();
-    _playerState = PlayerState.playing;
+    _playerState = PlayerStates.playing;
   }
 
   _pause() {
     _controller.pause();
-    _playerState = PlayerState.paused;
+    _playerState = PlayerStates.paused;
   }
 
   _setProgress() {
@@ -218,7 +218,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       if (progress == 1) {
         timer.cancel();
         isShowUI = true;
-        _playerState = PlayerState.stopped;
+        _playerState = PlayerStates.stopped;
       }
       setState(() {});
     });
@@ -273,21 +273,22 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   PlayerMode mode;
 
   AudioPlayer _audioPlayer;
+  AudioCache _audioCache = AudioCache();
   // ignore: unused_field
-  AudioPlayerState _audioPlayerState;
+  PlayerState _audioPlayerState;
   Duration _duration;
   Duration _position;
 
-  PlayerState _playerState = PlayerState.stopped;
+  PlayerStates _playerState = PlayerStates.stopped;
   StreamSubscription _durationSubscription;
   StreamSubscription _positionSubscription;
   StreamSubscription _playerCompleteSubscription;
   StreamSubscription _playerErrorSubscription;
   StreamSubscription _playerStateSubscription;
 
-  get isPlaying => _playerState == PlayerState.playing;
+  get isPlaying => _playerState == PlayerStates.playing;
 
-  get isPaused => _playerState == PlayerState.paused;
+  get isPaused => _playerState == PlayerStates.paused;
 
   get durationText => _duration?.toString()?.split('.')?.first ?? '';
 
@@ -337,7 +338,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             bottom: MySizes.s_2,
             child: GestureDetector(
               onTap: () {
-                if (_playerState == PlayerState.playing) {
+                if (_playerState == PlayerStates.playing) {
                   _pause();
                 } else {
                   _play();
@@ -345,7 +346,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               },
               child: Image(
                   image: MyImagesMultiple
-                      .audio_play[_playerState == PlayerState.playing]),
+                      .audio_play[_playerState == PlayerStates.playing]),
             ),
           ),
         ],
@@ -361,20 +362,22 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
       if (Theme.of(context).platform == TargetPlatform.iOS) {
         // (Optional) listen for notification updates in the background
-        _audioPlayer.startHeadlessService();
+        // _audioPlayer.startHeadlessService();
+        _audioCache.fixedPlayer.notificationService.startHeadlessService();
+        _audioPlayer.notificationService.startHeadlessService();
 
         // set at least title to see the notification bar on ios.
-        _audioPlayer.setNotification(
-            title: 'App Name',
-            artist: 'Artist or blank',
-            albumTitle: 'Name or blank',
-            imageUrl: 'url or blank',
-            forwardSkipInterval: const Duration(seconds: 30),
-            // default is 30s
-            backwardSkipInterval: const Duration(seconds: 30),
-            // default is 30s
-            duration: duration,
-            elapsedTime: Duration(seconds: 0));
+        //   _audioPlayer.setNotification(
+        //       title: 'App Name',
+        //       artist: 'Artist or blank',
+        //       albumTitle: 'Name or blank',
+        //       imageUrl: 'url or blank',
+        //       forwardSkipInterval: const Duration(seconds: 30),
+        //       // default is 30s
+        //       backwardSkipInterval: const Duration(seconds: 30),
+        //       // default is 30s
+        //       duration: duration,
+        //       elapsedTime: Duration(seconds: 0));
       }
     });
 
@@ -394,7 +397,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     _playerErrorSubscription = _audioPlayer.onPlayerError.listen((msg) {
       print('audioPlayer error : $msg');
       setState(() {
-        _playerState = PlayerState.stopped;
+        _playerState = PlayerStates.stopped;
         _duration = Duration(seconds: 0);
         _position = Duration(seconds: 0);
       });
@@ -422,7 +425,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         : null;
     final result =
         await _audioPlayer.play(url, isLocal: isLocal, position: playPosition);
-    if (result == 1) setState(() => _playerState = PlayerState.playing);
+    if (result == 1) setState(() => _playerState = PlayerStates.playing);
 
     if (Theme.of(context).platform == TargetPlatform.iOS) {
       // default playback rate is 1.0
@@ -436,7 +439,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   Future<int> _pause() async {
     final result = await _audioPlayer.pause();
-    if (result == 1) setState(() => _playerState = PlayerState.paused);
+    if (result == 1) setState(() => _playerState = PlayerStates.paused);
     return result;
   }
 
@@ -445,7 +448,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     final result = await _audioPlayer.stop();
     if (result == 1) {
       setState(() {
-        _playerState = PlayerState.stopped;
+        _playerState = PlayerStates.stopped;
         _position = Duration();
       });
     }
@@ -453,6 +456,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   void _onComplete() {
-    setState(() => _playerState = PlayerState.stopped);
+    setState(() => _playerState = PlayerStates.stopped);
   }
 }

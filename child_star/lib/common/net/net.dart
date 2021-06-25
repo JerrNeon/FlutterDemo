@@ -174,9 +174,9 @@ class Net {
       } else {
         return Future.error(
           DioError(
-              request: response.request,
+              requestOptions: response.requestOptions,
               response: response,
-              type: DioErrorType.DEFAULT),
+              type: DioErrorType.other),
         );
       }
     } on DioError catch (e) {

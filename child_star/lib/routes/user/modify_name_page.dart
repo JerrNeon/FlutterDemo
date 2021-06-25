@@ -92,7 +92,7 @@ class _ModifyNamePageState extends State<ModifyNamePage> {
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autofocus: true,
-                              autovalidate: true,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               style: TextStyle(
                                 color: MyColors.c_777777,
                                 fontSize: MyFontSizes.s_14,

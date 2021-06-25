@@ -79,7 +79,7 @@ class TimeUtils {
       if (second >= 1 * 60 * 60) {
         format = DataFormats.h_m_s;
       }
-      return DateUtils.formatDateMs(second * 1000, format: format);
+      return DatesUtils.formatDateMs(second * 1000, format: format);
     } catch (e) {
       return "";
     }
@@ -107,7 +107,7 @@ class TimeUtils {
       int day = time % tenDay == 0 ? time ~/ tenDay : time ~/ tenDay + 1;
       return "$day天前";
     } else {
-      return DateUtils.formatDateMs(milliSecond, format: DataFormats.y_mo_d);
+      return DatesUtils.formatDateMs(milliSecond, format: DataFormats.y_mo_d);
     }
   }
 }
@@ -177,7 +177,7 @@ const Map<int, int> MONTH_DAY = {
 };
 
 /// Date Util.
-class DateUtils {
+class DatesUtils {
   /// get DateTime By DateStr.
   static DateTime getDateTime(String dateStr, {bool isUtc}) {
     DateTime dateTime = DateTime.tryParse(dateStr);
